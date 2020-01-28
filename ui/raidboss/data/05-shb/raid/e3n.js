@@ -10,12 +10,12 @@
   triggers: [
     {
       id: 'E3N Tidal Roar',
-      regex: / 14:3FC4:Leviathan starts using Tidal Roar/,
-      regexCn: / 14:3FC4:利维亚桑 starts using 怒潮咆哮/,
-      regexDe: / 14:3FC4:Leviathan starts using Schrei der Gezeiten/,
-      regexFr: / 14:3FC4:Léviathan starts using Vague Rugissante/,
-      regexJa: / 14:3FC4:リヴァイアサン starts using タイダルロア/,
-      regexKo: / 14:3FC4:리바이어선 starts using 바다의 포효/,
+      regex: Regexes.startsUsing({ id: '3FC4', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FC4', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FC4', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FC4', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FC4', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FC4', source: '리바이어선', capture: false }),
       condition: function(data) {
         return data.role == 'healer';
       },
@@ -24,69 +24,69 @@
         de: 'AoE',
         fr: 'Dégâts de zone',
         cn: 'AOE',
-        ko: 'AOE',
+        ko: '광역공격',
       },
     },
     {
       id: 'E3N Rip Current',
-      regex: / 1B:\y{ObjectId}:(\y{Name}):....:....:0017:/,
+      regex: Regexes.headMarker({ id: '0017' }),
       alertText: function(data, matches) {
-        if (data.me == matches[1]) {
+        if (data.me == matches.target) {
           return {
             en: 'Tank Buster on YOU',
             de: 'Tankbuster auf DIR',
             fr: 'Tankbuster sur VOUS',
             cn: '死刑点名',
-            ko: '탱크버스터 on YOU',
+            ko: '나에게 탱버',
           };
         }
         if (data.role == 'healer') {
           return {
-            en: 'Buster on ' + data.ShortName(matches[1]),
-            de: 'Tankbuster auf ' + data.ShortName(matches[1]),
-            fr: 'Tankbuster sur ' + data.ShortName(matches[1]),
-            cn: '死刑 ->' + data.ShortName(matches[1]),
-            ko: '탱버 ->' + data.ShortName(matches[1]),
+            en: 'Buster on ' + data.ShortName(matches.target),
+            de: 'Tankbuster auf ' + data.ShortName(matches.target),
+            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
+            cn: '死刑 ->' + data.ShortName(matches.target),
+            ko: '탱버 ->' + data.ShortName(matches.target),
           };
         }
       },
       infoText: function(data, matches) {
-        if (matches[1] != data.me && data.role == 'tank') {
+        if (matches.target != data.me && data.role == 'tank') {
           return {
-            en: 'Buster on ' + data.ShortName(matches[1]),
-            de: 'Tankbuster auf ' + data.ShortName(matches[1]),
-            fr: 'Tankbuster sur ' + data.ShortName(matches[1]),
-            cn: '死刑 ->' + data.ShortName(matches[1]),
-            ko: '탱버 ->' + data.ShortName(matches[1]),
+            en: 'Buster on ' + data.ShortName(matches.target),
+            de: 'Tankbuster auf ' + data.ShortName(matches.target),
+            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
+            cn: '死刑 ->' + data.ShortName(matches.target),
+            ko: '탱버 ->' + data.ShortName(matches.target),
           };
         }
       },
     },
     {
       id: 'E3N Tidal Wave Look',
-      regex: / 14:3FD2:Leviathan starts using Tidal Wave/,
-      regexCn: / 14:3FD2:利维亚桑 starts using 巨浪/,
-      regexDe: / 14:3FD2:Leviathan starts using Flutwelle/,
-      regexFr: / 14:3FD2:Léviathan starts using Raz-De-Marée/,
-      regexJa: / 14:3FD2:リヴァイアサン starts using タイダルウェイブ/,
-      regexKo: / 14:3FD2:리바이어선 starts using 해일/,
+      regex: Regexes.startsUsing({ id: '3FD2', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FD2', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FD2', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FD2', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FD2', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FD2', source: '리바이어선', capture: false }),
       delaySeconds: 3,
       infoText: {
         en: 'Look for Wave',
         de: 'Nach der Welle schauen',
         fr: 'Repérez la vague',
         cn: '看浪',
-        ko: '해일 좌우 보세요',
+        ko: '해일 위치 확인',
       },
     },
     {
       id: 'E3N Tidal Wave Knockback',
-      regex: / 14:3FD2:Leviathan starts using Tidal Wave/,
-      regexCn: / 14:3FD2:利维亚桑 starts using 巨浪/,
-      regexDe: / 14:3FD2:Leviathan starts using Flutwelle/,
-      regexFr: / 14:3FD2:Léviathan starts using Raz-De-Marée/,
-      regexJa: / 14:3FD2:リヴァイアサン starts using タイダルウェイブ/,
-      regexKo: / 14:3FD2:리바이어선 starts using 해일/,
+      regex: Regexes.startsUsing({ id: '3FD2', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FD2', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FD2', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FD2', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FD2', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FD2', source: '리바이어선', capture: false }),
       // 3 seconds of cast, 10 seconds of delay.
       // This gives a warning within 5 seconds, so you can hit arm's length.
       delaySeconds: 8,
@@ -100,11 +100,12 @@
     },
     {
       id: 'E3N Undersea Quake Outside',
-      regex: / 14:3FD0:Leviathan starts using Undersea Quake/,
-      regexCn: / 14:3FD0:利维亚桑 starts using 海底地震/,
-      regexDe: / 14:3FD0:Leviathan starts using Unterwasserbeben/,
-      regexFr: / 14:3FD0:Léviathan starts using Séisme Sous-Marin/,
-      regexJa: / 14:3FD0:リヴァイアサン starts using アンダーシークエイク/,
+      regex: Regexes.startsUsing({ id: '3FD0', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FD0', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FD0', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FD0', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FD0', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FD0', source: '리바이어선', capture: false }),
       alertText: {
         en: 'Get Middle',
         de: 'In die Mitte gehen',
@@ -115,11 +116,12 @@
     },
     {
       id: 'E3N Undersea Quake Outside',
-      regex: / 14:3FCF:Leviathan starts using Undersea Quake/,
-      regexCn: / 14:3FCF:利维亚桑 starts using 海底地震/,
-      regexDe: / 14:3FCF:Leviathan starts using Unterwasserbeben/,
-      regexFr: / 14:3FCF:Léviathan starts using Séisme Sous-Marin/,
-      regexJa: / 14:3FCF:リヴァイアサン starts using アンダーシークエイク/,
+      regex: Regexes.startsUsing({ id: '3FCF', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FCF', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FCF', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FCF', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FCF', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FCF', source: '리바이어선', capture: false }),
       alarmText: {
         en: 'Go To Sides',
         de: 'Auf die Seiten gehen',
@@ -130,26 +132,26 @@
     },
     {
       id: 'E3N Maelstrom',
-      regex: / 14:3FD8:Leviathan starts using Maelstrom/,
-      regexCn: / 14:3FD8:利维亚桑 starts using 漩涡/,
-      regexDe: / 14:3FD8:Leviathan starts using Mahlstrom/,
-      regexFr: / 14:3FD8:Léviathan starts using Maelström/,
-      regexJa: / 14:3FD8:リヴァイアサン starts using メイルシュトローム/,
-      regexKo: / 14:3FD8:리바이어선 starts using 대격동/,
+      regex: Regexes.startsUsing({ id: '3FD8', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FD8', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FD8', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FD8', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FD8', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FD8', source: '리바이어선', capture: false }),
       delaySeconds: 8,
       infoText: {
         en: 'Avoid Puddles and Dives',
         de: 'Flächen und Leviathan ausweichen',
         fr: 'Evitez les flaques et les dives',
         cn: '躲圈闪避',
-        ko: 'Avoid Puddles and Dives',
+        ko: '돌진이랑 장판 피하세요',
       },
     },
     {
       id: 'E3N Drenching Pulse Spread',
-      regex: / 1B:\y{ObjectId}:(\y{Name}):....:....:00A9:/,
+      regex: Regexes.headMarker({ id: '00A9' }),
       condition: function(data, matches) {
-        return data.me == matches[1];
+        return data.me == matches.target;
       },
       infoText: {
         en: 'Spread',
@@ -161,12 +163,12 @@
     },
     {
       id: 'E3N Tsunami',
-      regex: / 14:3FD4:Leviathan starts using Tsunami/,
-      regexCn: / 14:3FD4:利维亚桑 starts using 大海啸/,
-      regexDe: / 14:3FD4:Leviathan starts using Sturzflut/,
-      regexFr: / 14:3FD4:Léviathan starts using Tsunami/,
-      regexJa: / 14:3FD4:リヴァイアサン starts using 大海嘯/,
-      regexKo: / 14:3FD4:리바이어선 starts using 대해일/,
+      regex: Regexes.startsUsing({ id: '3FD4', source: 'Leviathan', capture: false }),
+      regexDe: Regexes.startsUsing({ id: '3FD4', source: 'Leviathan', capture: false }),
+      regexFr: Regexes.startsUsing({ id: '3FD4', source: 'Léviathan', capture: false }),
+      regexJa: Regexes.startsUsing({ id: '3FD4', source: 'リヴァイアサン', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '3FD4', source: '利维亚桑', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '3FD4', source: '리바이어선', capture: false }),
       condition: function(data) {
         return data.role == 'healer';
       },
@@ -175,59 +177,59 @@
         de: 'AoE',
         fr: 'Dégâts de zone',
         cn: 'AOE',
-        ko: 'AOE',
+        ko: '광역공격',
       },
     },
     {
       // Crashing Pulse and Smothering Waters
       id: 'E3N Stack',
-      regex: / 1B:\y{ObjectId}:(\y{Name}):....:....:003E:/,
+      regex: Regexes.headMarker({ id: '003E' }),
       alertText: function(data, matches) {
-        if (matches[1] == data.me) {
+        if (matches.target == data.me) {
           return {
             en: 'Stack on YOU',
             de: 'Auf DIR sammeln',
             fr: 'Package sur VOUS',
             cn: '集合',
-            ko: '집합 on YOU',
+            ko: '나에게 쉐어',
           };
         }
         return {
-          en: 'Stack on ' + data.ShortName(matches[1]),
-          de: 'Auf ' + data.ShortName(matches[1]) + ' sammeln',
-          fr: 'Package sur ' + data.ShortName(matches[1]),
-          cn: '集合 ->' + data.ShortName(matches[1]),
-          ko: '집합 ->' + data.ShortName(matches[1]),
+          en: 'Stack on ' + data.ShortName(matches.target),
+          de: 'Auf ' + data.ShortName(matches.target) + ' sammeln',
+          fr: 'Package sur ' + data.ShortName(matches.target),
+          cn: '集合 ->' + data.ShortName(matches.target),
+          ko: '쉐어 ->' + data.ShortName(matches.target),
         };
       },
     },
     {
       id: 'E3N Surging Waters Marker',
-      regex: / 1B:\y{ObjectId}:(\y{Name}):....:....:00AD:/,
+      regex: Regexes.headMarker({ id: '00AD' }),
       infoText: function(data, matches) {
-        if (matches[1] == data.me) {
+        if (matches.target == data.me) {
           return {
             en: 'Knockback on YOU',
             de: 'Knockback auf DIR',
             fr: 'Poussée sur VOUS',
             cn: '击退点名',
-            ko: '넉백대상자입니다',
+            ko: '나에게 넉백징',
           };
         }
         return {
-          en: 'Knockback on ' + data.ShortName(matches[1]),
-          de: 'Knockback auf ' + data.ShortName(matches[1]),
-          fr: 'Poussée sur ' + data.ShortName(matches[1]),
-          cn: '击退 ->' + data.ShortName(matches[1]),
-          ko: '넉백 ->' + data.ShortName(matches[1]),
+          en: 'Knockback on ' + data.ShortName(matches.target),
+          de: 'Knockback auf ' + data.ShortName(matches.target),
+          fr: 'Poussée sur ' + data.ShortName(matches.target),
+          cn: '击退 ->' + data.ShortName(matches.target),
+          ko: '넉백 ->' + data.ShortName(matches.target),
         };
       },
     },
     {
       id: 'E3N Splashing Waters Spread',
-      regex: / 1B:\y{ObjectId}:(\y{Name}):....:....:0082:/,
+      regex: Regexes.headMarker({ id: '0082' }),
       condition: function(data, matches) {
-        return data.me == matches[1];
+        return data.me == matches.target;
       },
       infoText: {
         en: 'Spread',
@@ -239,16 +241,16 @@
     },
     {
       id: 'E3N Swirling Waters Donut',
-      regex: / 1B:\y{ObjectId}:(\y{Name}):....:....:0099:/,
+      regex: Regexes.headMarker({ id: '0099' }),
       condition: function(data, matches) {
-        return data.me == matches[1];
+        return data.me == matches.target;
       },
       infoText: {
         en: 'Donut on YOU',
         de: 'Donut auf DIR',
         fr: 'Donut sur VOUS',
         cn: '月环点名',
-        ko: '도넛장판 on YOU',
+        ko: '나에게 도넛장판',
       },
     },
   ],
@@ -414,13 +416,13 @@
         'Undersea Quake': '해저 지진',
         'Swirling Tsunami': '와동의 대해일',
         'Tidal Wave': '해일',
-        'Tsunami': '대해일',
         'Spinning Dive': '고속 돌진',
         'Rip Current': '이안류',
         'Temporary Current': '순간 해류',
         'Crashing Pulse': '격렬한 파동',
         'Drenching Pulse': '맹렬한 파동',
         'Surging Tsunami': '강압의 대해일',
+        'Tsunami': '대해일',
         '--untargetable--': '--타겟불가능--',
         '--targetable--': '--타겟가능--',
       },

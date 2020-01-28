@@ -10,6 +10,8 @@
       regexDe: Regexes.startsUsing({ source: 'Twintania', id: '5B2' }),
       regexFr: Regexes.startsUsing({ source: 'Gémellia', id: '5B2' }),
       regexJa: Regexes.startsUsing({ source: 'ツインタニア', id: '5B2' }),
+      regexCn: Regexes.startsUsing({ source: '双塔尼亚', id: '5B2' }),
+      regexKo: Regexes.startsUsing({ source: '트윈타니아', id: '5B2' }),
       condition: function(data, matches) {
         return data.me == matches.target || data.role == 'healer' || data.job == 'BLU';
       },
@@ -21,6 +23,8 @@
       regexDe: Regexes.startsUsing({ source: 'Twintania', id: '5B2', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Gémellia', id: '5B2', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'ツインタニア', id: '5B2', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '双塔尼亚', id: '5B2', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '트윈타니아', id: '5B2', capture: false }),
       condition: function(data) {
         return data.role == 'tank' || data.role == 'healer' || data.job == 'BLU';
       },
@@ -28,6 +32,7 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Death Sentence Soon',
+        fr: 'Sentence de mort bientôt',
       },
     },
     {
@@ -36,13 +41,21 @@
       regexDe: Regexes.startsUsing({ source: 'Fackel Von Meracydia', id: '4DB', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Fléau De Méracydia', id: '4DB', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'メラシディアン・ワイバーン', id: '4DB', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '美拉西迪亚祸龙', id: '4DB', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '메라시디아 와이번', id: '4DB', capture: false }),
       infoText: {
         en: 'Liquid Hell',
+        fr: 'Enfer liquide',
       },
     },
     {
       id: 'T5 Phase 2',
-      regex: /:Twintania HP at 85%/,
+      regex: Regexes.hasHP({ name: 'Twintania', hp: '85', capture: false }),
+      regexDe: Regexes.hasHP({ name: 'Twintania', hp: '85', capture: false }),
+      regexFr: Regexes.hasHP({ name: 'Gémellia', hp: '85', capture: false }),
+      regexJa: Regexes.hasHP({ name: 'ツインタニア', hp: '85', capture: false }),
+      regexCn: Regexes.hasHP({ name: '双塔尼亚', hp: '85', capture: false }),
+      regexKo: Regexes.hasHP({ name: '트윈타니아', hp: '85', capture: false }),
       sound: 'Long',
     },
     {
@@ -51,10 +64,13 @@
       regexDe: Regexes.ability({ source: 'Twintania', id: '5AC' }),
       regexFr: Regexes.ability({ source: 'Gémellia', id: '5AC' }),
       regexJa: Regexes.ability({ source: 'ツインタニア', id: '5AC' }),
+      regexCn: Regexes.ability({ source: '双塔尼亚', id: '5AC' }),
+      regexKo: Regexes.ability({ source: '트윈타니아', id: '5AC' }),
       alertText: function(data, matches) {
         if (data.me == matches.target) {
           return {
             en: 'Fireball on YOU',
+            fr: 'Boule de feu sur VOUS',
           };
         }
       },
@@ -62,6 +78,7 @@
         if (data.me != matches.target) {
           return {
             en: 'Fireball on ' + data.ShortName(matches.target),
+            fr: 'Boule de feu sur ' + data.ShortName(matches.target),
           };
         }
       },
@@ -72,10 +89,13 @@
       regexDe: Regexes.ability({ source: 'Twintania', id: '5AB' }),
       regexFr: Regexes.ability({ source: 'Gémellia', id: '5AB' }),
       regexJa: Regexes.ability({ source: 'ツインタニア', id: '5AB' }),
+      regexCn: Regexes.ability({ source: '双塔尼亚', id: '5AB' }),
+      regexKo: Regexes.ability({ source: '트윈타니아', id: '5AB' }),
       alarmText: function(data, matches) {
         if (data.me == matches.target) {
           return {
             en: 'Conflag on YOU',
+            fr: 'Incendie sur VOUS',
           };
         }
       },
@@ -83,13 +103,19 @@
         if (data.me != matches.target) {
           return {
             en: 'Conflag on ' + data.ShortName(matches.target),
+            fr: 'Incendie sur ' + data.ShortName(matches.target),
           };
         }
       },
     },
     {
       id: 'T5 Phase 3',
-      regex: /:Twintania HP at 55%/,
+      regex: Regexes.hasHP({ name: 'Twintania', hp: '55', capture: false }),
+      regexDe: Regexes.hasHP({ name: 'Twintania', hp: '55', capture: false }),
+      regexFr: Regexes.hasHP({ name: 'Gémellia', hp: '55', capture: false }),
+      regexJa: Regexes.hasHP({ name: 'ツインタニア', hp: '55', capture: false }),
+      regexCn: Regexes.hasHP({ name: '双塔尼亚', hp: '55', capture: false }),
+      regexKo: Regexes.hasHP({ name: '트윈타니아', hp: '55', capture: false }),
       sound: 'Long',
     },
     {
@@ -98,8 +124,11 @@
       regexDe: Regexes.ability({ source: 'Twintania', id: '5B0', capture: false }),
       regexFr: Regexes.ability({ source: 'Gémellia', id: '5B0', capture: false }),
       regexJa: Regexes.ability({ source: 'ツインタニア', id: '5B0', capture: false }),
+      regexCn: Regexes.ability({ source: '双塔尼亚', id: '5B0', capture: false }),
+      regexKo: Regexes.ability({ source: '트윈타니아', id: '5B0', capture: false }),
       alertText: {
         en: 'DIVEBOMB',
+        fr: 'BOMBE PLONGEANTE',
       },
     },
     {
@@ -108,10 +137,13 @@
       regexDe: Regexes.ability({ source: 'Twintania', id: '5B0', capture: false }),
       regexFr: Regexes.ability({ source: 'Gémellia', id: '5B0', capture: false }),
       regexJa: Regexes.ability({ source: 'ツインタニア', id: '5B0', capture: false }),
+      regexCn: Regexes.ability({ source: '双塔尼亚', id: '5B0', capture: false }),
+      regexKo: Regexes.ability({ source: '트윈타니아', id: '5B0', capture: false }),
       delaySeconds: 60,
       suppressSeconds: 5000,
       infoText: {
         en: 'Divebombs Soon',
+        fr: 'Bombe plongeante bientôt',
       },
     },
     {
@@ -121,14 +153,18 @@
       regexDe: Regexes.ability({ source: 'Twintania', id: '4E3' }),
       regexFr: Regexes.ability({ source: 'Gémellia', id: '4E3' }),
       regexJa: Regexes.ability({ source: 'ツインタニア', id: '4E3' }),
+      regexCn: Regexes.ability({ source: '双塔尼亚', id: '4E3' }),
+      regexKo: Regexes.ability({ source: '트윈타니아', id: '4E3' }),
       infoText: function(data, matches) {
         if (data.me == matches.target) {
           return {
             en: 'Knight on YOU',
+            fr: 'Chevalier sur VOUS',
           };
         }
         return {
           en: 'Knight on ' + data.ShortName(matches.target),
+          fr: 'Chevalier sur ' + data.ShortName(matches.target),
         };
       },
     },
@@ -138,13 +174,21 @@
       regexDe: Regexes.startsUsing({ source: 'Twintania', id: '4E1', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Gémellia', id: '4E1', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'ツインタニア', id: '4E1', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '双塔尼亚', id: '4E1', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '트윈타니아', id: '4E1', capture: false }),
       alertText: {
         en: 'Twister!',
+        fr: 'Grande tornade !',
       },
     },
     {
       id: 'T5 Phase 4',
-      regex: /:Twintania HP at 29%/,
+      regex: Regexes.hasHP({ name: 'Twintania', hp: '29', capture: false }),
+      regexDe: Regexes.hasHP({ name: 'Twintania', hp: '29', capture: false }),
+      regexFr: Regexes.hasHP({ name: 'Gémellia', hp: '29', capture: false }),
+      regexJa: Regexes.hasHP({ name: 'ツインタニア', hp: '29', capture: false }),
+      regexCn: Regexes.hasHP({ name: '双塔尼亚', hp: '29', capture: false }),
+      regexKo: Regexes.hasHP({ name: '트윈타니아', hp: '29', capture: false }),
       sound: 'Long',
     },
     {
@@ -153,10 +197,13 @@
       regexDe: Regexes.ability({ source: 'Twintania', id: '5AD' }),
       regexFr: Regexes.ability({ source: 'Gémellia', id: '5AD' }),
       regexJa: Regexes.ability({ source: 'ツインタニア', id: '5AD' }),
+      regexCn: Regexes.ability({ source: '双塔尼亚', id: '5AD' }),
+      regexKo: Regexes.ability({ source: '트윈타니아', id: '5AD' }),
       alertText: function(data, matches) {
         if (data.me == matches.target) {
           return {
             en: 'Hatch on YOU',
+            fr: 'Eclosion sur VOUS',
           };
         }
       },
@@ -164,6 +211,7 @@
         if (data.me != matches.target) {
           return {
             en: 'Hatch on ' + data.ShortName(matches.target),
+            fr: 'Eclosion sur ' + data.ShortName(matches.target),
           };
         }
       },
@@ -174,7 +222,8 @@
       'locale': 'de',
       'replaceSync': {
         'Engage!': 'Start!',
-        'The Right Hand of Bahamut will be sealed off': 'bis sich der Zugang zur Rechten Hand von Bahamut schließt',
+        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
+        'The Right Hand of Bahamut will be sealed off': 'bis sich der Zugang zu[rm]? Rechte Hand von Bahamut schließt',
         'Twintania': 'Twintania',
       },
       'replaceText': {
@@ -197,6 +246,7 @@
       'locale': 'fr',
       'replaceSync': {
         'Engage!': 'À l\'attaque !',
+        'The Right Hand of Bahamut is no longer sealed': 'Ouverture de la Serre droite de Bahamut',
         'The Right Hand of Bahamut will be sealed off': 'Fermeture de la Serre droite de Bahamut',
         'Twintania': 'Gémellia',
       },
@@ -220,6 +270,7 @@
       'locale': 'ja',
       'replaceSync': {
         'Engage!': '戦闘開始！',
+        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
         'The Right Hand of Bahamut will be sealed off': 'The Right Hand of Bahamut will be sealed off', // FIXME
         'Twintania': 'ツインタニア',
       },
@@ -237,6 +288,54 @@
         'Plummet': 'プラメット',
         'Twister': '大竜巻',
         'Unwoven Will': 'アンウォーヴェンウィル',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Engage!': '战斗开始！',
+        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
+        'The Right Hand of Bahamut will be sealed off': 'The Right Hand of Bahamut will be sealed off', // FIXME
+        'Twintania': '双塔尼亚',
+      },
+      'replaceText': {
+        '--targetable--': '--targetable--', // FIXME
+        'Aetheric Profusion': '以太失控',
+        'Asclepius': '阿斯克勒庇俄斯',
+        'Death Sentence': '死刑',
+        'Divebomb': '爆破俯冲',
+        'Fireball': '火球',
+        'Firestorm': '火焰风暴',
+        'Hatch': '魔力爆散',
+        'Hygieia': '许癸厄亚',
+        'Liquid Hell': '液体地狱',
+        'Plummet': '垂直下落',
+        'Twister': '大龙卷',
+        'Unwoven Will': '破愿',
+      },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Engage!': '전투 시작!',
+        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
+        'The Right Hand of Bahamut will be sealed off': 'The Right Hand of Bahamut will be sealed off', // FIXME
+        'Twintania': '트윈타니아',
+      },
+      'replaceText': {
+        '--targetable--': '--targetable--', // FIXME
+        'Aetheric Profusion': '에테르 홍수',
+        'Asclepius': '아스클레피오스',
+        'Death Sentence': '사형 선고',
+        'Divebomb': '급강하 폭격',
+        'Fireball': '화염구',
+        'Firestorm': '불보라',
+        'Hatch': '마력 방출',
+        'Hygieia': '히기에이아',
+        'Liquid Hell': '지옥의 늪',
+        'Plummet': '곤두박질',
+        'Twister': '대회오리',
+        'Unwoven Will': '짓밟힌 의지',
       },
     },
   ],

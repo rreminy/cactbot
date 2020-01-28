@@ -75,6 +75,7 @@
               en: 'Tank Buster on YOU',
               de: 'Tankbuster auf DIR',
               ja: '自分にタンクバスター',
+              fr: 'Tank buster sur VOUS',
             };
           }
         }
@@ -88,6 +89,8 @@
         return {
           en: 'Tank Cleave',
           de: 'Tank Cleave',
+          ja: 'タンククリーブ',
+          fr: 'Tank Cleave',
         };
       },
     },
@@ -105,6 +108,7 @@
       infoText: {
         en: 'Move Bosses',
         de: 'Bosse bewegen',
+        ja: 'ボス動かして',
       },
     },
     {
@@ -130,6 +134,8 @@
       infoText: {
         en: 'Water/Thunder in 3',
         de: 'Wasser/Blitz in 3',
+        ja: '水/雷まで3秒',
+        fr: 'Eau/Foudre dans 3',
       },
     },
     {
@@ -143,6 +149,7 @@
       alertText: {
         en: 'Face Brute Towards Water',
         de: 'Drehe Brute zum Wasser',
+        ja: 'ジャスを竜巻に向ける',
       },
     },
     {
@@ -152,6 +159,8 @@
       infoText: {
         en: 'Hide Behind Ice',
         de: 'Hinter dem Eis verstecken',
+        ja: '氷の後ろへ',
+        fr: 'Derrière la glace',
       },
     },
     {
@@ -174,6 +183,8 @@
           return {
             en: 'Soak This Puddle (#' + matches[1] + ')',
             de: 'Fläche nehmen (#' + matches[1] + ')',
+            ja: '懺悔踏む (#' + matches[1] + ')',
+            fr: 'Absorbe cette flaque (#' + matches[1] + ')',
           };
         }
       },
@@ -183,6 +194,8 @@
         return {
           en: 'Puddle #' + matches[1],
           de: 'Fläche #' + matches[1],
+          ja: '懺悔 #' + matches[1],
+          fr: 'Flaque #' + matches[1],
         };
       },
       tts: function(data, matches) {
@@ -190,6 +203,7 @@
           return {
             en: 'Soak This Puddle',
             de: 'Fläche nehmen',
+            ja: '沼踏んで',
           };
         }
       },
@@ -206,6 +220,8 @@
           return {
             en: 'Shared Tankbuster',
             de: 'geteilter Tankbuster',
+            ja: 'タンクシェア',
+            fr: 'Tankbuster partagé',
           };
         }
       },
@@ -218,6 +234,8 @@
       regexDe: Regexes.startsUsing({ source: 'Brutalus', id: '483E', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Justicier', id: '483E', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'ブルートジャスティス', id: '483E', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '残暴正义号', id: '483E', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '포악한 심판자', id: '483E', capture: false }),
       run: function(data) {
         data.phase = 'brute';
         data.resetState = function() {
@@ -243,6 +261,18 @@
             2: 'Lila γ',
             3: 'Grün δ',
           },
+          ja: {
+            0: '青 α',
+            1: 'オレンジ β',
+            2: '紫 γ',
+            3: '緑 δ',
+          },
+          fr: {
+            0: 'Bleu α',
+            1: 'Orange β',
+            2: 'Violet γ',
+            3: 'Vert δ',
+          },
         }[data.lang];
 
         // Convenience function called for third and fourth nisi passes.
@@ -252,6 +282,8 @@
             return {
               en: 'Get Final Nisi (?)',
               de: 'Nehme letzten Nisi (?)',
+              ja: '最後のナイサイを取得 (?)',
+              fr: 'Récupère Nisi Final (?)',
             };
           }
 
@@ -276,6 +308,8 @@
               return {
                 en: 'Pass ' + data.nisiNames[myNisi] + ' Nisi',
                 de: 'Gebe ' + data.nisiNames[myNisi] + ' Nisi',
+                ja: data.nisiNames[myNisi] + ' を渡す',
+                fr: 'Passe ' + data.nisiNames[myNisi] + ' Nisi',
               };
             }
 
@@ -286,6 +320,10 @@
                   namesWithoutNisi.map((x) => data.ShortName(x)).join(', or '),
               de: 'Gebe ' + data.nisiNames[myNisi] + ' zu ' +
                   namesWithoutNisi.map((x) => data.ShortName(x)).join(', oder '),
+              ja: data.nisiNames[myNisi] + ' を ' +
+                  namesWithoutNisi.map((x) => data.ShortName(x)).join(', か ') + ' に渡す',
+              fr: 'Passe ' + data.nisiNames[myNisi] + ' à ' +
+                  namesWithoutNisi.map((x) => data.ShortName(x)).join(', ou '),
             };
           }
 
@@ -297,11 +335,15 @@
             return {
               en: 'Get ' + data.nisiNames[myNisi],
               de: 'Nimm ' + data.nisiNames[myNisi],
+              ja: data.nisiNames[myNisi] + ' を取る',
+              fr: 'Récupère ' + data.nisiNames[myNisi],
             };
           }
           return {
             en: 'Get ' + data.nisiNames[myNisi] + ' from ' + data.ShortName(names[0]),
             de: 'Nimm ' + data.nisiNames[myNisi] + ' von ' + data.ShortName(names[0]),
+            ja: data.ShortName(names[0]) + ' から ' + data.nisiNames[myNisi] + ' を取る',
+            fr: 'Récupère ' + data.nisiNames[myNisi] + ' de ' + data.ShortName(names[0]),
           };
         };
       },
@@ -312,6 +354,8 @@
       regexDe: Regexes.startsUsing({ source: 'Prim-Alexander', id: '486F', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Primo-Alexander', id: '486F', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'アレキサンダー・プライム', id: '486F', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '至尊亚历山大', id: '486F', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '알렉산더 프라임', id: '486F', capture: false }),
       run: function(data) {
         data.phase = 'inception';
         data.resetState();
@@ -323,6 +367,8 @@
       regexDe: Regexes.startsUsing({ source: 'Prim-Alexander', id: '486E', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Primo-Alexander', id: '486E', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'アレキサンダー・プライム', id: '486E', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '至尊亚历山大', id: '486E', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '알렉산더 프라임', id: '486E', capture: false }),
       run: function(data) {
         data.phase = 'wormhole';
         data.resetState();
@@ -356,6 +402,8 @@
       regexDe: Regexes.abilityFull({ source: 'belebtes Wasser', id: '4978' }),
       regexFr: Regexes.abilityFull({ source: 'liquide vivant', id: '4978' }),
       regexJa: Regexes.abilityFull({ source: 'リビングリキッド', id: '4978' }),
+      regexCn: Regexes.abilityFull({ source: '有生命活水', id: '4978' }),
+      regexKo: Regexes.abilityFull({ source: '살아있는 액체', id: '4978' }),
       run: function(data, matches) {
         data.liquidTank = matches.target;
       },
@@ -376,6 +424,8 @@
       regexDe: Regexes.abilityFull({ source: 'Chaser-Mecha', id: '497A' }),
       regexFr: Regexes.abilityFull({ source: 'Croiseur-chasseur', id: '497A' }),
       regexJa: Regexes.abilityFull({ source: 'クルーズチェイサー', id: '497A' }),
+      regexCn: Regexes.abilityFull({ source: '巡航驱逐者', id: '497A' }),
+      regexKo: Regexes.abilityFull({ source: '순항추격기', id: '497A' }),
       run: function(data, matches) {
         data.cruiseTank = matches.target;
       },
@@ -386,6 +436,8 @@
       regexDe: Regexes.abilityFull({ source: 'Brutalus', id: '497B' }),
       regexFr: Regexes.abilityFull({ source: 'Justicier', id: '497B' }),
       regexJa: Regexes.abilityFull({ source: 'ブルートジャスティス', id: '497B' }),
+      regexCn: Regexes.abilityFull({ source: '残暴正义号', id: '497B' }),
+      regexKo: Regexes.abilityFull({ source: '포악한 심판자', id: '497B' }),
       run: function(data, matches) {
         data.bruteTank = matches.target;
       },
@@ -396,6 +448,8 @@
       regexDe: Regexes.startsUsing({ source: 'belebtes Wasser', id: '4826', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'liquide vivant', id: '4826', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'リビングリキッド', id: '4826', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '有生命活水', id: '4826', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '살아있는 액체', id: '4826', capture: false }),
       condition: Conditions.caresAboutAOE(),
       response: Responses.aoe(),
     },
@@ -405,6 +459,8 @@
       regexDe: Regexes.startsUsing({ source: 'belebtes Wasser', id: '4822', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'liquide vivant', id: '4822', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'リビングリキッド', id: '4822', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '有生命活水', id: '4822', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '살아있는 액체', id: '4822', capture: false }),
       infoText: {
         en: 'Protean Wave',
         de: 'Proteische Welle',
@@ -451,6 +507,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Erstickung', capture: false }),
       regexFr: Regexes.gainsEffect({ effect: 'Suffocation', capture: false }),
       regexJa: Regexes.gainsEffect({ effect: '窒息', capture: false }),
+      regexCn: Regexes.gainsEffect({ effect: '窒息', capture: false }),
+      regexKo: Regexes.gainsEffect({ effect: '질식', capture: false }),
       condition: function(data) {
         return data.CanCleanse();
       },
@@ -513,6 +571,7 @@
           en: '#' + data.limitCutNumber,
           de: '#' + data.limitCutNumber,
           ja: data.limitCutNumber + '番',
+          fr: '#' + data.limitCutNumber,
         };
       },
     },
@@ -534,18 +593,22 @@
             return {
               en: 'Knockback Cleave; Face Outside',
               de: 'Rückstoß Cleave; nach Außen schauen',
+              ja: 'ノックバック ソード; 外向く',
+              fr: 'Poussée Cleave; Regarde à l\'extérieur',
             };
           }
           return {
             en: 'Knockback Charge; Face Middle',
             de: 'Rückstoß Charge; zur Mitte schauen',
+            ja: 'ノックバック チャージ; 中央向く',
+            fr: 'Poussée Charge; Regarde à l\'intérieur',
           };
         }
         if (isOddNumber) {
           return {
             en: 'Knockback Cleave on YOU',
             de: 'Rückstoß Cleave auf DIR',
-            fr: 'Cleave sur vous',
+            fr: 'Cleave sur VOUS',
             ja: '自分にクリーブ',
           };
         }
@@ -565,6 +628,8 @@
       regexDe: Regexes.ability({ source: 'Brutalus', id: '483F', capture: false }),
       regexFr: Regexes.ability({ source: 'Justicier', id: '483F', capture: false }),
       regexJa: Regexes.ability({ source: 'ブルートジャスティス', id: '483F', capture: false }),
+      regexCn: Regexes.ability({ source: '残暴正义号', id: '483F', capture: false }),
+      regexKo: Regexes.ability({ source: '포악한 심판자', id: '483F', capture: false }),
       condition: function(data) {
         return data.phase == 'brute';
       },
@@ -572,6 +637,7 @@
         en: 'Out, Dodge Chakrams',
         de: 'Raus, Chakrams ausweichen',
         ja: '外へ',
+        fr: 'Dehors, évite les Chakrams',
       },
     },
     {
@@ -581,6 +647,8 @@
       regexDe: Regexes.ability({ source: 'Chaser-Mecha', id: '482F', capture: false }),
       regexFr: Regexes.ability({ source: 'Croiseur-chasseur', id: '482F', capture: false }),
       regexJa: Regexes.ability({ source: 'クルーズチェイサー', id: '482F', capture: false }),
+      regexCn: Regexes.ability({ source: '巡航驱逐者', id: '482F', capture: false }),
+      regexKo: Regexes.ability({ source: '순항추격기', id: '482F', capture: false }),
       suppressSeconds: 1,
       alertText: {
         en: 'Run In',
@@ -594,6 +662,8 @@
       regexDe: Regexes.startsUsing({ source: 'Chaser-Mecha', id: '49C2', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Croiseur-chasseur', id: '49C2', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'クルーズチェイサー', id: '49C2', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '巡航驱逐者', id: '49C2', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '순항추격기', id: '49C2', capture: false }),
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
@@ -605,6 +675,8 @@
       regexDe: Regexes.startsUsing({ source: 'Chaser-Mecha', id: '4A72', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Croiseur-chasseur', id: '4A72', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'クルーズチェイサー', id: '4A72', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '巡航驱逐者', id: '4A72', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '순항추격기', id: '4A72', capture: false }),
       // Nobody should be in front of cruise chaser but the tank, and this is close to
       // water thunder handling, so only tell the tank.
       condition: function(data) {
@@ -613,6 +685,7 @@
       alertText: {
         en: 'Dodge Spin Crusher',
         de: 'Rotorbrecher ausweichen',
+        ja: 'スピンクラッシャー避けて',
       },
     },
     {
@@ -624,6 +697,8 @@
       alarmText: {
         en: 'Freeze Tornado',
         de: 'Tornado einfrieren',
+        ja: '竜巻凍らせる',
+        fr: 'Gèle la tornade',
       },
     },
     {
@@ -632,6 +707,8 @@
       regexDe: Regexes.ability({ source: 'Brutalus', id: '4851', capture: false }),
       regexFr: Regexes.ability({ source: 'Justicier', id: '4851', capture: false }),
       regexJa: Regexes.ability({ source: 'ブルートジャスティス', id: '4851', capture: false }),
+      regexCn: Regexes.ability({ source: '残暴正义号', id: '4851', capture: false }),
+      regexKo: Regexes.ability({ source: '포악한 심판자', id: '4851', capture: false }),
       condition: function(data) {
         return data.role == 'tank';
       },
@@ -639,6 +716,8 @@
       infoText: {
         en: 'Mines',
         de: 'Minen',
+        ja: '地雷',
+        fr: 'Mines',
       },
     },
     {
@@ -650,6 +729,8 @@
       alertText: {
         en: 'Enumeration on YOU',
         de: 'Enumeration auf DIR',
+        ja: '自分にカウント',
+        fr: 'Enumeration sur VOUS',
       },
     },
     {
@@ -666,6 +747,8 @@
         return {
           en: 'Enumeration: ' + names.map((x) => data.ShortName(x)).join(', '),
           de: 'Enumeration: ' + names.map((x) => data.ShortName(x)).join(', '),
+          ja: 'カウント: ' + names.map((x) => data.ShortName(x)).join(', '),
+          fr: 'Enumeration: ' + names.map((x) => data.ShortName(x)).join(', '),
         };
       },
     },
@@ -675,10 +758,14 @@
       regexDe: Regexes.ability({ source: 'Chaser-Mecha', id: '4833', capture: false }),
       regexFr: Regexes.ability({ source: 'Croiseur-chasseur', id: '4833', capture: false }),
       regexJa: Regexes.ability({ source: 'クルーズチェイサー', id: '4833', capture: false }),
+      regexCn: Regexes.ability({ source: '巡航驱逐者', id: '4833', capture: false }),
+      regexKo: Regexes.ability({ source: '순항추격기', id: '4833', capture: false }),
       delaySeconds: 2,
       infoText: {
         en: 'Break Shield From Front',
         de: 'Schild von Vorne zerstören',
+        ja: '正面からシールド壊して',
+        fr: 'Détruis le bouclier en face',
       },
     },
     {
@@ -687,6 +774,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Wasserkompression' }),
       regexFr: Regexes.gainsEffect({ effect: 'Compression aqueuse' }),
       regexJa: Regexes.gainsEffect({ effect: '水属性圧縮' }),
+      regexCn: Regexes.gainsEffect({ effect: '水属性压缩' }),
+      regexKo: Regexes.gainsEffect({ effect: '물속성 압축' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -694,6 +783,7 @@
         en: 'Water on YOU',
         de: 'Wasser auf DIR',
         ja: '自分に水',
+        fr: 'Eau sur VOUS',
       },
     },
     {
@@ -702,6 +792,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Wasserkompression' }),
       regexFr: Regexes.gainsEffect({ effect: 'Compression aqueuse' }),
       regexJa: Regexes.gainsEffect({ effect: '水属性圧縮' }),
+      regexCn: Regexes.gainsEffect({ effect: '水属性压缩' }),
+      regexKo: Regexes.gainsEffect({ effect: '물속성 압축' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -716,6 +808,7 @@
           en: 'Drop Water Soon',
           de: 'Gleich Wasser ablegen',
           ja: '水来るよ',
+          fr: 'Dépose l\'eau bientôt',
         };
       },
     },
@@ -725,6 +818,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Blitzkompression' }),
       regexFr: Regexes.gainsEffect({ effect: 'Compression électrique' }),
       regexJa: Regexes.gainsEffect({ effect: '雷属性圧縮' }),
+      regexCn: Regexes.gainsEffect({ effect: '雷属性压缩' }),
+      regexKo: Regexes.gainsEffect({ effect: '번개속성 압축' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -732,6 +827,7 @@
         en: 'Lightning on YOU',
         de: 'Blitz auf DIR',
         ja: '自分に雷',
+        fr: 'Foudre sur VOUS',
       },
     },
     {
@@ -740,6 +836,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Blitzkompression' }),
       regexFr: Regexes.gainsEffect({ effect: 'Compression électrique' }),
       regexJa: Regexes.gainsEffect({ effect: '雷属性圧縮' }),
+      regexCn: Regexes.gainsEffect({ effect: '雷属性压缩' }),
+      regexKo: Regexes.gainsEffect({ effect: '번개속성 압축' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -754,6 +852,7 @@
           en: 'Drop Lightning Soon',
           de: 'Gleich Blitz ablegen',
           ja: '雷来るよ',
+          fr: 'Passe la foudre bientôt',
         };
       },
     },
@@ -764,12 +863,15 @@
       regexDe: Regexes.startsUsing({ source: 'Chaser-Mecha', id: '4836', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Croiseur-chasseur', id: '4836', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'クルーズチェイサー', id: '4836', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '巡航驱逐者', id: '4836', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '순항추격기', id: '4836', capture: false }),
       delaySeconds: 4,
       suppressSeconds: 10000,
       alertText: {
         en: 'Pass Nisi',
         de: 'Nisi weitergeben',
         ja: 'ナイサイ渡して',
+        fr: 'Passe Nisi',
       },
     },
     {
@@ -780,6 +882,8 @@
       regexDe: Regexes.ability({ source: 'Brutalus', id: '4850', capture: false }),
       regexFr: Regexes.ability({ source: 'Justicier', id: '4850', capture: false }),
       regexJa: Regexes.ability({ source: 'ブルートジャスティス', id: '4850', capture: false }),
+      regexCn: Regexes.ability({ source: '残暴正义号', id: '4850', capture: false }),
+      regexKo: Regexes.ability({ source: '포악한 심판자', id: '4850', capture: false }),
       // Ignore enumerations later in the fight.
       condition: (data) => data.phase == 'brute',
       delaySeconds: 1,
@@ -788,6 +892,7 @@
         en: 'Pass Nisi',
         de: 'Nisi weitergeben',
         ja: 'ナイサイ渡して',
+        fr: 'Passe Nisi',
       },
     },
     {
@@ -797,6 +902,8 @@
       regexDe: Regexes.startsUsing({ source: 'Brutalus', id: '4845', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Justicier', id: '4845', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'ブルートジャスティス', id: '4845', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '残暴正义号', id: '4845', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '포악한 심판자', id: '4845', capture: false }),
       delaySeconds: 8,
       durationSeconds: 9,
       alertText: function(data) {
@@ -809,6 +916,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Letztes Vorläufiges Urteil (?<sym>[ΑΒΓΔαβγδ])' }),
       regexFr: Regexes.gainsEffect({ effect: 'Peine provisoire (?<sym>[ΑΒΓΔαβγδ]) ultime' }),
       regexJa: Regexes.gainsEffect({ effect: '最後の仮判決(?<sym>[ΑΒΓΔαβγδ])' }),
+      regexCn: Regexes.gainsEffect({ effect: '最终判决(?<sym>[ΑΒΓΔαβγδ])' }),
+      regexKo: Regexes.gainsEffect({ effect: '최후의 임시 판결 (?<sym>[ΑΒΓΔαβγδ])' }),
       run: function(data, matches) {
         let num = 'ΑΒΓΔαβγδ'.indexOf(matches.sym) % 4;
         data.nisiMap = data.nisiMap || {};
@@ -821,6 +930,8 @@
       regexDe: Regexes.losesEffect({ effect: 'Letztes Vorläufiges Urteil (?<sym>[ΑΒΓΔαβγδ])' }),
       regexFr: Regexes.losesEffect({ effect: 'Peine provisoire (?<sym>[ΑΒΓΔαβγδ]) ultime' }),
       regexJa: Regexes.losesEffect({ effect: '最後の仮判決(?<sym>[ΑΒΓΔαβγδ])' }),
+      regexCn: Regexes.losesEffect({ effect: '最终判决(?<sym>[ΑΒΓΔαβγδ])' }),
+      regexKo: Regexes.losesEffect({ effect: '최후의 임시 판결 (?<sym>[ΑΒΓΔαβγδ])' }),
       run: function(data, matches) {
         data.nisiMap = data.nisiMap || {};
         delete data.nisiMap[matches.target];
@@ -839,6 +950,12 @@
       }),
       regexJa: Regexes.gainsEffect({
         effect: '最後の審判：仮判決(?<sym>[ΑΒΓΔαβγδ])',
+      }),
+      regexCn: Regexes.gainsEffect({
+        effect: '终审：判决(?<sym>[ΑΒΓΔαβγδ])',
+      }),
+      regexKo: Regexes.gainsEffect({
+        effect: '최후의 심판: 임시 판결 (?<sym>[ΑΒΓΔαβγδ])',
       }),
       run: function(data, matches) {
         let num = 'ΑΒΓΔαβγδ'.indexOf(matches.sym) % 4;
@@ -860,6 +977,12 @@
       regexJa: Regexes.gainsEffect({
         effect: '最後の審判：仮判決(?<sym>[ΑΒΓΔαβγδ])',
       }),
+      regexCn: Regexes.gainsEffect({
+        effect: '终审：判决(?<sym>[ΑΒΓΔαβγδ])',
+      }),
+      regexKo: Regexes.gainsEffect({
+        effect: '최후의 심판: 임시 판결 (?<sym>[ΑΒΓΔαβγδ])',
+      }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -871,6 +994,8 @@
         return {
           en: 'Verdict: ' + data.nisiNames[num] + ' Nisi',
           de: 'Prozesseröffnung: ' + data.nisiNames[num] + ' Nisi',
+          ja: '最終: ' + data.nisiNames[num],
+          fr: 'Verdict: ' + data.nisiNames[num] + ' Nisi',
         };
       },
     },
@@ -880,6 +1005,8 @@
       regexDe: Regexes.startsUsing({ source: 'Brutalus', id: '483C', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Justicier', id: '483C', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'ブルートジャスティス', id: '483C', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '残暴正义号', id: '483C', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '포악한 심판자', id: '483C', capture: false }),
       run: function(data) {
         data.seenGavel = true;
       },
@@ -890,17 +1017,23 @@
       regexDe: Regexes.startsUsing({ source: 'Brutalus', id: '4847' }),
       regexFr: Regexes.startsUsing({ source: 'Justicier', id: '4847' }),
       regexJa: Regexes.startsUsing({ source: 'ブルートジャスティス', id: '4847' }),
+      regexCn: Regexes.startsUsing({ source: '残暴正义号', id: '4847' }),
+      regexKo: Regexes.startsUsing({ source: '포악한 심판자', id: '4847' }),
       alertText: function(data, matches) {
         if (data.me == matches.target) {
           return {
             en: 'Shared Tankbuster on YOU',
             de: 'geteilter Tankbuster auf DIR',
+            ja: '自分にタンクシェア',
+            fr: 'Tankbuster partagé sur vous',
           };
         }
         if (data.role == 'tank' || data.role == 'healer') {
           return {
             en: 'Shared Tankbuster on ' + data.ShortName(matches.target),
             de: 'geteilter Tankbuster on ' + data.ShortName(matches.target),
+            ja: data.ShortName(matches.target) + ' にタンクシェア',
+            fr: 'Tankbuster partagé sur ' + data.ShortName(matches.target),
           };
         }
       },
@@ -910,6 +1043,7 @@
         return {
           en: 'Bait Super Jump?',
           de: 'Supersprung anlocken?',
+          ja: 'スパジャン誘導',
         };
       },
     },
@@ -919,10 +1053,14 @@
       regexDe: Regexes.ability({ source: 'Brutalus', id: '484A', capture: false }),
       regexFr: Regexes.ability({ source: 'Justicier', id: '484A', capture: false }),
       regexJa: Regexes.ability({ source: 'ブルートジャスティス', id: '484A', capture: false }),
+      regexCn: Regexes.ability({ source: '残暴正义号', id: '484A', capture: false }),
+      regexKo: Regexes.ability({ source: '포악한 심판자', id: '484A', capture: false }),
       condition: (data) => data.phase == 'brute',
       infoText: {
         en: 'avoid ray',
         de: 'Strahl ausweichen',
+        ja: 'アポカリ避けて',
+        fr: 'Evitez le rayon',
       },
     },
     {
@@ -945,10 +1083,10 @@
       }),
       regexFr: Regexes.gainsEffect({
         effect: [
-          'Jugement: éloignement',
-          'Jugement: Rapprochement',
-          'Jugement: Peine Sévère',
-          'Jugement: Peine Collective',
+          'Jugement : éloignement',
+          'Jugement : Rapprochement',
+          'Jugement : Peine Sévère',
+          'Jugement : Peine Collective',
         ],
       }),
       regexJa: Regexes.gainsEffect({
@@ -968,8 +1106,10 @@
       id: 'TEA Temporal Stasis No Buff',
       regex: Regexes.gainsEffect({ effect: 'Restraining Order', capture: false }),
       regexDe: Regexes.gainsEffect({ effect: 'Urteil: Näherungsverbot', capture: false }),
-      regexFr: Regexes.gainsEffect({ effect: 'Jugement: éloignement', capture: false }),
+      regexFr: Regexes.gainsEffect({ effect: 'Jugement : éloignement', capture: false }),
       regexJa: Regexes.gainsEffect({ effect: '確定判決：接近禁止命令', capture: false }),
+      regexCn: Regexes.gainsEffect({ effect: '判决确定：禁止接近命令', capture: false }),
+      regexKo: Regexes.gainsEffect({ effect: '확정 판결: 접근금지 명령', capture: false }),
       delaySeconds: 0.5,
       suppressSeconds: 1,
       durationSeconds: 10,
@@ -984,6 +1124,7 @@
         return {
           en: 'No Debuff',
           de: 'Kein Debuff',
+          ja: 'デバフ無し',
         };
       },
     },
@@ -991,8 +1132,10 @@
       id: 'TEA Restraining Order',
       regex: Regexes.gainsEffect({ effect: 'Restraining Order' }),
       regexDe: Regexes.gainsEffect({ effect: 'Urteil: Näherungsverbot' }),
-      regexFr: Regexes.gainsEffect({ effect: 'Jugement: éloignement' }),
+      regexFr: Regexes.gainsEffect({ effect: 'Jugement : éloignement' }),
       regexJa: Regexes.gainsEffect({ effect: '確定判決：接近禁止命令' }),
+      regexCn: Regexes.gainsEffect({ effect: '判决确定：禁止接近命令' }),
+      regexKo: Regexes.gainsEffect({ effect: '확정 판결: 접근금지 명령' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -1009,8 +1152,10 @@
       id: 'TEA House Arrest',
       regex: Regexes.gainsEffect({ effect: 'House Arrest' }),
       regexDe: Regexes.gainsEffect({ effect: 'Urteil: Freiheitsstrafe' }),
-      regexFr: Regexes.gainsEffect({ effect: 'Jugement: Rapprochement' }),
+      regexFr: Regexes.gainsEffect({ effect: 'Jugement : Rapprochement' }),
       regexJa: Regexes.gainsEffect({ effect: '確定判決：接近強制命令' }),
+      regexCn: Regexes.gainsEffect({ effect: '判决确定：强制接近命令' }),
+      regexKo: Regexes.gainsEffect({ effect: '확정 판결: 강제접근 명령' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
@@ -1027,8 +1172,10 @@
       id: 'TEA Shared Sentence',
       regex: Regexes.gainsEffect({ effect: 'Shared Sentence' }),
       regexDe: Regexes.gainsEffect({ effect: 'Urteil: Kollektivstrafe' }),
-      regexFr: Regexes.gainsEffect({ effect: 'Jugement: Peine Collective' }),
+      regexFr: Regexes.gainsEffect({ effect: 'Jugement : Peine Collective' }),
       regexJa: Regexes.gainsEffect({ effect: '確定判決：集団罰' }),
+      regexCn: Regexes.gainsEffect({ effect: '判决确定：集团罪' }),
+      regexKo: Regexes.gainsEffect({ effect: '확정 판결: 단체형' }),
       durationSeconds: 10,
       condition: function(data, matches) {
         return data.me == matches.target;
@@ -1036,19 +1183,24 @@
       alertText: {
         en: 'Shared Sentence',
         de: 'Urteil: Kollektivstrafe',
+        ja: '集団罰',
+        fr: 'Peine collective',
       },
     },
     {
       id: 'TEA Shared Sentence Inception',
       regex: Regexes.gainsEffect({ effect: 'Shared Sentence' }),
       regexDe: Regexes.gainsEffect({ effect: 'Urteil: Kollektivstrafe' }),
-      regexFr: Regexes.gainsEffect({ effect: 'Jugement: Peine Collective' }),
+      regexFr: Regexes.gainsEffect({ effect: 'Jugement : Peine Collective' }),
       regexJa: Regexes.gainsEffect({ effect: '確定判決：集団罰' }),
+      regexCn: Regexes.gainsEffect({ effect: '判决确定：集团罪' }),
+      regexKo: Regexes.gainsEffect({ effect: '확정 판결: 단체형' }),
       delaySeconds: 3,
       condition: (data) => data.phase == 'inception',
       infoText: function(data, matches) {
         return {
           en: 'Shared Sentence on ' + matches.target,
+          ja: matches.target + ' に集団罰',
         };
       },
     },
@@ -1056,8 +1208,10 @@
       id: 'TEA Aggravated Assault',
       regex: Regexes.gainsEffect({ effect: 'Aggravated Assault' }),
       regexDe: Regexes.gainsEffect({ effect: 'Urteil: Erschwerte Strafe' }),
-      regexFr: Regexes.gainsEffect({ effect: 'Jugement: Peine Sévère' }),
+      regexFr: Regexes.gainsEffect({ effect: 'Jugement : Peine Sévère' }),
       regexJa: Regexes.gainsEffect({ effect: '確定判決：加重罰' }),
+      regexCn: Regexes.gainsEffect({ effect: '判决确定：加重罪' }),
+      regexKo: Regexes.gainsEffect({ effect: '확정 판결: 가중형' }),
       durationSeconds: 10,
       condition: function(data, matches) {
         return data.me == matches.target;
@@ -1065,6 +1219,8 @@
       alarmText: {
         en: 'Thunder',
         de: 'Blitz',
+        ja: '加重罰',
+        fr: 'Peine Sévère',
       },
     },
     {
@@ -1073,6 +1229,8 @@
       regexDe: Regexes.startsUsing({ source: 'Prim-Alexander', id: '4A80' }),
       regexFr: Regexes.startsUsing({ source: 'Primo-Alexander', id: '4A80' }),
       regexJa: Regexes.startsUsing({ source: 'アレキサンダー・プライム', id: '4A80' }),
+      regexCn: Regexes.startsUsing({ source: '至尊亚历山大', id: '4A80' }),
+      regexKo: Regexes.startsUsing({ source: '알렉산더 프라임', id: '4A80' }),
       alertText: function(data, matches) {
         if (matches.target == data.me) {
           return {
@@ -1116,6 +1274,8 @@
       alertText: {
         en: 'Crystal on YOU',
         de: 'Kristall auf DIR',
+        ja: '自分に結晶',
+        fr: 'Cristal sur VOUS',
       },
     },
     {
@@ -1124,10 +1284,14 @@
       regexDe: Regexes.ability({ source: 'Prim-Alexander', id: '485C', capture: false }),
       regexFr: Regexes.ability({ source: 'Primo-Alexander', id: '485C', capture: false }),
       regexJa: Regexes.ability({ source: 'アレキサンダー・プライム', id: '485C', capture: false }),
+      regexCn: Regexes.ability({ source: '至尊亚历山大', id: '485C', capture: false }),
+      regexKo: Regexes.ability({ source: '알렉산더 프라임', id: '485C', capture: false }),
       suppressSeconds: 100,
       infoText: {
         en: 'Get Away From Crystals',
         de: 'Geh weg vom Kristall',
+        ja: '結晶から離れて',
+        fr: 'Eloignez-vous des Cristaux',
       },
     },
     {
@@ -1136,11 +1300,14 @@
       regexDe: Regexes.ability({ source: 'Urteilskristall', id: '4A88', capture: false }),
       regexFr: Regexes.ability({ source: 'Cristal du jugement', id: '4A88', capture: false }),
       regexJa: Regexes.ability({ source: '審判の結晶', id: '4A88', capture: false }),
+      regexCn: Regexes.ability({ source: '审判结晶', id: '4A88', capture: false }),
+      regexKo: Regexes.ability({ source: '심판의 결정체', id: '4A88', capture: false }),
       suppressSeconds: 100,
       delaySeconds: 1,
       infoText: {
         en: 'Bait Brute\'s Flarethrower',
         de: 'Locke Brute\'s Großflammenwerfer',
+        ja: '火炎放射を誘導',
       },
     },
     {
@@ -1149,6 +1316,8 @@
       regexDe: Regexes.gainsEffect({ effect: 'Erhöhte Physische Verwundbarkeit' }),
       regexFr: Regexes.gainsEffect({ effect: 'Vulnérabilité physique augmentée' }),
       regexJa: Regexes.gainsEffect({ effect: '被物理ダメージ増加' }),
+      regexCn: Regexes.gainsEffect({ effect: '物理受伤加重' }),
+      regexKo: Regexes.gainsEffect({ effect: '받는 물리 피해량 증가' }),
       condition: (data) => data.phase == 'inception',
       run: function(data, matches) {
         data.vuln[matches.target] = true;
@@ -1161,6 +1330,8 @@
       regexDe: Regexes.ability({ source: 'Prim-Alexander', id: '485F', capture: false }),
       regexFr: Regexes.ability({ source: 'Primo-Alexander', id: '485F', capture: false }),
       regexJa: Regexes.ability({ source: 'アレキサンダー・プライム', id: '485F', capture: false }),
+      regexCn: Regexes.ability({ source: '至尊亚历山大', id: '485F', capture: false }),
+      regexKo: Regexes.ability({ source: '알렉산더 프라임', id: '485F', capture: false }),
       condition: (data) => data.phase == 'inception',
       alarmText: function(data) {
         let numVulns = Object.keys(data.vuln).length;
@@ -1170,6 +1341,7 @@
           // TODO: we could probably determine where this is.
           return {
             en: 'Bait Jump With Cooldowns',
+            ja: 'スパジャン誘導',
           };
         }
       },
@@ -1183,12 +1355,14 @@
           return {
             en: 'Bait Sword',
             de: 'Locke Chaser-Mecha Schwert',
+            ja: 'ソード誘導',
           };
         }
 
         // Otherwise everybody without a vuln can do anything.
         return {
           en: 'Bait Sword or Jump?',
+          ja: 'ソードかジャンプ誘導?',
         };
       },
       infoText: function(data) {
@@ -1200,6 +1374,7 @@
 
           return {
             en: 'Vuln: Avoid cleaves and jump',
+            ja: '被ダメ増加',
           };
         }
       },
@@ -1210,15 +1385,19 @@
       regexDe: Regexes.ability({ source: 'Prim-Alexander', id: '486E', capture: false }),
       regexFr: Regexes.ability({ source: 'Primo-Alexander', id: '486E', capture: false }),
       regexJa: Regexes.ability({ source: 'アレキサンダー・プライム', id: '486E', capture: false }),
+      regexCn: Regexes.ability({ source: '至尊亚历山大', id: '486E', capture: false }),
+      regexKo: Regexes.ability({ source: '알렉산더 프라임', id: '486E', capture: false }),
       infoText: function(data) {
         if (data.options.cactbotWormholeStrat) {
           return {
             en: 'Bait Chakrams mid; Look opposite Alex',
             de: 'Locke Chakrams mittig; schau weg von Alex',
+            ja: '中央にチャクラム誘導; アレキの反対見て',
           };
         }
         return {
           en: 'Bait Chakrams',
+          ja: 'チャクラム誘導',
         };
       },
     },
@@ -1251,34 +1430,42 @@
           '004F': {
             en: 'Left To Robot; Look Outside; 3rd Puddle',
             de: 'Links vom Robot; Nach Außen schauen; 3. Fläche',
+            ja: '右上 外向き 懺悔3回目',
           },
           '0050': {
             en: 'Back Right Opposite Robot; Look Middle; 3rd Puddle',
             de: 'Hinten Rechts gegenüber vom Robot; zur Mitte schauen; 3. Fläche',
+            ja: '左下 内向き 懺悔3回目',
           },
           '0051': {
             en: 'Back Left Opposite Robot; No Puddle',
             de: 'Hinten Links gegenüber vom Robot; keine Fläche',
+            ja: '左上',
           },
           '0052': {
             en: 'Right To Robot; No puddle',
             de: 'Rechts vom Robot; keine Fläche',
+            ja: '右下',
           },
           '0053': {
             en: 'Left Robot Side -> 1st Puddle',
             de: 'Linke Robot Seite -> 1. Fläche',
+            ja: '右ちょい上 懺悔1回目',
           },
           '0054': {
             en: 'Right Robot Side -> 1st Puddle',
             de: 'Rechte Robot Seite -> 1. Fläche',
+            ja: '左ちょい上 懺悔1回目',
           },
           '0055': {
             en: 'Left Robot Side -> cardinal; 2nd Puddle',
             de: 'Linke Robot Seite -> cardinal; 2. Fläche',
+            ja: '右ちょい上 懺悔2回目',
           },
           '0056': {
             en: 'Right Robot Side -> cardinal; 2nd Puddle',
             de: 'Rechte Robot Seite -> cardinal; 2. Fläche',
+            ja: '左ちょい上 懺悔2回目',
           },
         }[matches.id];
       },
@@ -1289,6 +1476,8 @@
       regexDe: Regexes.ability({ source: 'Brutalus', id: '484A', capture: false }),
       regexFr: Regexes.ability({ source: 'Justicier', id: '484A', capture: false }),
       regexJa: Regexes.ability({ source: 'ブルートジャスティス', id: '484A', capture: false }),
+      regexCn: Regexes.ability({ source: '残暴正义号', id: '484A', capture: false }),
+      regexKo: Regexes.ability({ source: '포악한 심판자', id: '484A', capture: false }),
       condition: function(data) {
         if (!data.options.cactbotWormholeStrat)
           return false;
@@ -1299,6 +1488,7 @@
       infoText: {
         en: 'Move Behind Brute Justice?',
         de: 'Geh hinter Brutalus?',
+        ja: 'ジャスティスの背面へ',
       },
     },
     {
@@ -1307,6 +1497,7 @@
       alertText: {
         en: 'Stack Middle',
         de: 'mittig sammeln',
+        ja: '中央へ',
       },
     },
     {
@@ -1315,9 +1506,12 @@
       regexDe: Regexes.startsUsing({ source: 'Prim-Alexander', id: '4A83', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Primo-Alexander', id: '4A83', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'アレキサンダー・プライム', id: '4A83', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '至尊亚历山大', id: '4A83', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '알렉산더 프라임', id: '4A83', capture: false }),
       alertText: {
         en: 'big aoe',
         de: 'große AoE',
+        fr: 'Grosse AoE',
       },
     },
     {
@@ -1326,10 +1520,14 @@
       regexDe: Regexes.startsUsing({ source: 'Prim-Alexander', id: '4A55', capture: false }),
       regexFr: Regexes.startsUsing({ source: 'Primo-Alexander', id: '4A55', capture: false }),
       regexJa: Regexes.startsUsing({ source: 'アレキサンダー・プライム', id: '4A55', capture: false }),
+      regexCn: Regexes.startsUsing({ source: '至尊亚历山大', id: '4A55', capture: false }),
+      regexKo: Regexes.startsUsing({ source: '알렉산더 프라임', id: '4A55', capture: false }),
       delaySeconds: 10.4,
       infoText: {
         en: 'Kill Cruise Chaser First',
         de: 'Chaser-Mecha zuerst besiegen',
+        ja: 'チェイサーから倒す',
+        fr: 'Tuez Croiseur-chasseur en premier',
       },
     },
     {
@@ -1338,6 +1536,8 @@
       regexDe: Regexes.ability({ source: 'Prim-Alexander', id: '4879', capture: false }),
       regexFr: Regexes.ability({ source: 'Primo-Alexander', id: '4879', capture: false }),
       regexJa: Regexes.ability({ source: 'アレキサンダー・プライム', id: '4879', capture: false }),
+      regexCn: Regexes.ability({ source: '至尊亚历山大', id: '4879', capture: false }),
+      regexKo: Regexes.ability({ source: '알렉산더 프라임', id: '4879', capture: false }),
       condition: function(data) {
         return data.role == 'tank';
       },
@@ -1345,6 +1545,8 @@
       alarmText: {
         en: 'TANK LB!!',
         de: 'TANK LB!!',
+        ja: 'タンクLB!!',
+        fr: 'TANK LB!!',
       },
     },
     {
@@ -1373,6 +1575,8 @@
           return {
             en: 'Stack on YOU',
             de: 'Sammeln auf DIR',
+            ja: '自分にシェア',
+            fr: 'Stack sur VOUS',
           };
         }
       },
@@ -1383,6 +1587,8 @@
         return {
           en: 'Optical Stack (' + names.join(', ') + ')',
           de: 'Optischer Stack (' + names.join(', ') + ')',
+          ja: 'シェア (' + names.join(', ') + ')',
+          fr: 'Stack Optical (' + names.join(', ') + ')',
         };
       },
     },
@@ -1396,6 +1602,8 @@
       alertText: {
         en: 'Keep Moving',
         de: 'weiter bewegen',
+        ja: '動く',
+        fr: 'Bougez',
       },
     },
     {
@@ -1407,6 +1615,8 @@
       alarmText: {
         en: 'STOP LITERALLY EVERYTHING',
         de: 'STOP WIRKLICH ALLES',
+        ja: '止まる',
+        fr: 'ARRÊTEZ TOUT',
       },
     },
     {
@@ -1419,10 +1629,14 @@
       infoText: {
         en: 'Orange (Attract)',
         de: 'Orange (Anziehen)',
+        ja: '接触禁止',
+        fr: 'Orange (Attraction)',
       },
       tts: {
         en: 'Orange',
         de: 'Orange',
+        ja: '接触禁止',
+        fr: 'Orange',
       },
     },
     {
@@ -1435,6 +1649,8 @@
       alarmText: {
         en: 'Orange Bait: Get Away',
         de: 'Orange locken: Geh Weg',
+        ja: '接触保護',
+        fr: 'Appât Orange: Eloignez-vous',
       },
     },
     {
@@ -1447,10 +1663,14 @@
       infoText: {
         en: 'Purple (Repel)',
         de: 'Lila (Abstoßen)',
+        ja: '逃亡禁止',
+        fr: 'Violet (Répulsion)',
       },
       tts: {
         en: 'Purple',
         de: 'Lila',
+        ja: '逃亡禁止',
+        fr: 'Violet',
       },
     },
     {
@@ -1463,6 +1683,8 @@
       alertText: {
         en: 'Purple Bait: Be In Back Of Group',
         de: 'Lila locken: Hinter der Gruppe sein',
+        ja: '逃亡監察',
+        fr: 'Appât Violet: Placez-vous derrière le groupe',
       },
     },
     {
@@ -1493,10 +1715,14 @@
         let kNoDebuff = {
           en: 'No debuff: shared stack',
           de: 'Kein debuff: geteilter stack',
+          ja: 'デバフ無し',
+          fr: 'Aucun debuff: stack partagé',
         };
         let kSeverity = {
           en: 'Severity: avoid shared stack',
           de: 'Erschwertes: geteilter stack ausweichen',
+          ja: '加重罰',
+          fr: 'Sévérité: éloignez-vous du stack',
         };
 
         let kUnknown;
@@ -1504,11 +1730,15 @@
           kUnknown = {
             en: 'No clone: probably stack?',
             de: 'keine Klone: warscheinlich kein debuff + stack?',
+            ja: 'クローン無し: 多分シェア?',
+            fr: 'Pas de clone: stack?',
           };
         } else {
           kUnknown = {
             en: 'No clone: ???',
             de: 'keine Klone: ???',
+            ja: 'クローン無し: ???',
+            fr: 'Pas de clone: ???',
           };
         }
 
@@ -1517,10 +1747,13 @@
           '0': {
             en: 'Shared Sentence: stack',
             de: 'Urteil Kollektivstrafe: stack',
+            ja: '集団罰: ',
+            fr: 'Peine collective: stack',
           },
           '1': {
             en: 'Defamation on YOU',
             de: 'Ehrenstrafe aud DIR',
+            ja: '名誉罰',
           },
           '2': kSeverity,
           '3': kSeverity,
@@ -1573,6 +1806,8 @@
         data.firstAlphaOrdainedText = {
           en: 'Motion first',
           de: 'Bewegungsbefehl zuerst',
+          ja: '最初は動く',
+          fr: 'Mouvement en premier',
         };
       },
       infoText: (data) => data.firstAlphaOrdainedText,
@@ -1592,6 +1827,8 @@
         data.firstAlphaOrdainedText = {
           en: 'Stillness first',
           de: 'Stillstandsbefehl zuerst',
+          ja: '最初は止まる',
+          fr: 'Immobilité en premier',
         };
       },
       infoText: (data) => data.firstAlphaOrdainedText,
@@ -1611,6 +1848,8 @@
         data.secondAlphaOrdainedText = {
           en: 'Motion second',
           de: 'Bewegungsbefehl als Zweites',
+          ja: '最後は動く',
+          fr: 'Mouvement en deuxième',
         };
       },
       infoText: function(data) {
@@ -1639,6 +1878,8 @@
         data.secondAlphaOrdainedText = {
           en: 'Stillness second',
           de: 'Stillstandsbefehl als Zweites',
+          ja: '最後は止まる',
+          fr: 'Immobilité en deuxième',
         };
       },
       infoText: function(data) {
@@ -1699,10 +1940,12 @@
             {
               en: 'Defamation: front left',
               de: 'Ehrenstrafe: vorne links',
+              ja: '名誉: 左前',
             },
             {
               en: 'Defamation: front right',
               de: 'Ehrenstrafe: vorne rechts',
+              ja: '名誉: 右前',
             },
           ][idx - 1];
         }
@@ -1711,10 +1954,14 @@
           {
             en: 'Party: back right',
             de: 'Gruppe: hinten rechts',
+            ja: '右後ろ',
+            fr: 'Groupe: arrière droite',
           },
           {
             en: 'Party: back left',
             de: 'Gruppe: hinten links',
+            ja: '左後ろ',
+            fr: 'Groupe: arrière gauche',
           },
         ][idx - 1];
       },
@@ -1732,11 +1979,15 @@
           return {
             en: 'Move First',
             de: 'Zuerst bewegen',
+            ja: '最初は動く',
+            fr: 'Bougez en premier',
           };
         }
         return {
           en: 'Stillness First',
           de: 'Zuerst Stillstehen',
+          ja: '最初は止まる',
+          fr: 'Restez immobile en premier',
         };
       },
     },
@@ -1753,11 +2004,15 @@
           return {
             en: 'Keep Moving',
             de: 'weiter bewegen',
+            ja: '最後は動く',
+            fr: 'Continuez à bouger',
           };
         }
         return {
           en: 'Stop Everything',
           de: 'Alles stoppen',
+          ja: '最後は止まる',
+          fr: 'Arrêtez tout',
         };
       },
     },
@@ -1782,39 +2037,57 @@
           '-1': {
             en: 'No Clone: maybe purple E->S ???',
             de: 'Keine Klone: vielleicht Lila O->S ???',
+            ja: 'クローン無し: 多分東から南???',
+            fr: 'Pas de Clone: peut-être E->S ???',
           },
           '0': {
             en: 'Purple Bait: bait E',
             de: 'Lila Köder: locke O',
+            ja: '逃亡監察: 東へ',
+            fr: 'Appât Violet: placez-vous E',
           },
           '1': {
             en: 'Orange Bait: bait N',
             de: 'Orange Köder: locke N',
+            ja: '接触保護: 北へ',
+            fr: 'Appât Orange: placez-vous N',
           },
           '2': {
             en: 'Purple, no tether: E->W',
             de: 'Lila, keine Verbindung: O->W',
+            ja: '接触禁止, 線無し: 東から西へ',
+            fr: 'Violet, pas de lien: E->O',
           },
           // This person also has the shared sentence.
           '3': {
             en: 'Orange, no tether: E->N',
             de: 'Orange, keine Verbindung: O->N',
+            ja: '接触禁止, 線無し: 東から北へ',
+            fr: 'Orange, pas de lien: E->N',
           },
           '4': {
             en: 'Purple, close tether: E->N',
             de: 'Lila, nahe Verbindungr: O->N',
+            ja: '逃亡禁止, 接近強制: 東から北へ',
+            fr: 'Violet, lien rapproché: E->N',
           },
           '5': {
             en: 'Orange, close tether: E->N',
             de: 'Orange, nahe Verbindung: O->N',
+            ja: '接触禁止, 接近強制: 東から北へ',
+            fr: 'Orange, lien rapproché: E->N',
           },
           '6': {
             en: 'Purple, far tether: E->S',
             de: 'Lila, entfernte Verbindung: O->S',
+            ja: '逃亡禁止, 接近禁止: 東から南へ',
+            fr: 'Violet, lien éloigné: E->S',
           },
           '7': {
             en: 'Orange, far tether: E->N',
             de: 'Orange, entfernte Verbindung: O->N',
+            ja: '接触禁止, 接近禁止: 東から北へ',
+            fr: 'Orange, lien éloigné: E->N',
           },
         }[sortedNames.indexOf(data.me)];
       },
@@ -1869,18 +2142,26 @@
           0: {
             en: 'Sacrament North',
             de: 'Sacrement Norden',
+            ja: '拝火は北',
+            fr: 'Sacrement Nord',
           },
           1: {
             en: 'Sacrament East',
             de: 'Sacrement Osten',
+            ja: '拝火は東',
+            fr: 'Sacrement Est',
           },
           2: {
             en: 'Sacrament South',
             de: 'Sacrement Süden',
+            ja: '拝火は南',
+            fr: 'Sacrement Sud',
           },
           3: {
             en: 'Sacrament West',
             de: 'Sacrement Westen',
+            ja: '拝火は西',
+            fr: 'Sacrement Ouest',
           },
         }[idx];
       },
@@ -1902,6 +2183,7 @@
       infoText: {
         en: 'Optical Spread',
         de: 'Visier verteilen',
+        ja: '散開',
       },
       run: function(data) {
         data.betaIsOpticalStack = false;
@@ -1916,6 +2198,7 @@
       infoText: {
         en: 'Optical Stack',
         de: 'Visier sammeln',
+        ja: 'シェア',
       },
       run: function(data) {
         data.betaIsOpticalStack = true;
@@ -1933,12 +2216,14 @@
           return {
             en: 'Optical Spread',
             de: 'Visier verteilen',
+            ja: '散開',
           };
         }
         if (data.betaBait.includes(data.me)) {
           return {
             en: 'Optical Stack on YOU',
             de: 'Visier sammeln auf DIR',
+            ja: '自分にシェア',
           };
         }
       },
@@ -2014,6 +2299,7 @@
       alertText: {
         en: 'Stack Middle for Trine',
         de: 'Mittig sammeln für Trine',
+        ja: '大審判来るよ',
       },
     },
     {
@@ -2100,6 +2386,10 @@
               first: 'Warte in der Mitte, ausweichen nach Norden',
               second: 'Norden',
             },
+            ja: {
+              first: '中央から北へ',
+              second: '北へ',
+            },
           },
           'rg': {
             en: {
@@ -2109,6 +2399,10 @@
             de: {
               first: 'Geh nach Norden, ausweichen nach Süden',
               second: 'Süden',
+            },
+            ja: {
+              first: '北から中央へ',
+              second: '中央へ',
             },
           },
           'ry': {
@@ -2120,6 +2414,10 @@
               first: 'Geh nach Norden, ausweichen nach Westen',
               second: 'Westen',
             },
+            ja: {
+              first: '北から西へ',
+              second: '西へ',
+            },
           },
           'yr': {
             en: {
@@ -2129,6 +2427,10 @@
             de: {
               first: 'Geh nach Süden, ausweichen nach Osten',
               second: 'Osten',
+            },
+            ja: {
+              first: '南から東へ',
+              second: '東へ',
             },
           },
           'gy': {
@@ -2140,6 +2442,10 @@
               first: 'Warte in der Mitte, ausweichen nach Süden',
               second: 'Süden',
             },
+            ja: {
+              first: '中央から南へ',
+              second: '南へ',
+            },
           },
           'yg': {
             en: {
@@ -2149,6 +2455,10 @@
             de: {
               first: 'Geh nach Süden, ausweichen nach Norden',
               second: 'Norden',
+            },
+            ja: {
+              first: '南から北へ',
+              second: '北へ',
             },
           },
         }[threeOne][data.lang];
@@ -2193,6 +2503,7 @@
           de: 'Auf ' + data.ShortName(matches.target) + ' sammeln',
           fr: 'Package sur ' + data.ShortName(matches.target),
           cn: '靠近 ' + data.ShortName(matches.target) + '集合',
+          ja: data.ShortName(matches.target) + ' にシェア',
         };
       },
       run: function(data) {
@@ -2446,7 +2757,7 @@
         'Wormhole Formation': 'Marche de la fracture dimensionnelle',
       },
       '~effectNames': {
-        'Aggravated Assault': 'Jugement: peine sévère',
+        'Aggravated Assault': 'Jugement : peine sévère',
         'Compressed Lightning': 'Compression électrique',
         'Compressed Water': 'Compression aqueuse',
         'Contact Regulation Ordained': 'Contact forcé',
@@ -2459,26 +2770,26 @@
         'Final Decree Nisi β': 'Peine provisoire β ultime',
         'Final Decree Nisi γ': 'Peine provisoire γ ultime',
         'Final Decree Nisi δ': 'Peine provisoire δ ultime',
-        'Final Judgment: Decree Nisi α': 'Injonction: peine provisoire α',
-        'Final Judgment: Decree Nisi β': 'Injonction: peine provisoire β',
-        'Final Judgment: Decree Nisi γ': 'Injonction: peine provisoire γ',
-        'Final Judgment: Decree Nisi δ': 'Injonction: peine provisoire δ',
-        'Final Judgment: Penalty III': 'Injonction: 3 altérations',
-        'Final Word: Contact Prohibition': 'Jugement: contact prohibé',
-        'Final Word: Contact Regulation': 'Jugement: contact forcé',
-        'Final Word: Escape Detection': 'Jugement: fuite forcée',
-        'Final Word: Escape Prohibition': 'Jugement: fuite prohibée',
+        'Final Judgment: Decree Nisi α': 'Injonction : peine provisoire α',
+        'Final Judgment: Decree Nisi β': 'Injonction : peine provisoire β',
+        'Final Judgment: Decree Nisi γ': 'Injonction : peine provisoire γ',
+        'Final Judgment: Decree Nisi δ': 'Injonction : peine provisoire δ',
+        'Final Judgment: Penalty III': 'Injonction : 3 altérations',
+        'Final Word: Contact Prohibition': 'Jugement : contact prohibé',
+        'Final Word: Contact Regulation': 'Jugement : contact forcé',
+        'Final Word: Escape Detection': 'Jugement : fuite forcée',
+        'Final Word: Escape Prohibition': 'Jugement : fuite prohibée',
         'Fire Resistance Down II': 'Résistance au feu réduite+',
         'Heavy': 'Pesanteur',
-        'House Arrest': 'Jugement: rapprochement',
+        'House Arrest': 'Jugement : rapprochement',
         'Lightning Resistance Down II': 'Résistance à la foudre réduite+',
         'Luminous Aetheroplasm': 'Éthéroplasma lumineux',
         'Magic Vulnerability Up': 'Vulnérabilité magique augmentée',
         'Physical Vulnerability Up': 'Vulnérabilité physique augmentée',
-        'Restraining Order': 'Jugement: éloignement',
-        'Shared Sentence': 'Jugement: peine collective',
-        'Summon Order': 'Action en attente: 1',
-        'Summon Order III': 'Actions en attente: 3',
+        'Restraining Order': 'Jugement : éloignement',
+        'Shared Sentence': 'Jugement : peine collective',
+        'Summon Order': 'Action en attente : 1',
+        'Summon Order III': 'Actions en attente : 3',
         'Temporal Displacement': 'Stase temporelle',
         'Throttle': 'Cadence améliorée',
         'Water Resistance Down II': 'Résistance à l\'eau réduite+',
