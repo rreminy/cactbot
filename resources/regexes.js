@@ -168,6 +168,23 @@ var Regexes = {
     return Regexes.parse(str);
   },
 
+  // fields: id, name, hp, capture
+  // matches: https://github.com/quisquous/cactbot/blob/master/docs/LogGuide.md#04-removecombatant
+  removingCombatantFull: (f) => {
+    if (typeof f === 'undefined')
+      f = {};
+    validateParams(f, 'removingCombatant', ['id', 'name', 'maxHp', 'x', 'y', 'z', 'capture']);
+    let capture = trueIfUndefined(f.capture);
+    let str = '\\y{Timestamp} 04:' + Regexes.maybeCapture(capture, 'id', f.id, '\\y{ObjectId}') +
+      ':Removing combatant ' + Regexes.maybeCapture(capture, 'name', f.name, '.*?') + '\\.' +
+      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'maxHp', f.maxHp, '[0-9]+') + '\.' +
+      '.*?Pos: \\(' +
+      Regexes.maybeCapture(capture, 'x', f.x, '\\y{Float}') + ',' +
+      Regexes.maybeCapture(capture, 'y', f.y, '\\y{Float}') + ',' +
+      Regexes.maybeCapture(capture, 'z', f.z, '\\y{Float}') + '\\)';
+    return Regexes.parse(str);
+  },
+
   // fields: target, effect, source, duration, capture
   // matches: https://github.com/quisquous/cactbot/blob/master/docs/LogGuide.md#1a-networkbuff
   gainsEffect: (f) => {
