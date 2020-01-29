@@ -208,7 +208,7 @@ var Regexes = {
     let capture = trueIfUndefined(f.capture);
     let str = '\\y{Timestamp} 04:\\y{ObjectId}:Removing combatant ' +
       Regexes.maybeCapture(capture, 'name', f.name, '.*?') + '\\.' +
-      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'hp', f.maxHp, '[0-9]+') + '\.';
+      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'hp', f.hp, '[0-9]+') + '\.';
     return Regexes.parse(str);
   },
 
