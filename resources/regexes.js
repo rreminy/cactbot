@@ -86,14 +86,34 @@ var Regexes = {
       'targetId',
       'target',
       'flags',
+
+      'targetHp',
+      'targetMaxHp',
+      'targetMp',
+      'targetMaxMp',
+      'targetTp',
+      'targetMaxTp',
+      'targetX',
+      'targetY',
+      'targetZ',
+      'targetHeading',
+
+      'hp',
+      'maxHp',
+      'mp',
+      'maxMp',
+      'tp',
+      'maxTp',
       'x',
       'y',
       'z',
       'heading',
+
       'capture',
     ]);
     let capture = trueIfUndefined(f.capture);
     let str = '\\y{Timestamp} 1[56]:' +
+      // Initial information
       Regexes.maybeCapture(capture, 'sourceId', f.sourceId, '\\y{ObjectId}') + ':' +
       Regexes.maybeCapture(capture, 'source', f.source, '[^:]*?') + ':' +
       Regexes.maybeCapture(capture, 'id', f.id, '\\y{AbilityCode}') + ':' +
@@ -101,11 +121,35 @@ var Regexes = {
       Regexes.maybeCapture(capture, 'targetId', f.targetId, '\\y{ObjectId}') + ':' +
       Regexes.maybeCapture(capture, 'target', f.target, '[^:]*?') + ':' +
       Regexes.maybeCapture(capture, 'flags', f.flags, '[^:]*?') + ':' +
+
+      // Flags, damage and special shift cases specific stuff
       '.*:' +
+
+      // Target Information
+      Regexes.maybeCapture(capture, 'targetHp', f.targetHp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetMaxHp', f.targetMaxHp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetMp', f.targetMp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetMaxMp', f.targetMaxMp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetTp', f.targetTp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetMaxTp', f.targetMaxTp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetX', f.targetX, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetY', f.targetY, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetZ', f.targetZ, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'targetHeading', f.targetHeading, '\\y{Float}') + ':' +
+
+      // Caster Information
+      Regexes.maybeCapture(capture, 'hp', f.hp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'maxHp', f.maxHp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'mp', f.mp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'maxMp', f.maxMp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'tp', f.tp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'maxTp', f.maxTp, '\\y{Float}') + ':' +
       Regexes.maybeCapture(capture, 'x', f.x, '\\y{Float}') + ':' +
       Regexes.maybeCapture(capture, 'y', f.y, '\\y{Float}') + ':' +
       Regexes.maybeCapture(capture, 'z', f.z, '\\y{Float}') + ':' +
       Regexes.maybeCapture(capture, 'heading', f.heading, '\\y{Float}') +
+
+      // Some additional field
       ':.*?:?$';
     return Regexes.parse(str);
   },
