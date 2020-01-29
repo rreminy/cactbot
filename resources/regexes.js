@@ -259,6 +259,10 @@ var Regexes = {
       'target',
       'hp',
       'maxHp',
+      'mp',
+      'maxMp',
+      'tp',
+      'maxTp',
       'x',
       'y',
       'z',
@@ -281,10 +285,10 @@ var Regexes = {
       kField + // jobs
       Regexes.maybeCapture(capture, 'hp', f.hp, '\\y{Float}') + ':' +
       Regexes.maybeCapture(capture, 'maxHp', f.maxHp, '\\y{Float}') + ':' +
-      kField + // mp
-      kField + // max mp
-      kField + // tp lol
-      kField + // max tp extra lol
+      Regexes.maybeCapture(capture, 'mp', f.hp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'maxMp', f.maxHp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'tp', f.hp, '\\y{Float}') + ':' +
+      Regexes.maybeCapture(capture, 'maxTp', f.maxHp, '\\y{Float}') + ':' +
       // x, y, z heading may be blank
       Regexes.optional(Regexes.maybeCapture(capture, 'x', f.x, '\\y{Float}')) + ':' +
       Regexes.optional(Regexes.maybeCapture(capture, 'y', f.y, '\\y{Float}')) + ':' +
