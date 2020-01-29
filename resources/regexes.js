@@ -160,11 +160,11 @@ var Regexes = {
   removingCombatant: (f) => {
     if (typeof f === 'undefined')
       f = {};
-    validateParams(f, 'removingCombatant', ['name', 'maxHp', 'capture']);
+    validateParams(f, 'removingCombatant', ['name', 'hp', 'capture']);
     let capture = trueIfUndefined(f.capture);
     let str = '\\y{Timestamp} 04:\\y{ObjectId}:Removing combatant ' +
       Regexes.maybeCapture(capture, 'name', f.name, '.*?') + '\\.' +
-      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'maxHp', f.maxHp, '[0-9]+') + '\.';
+      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'hp', f.maxHp, '[0-9]+') + '\.';
     return Regexes.parse(str);
   },
 
@@ -173,11 +173,11 @@ var Regexes = {
   removingCombatantFull: (f) => {
     if (typeof f === 'undefined')
       f = {};
-    validateParams(f, 'removingCombatant', ['id', 'name', 'maxHp', 'x', 'y', 'z', 'capture']);
+    validateParams(f, 'removingCombatant', ['id', 'name', 'hp', 'x', 'y', 'z', 'capture']);
     let capture = trueIfUndefined(f.capture);
     let str = '\\y{Timestamp} 04:' + Regexes.maybeCapture(capture, 'id', f.id, '\\y{ObjectId}') +
       ':Removing combatant ' + Regexes.maybeCapture(capture, 'name', f.name, '.*?') + '\\.' +
-      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'maxHp', f.maxHp, '[0-9]+') + '\.' +
+      '.*?Max HP: ' + Regexes.maybeCapture(capture, 'hp', f.hp, '[0-9]+') + '\.' +
       '.*?Pos: \\(' +
       Regexes.maybeCapture(capture, 'x', f.x, '\\y{Float}') + ',' +
       Regexes.maybeCapture(capture, 'y', f.y, '\\y{Float}') + ',' +
