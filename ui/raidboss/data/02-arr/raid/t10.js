@@ -1,7 +1,10 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Final Coil Of Bahamut - Turn \(1\)$/,
+  zoneRegex: {
+    en: /^The Final Coil Of Bahamut - Turn \(1\)$/,
+    cn: /^巴哈姆特大迷宫 \(真源之章1\)$/,
+  },
   timelineFile: 't10.txt',
   triggers: [
     {
@@ -22,10 +25,7 @@
       regexJa: Regexes.startsUsing({ id: 'B5F', source: 'イムドゥグド', capture: false }),
       regexCn: Regexes.startsUsing({ id: 'B5F', source: '伊姆都古德', capture: false }),
       regexKo: Regexes.startsUsing({ id: 'B5F', source: '임두구드', capture: false }),
-      alertText: {
-        en: 'Spread',
-        fr: 'Ecartez-vous',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'T10 Wild Charge',
@@ -34,7 +34,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Charge on YOU',
+            de: 'Ansturm auf DIR',
             fr: 'Charge sur VOUS',
+            cn: '蓝球点名',
           };
         }
       },
@@ -42,7 +44,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Charge on ' + data.ShortName(matches.target),
+            de: 'Ansturm auf ' + data.ShortName(matches.target),
             fr: 'Charge sur ' + data.ShortName(matches.target),
+            cn: '蓝球点' + data.ShortName(matches.target),
           };
         }
       },
@@ -50,22 +54,7 @@
     {
       id: 'T10 Prey',
       regex: Regexes.headMarker({ id: '001E' }),
-      alertText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Prey on YOU',
-            fr: 'Prière sur VOUS',
-          };
-        }
-      },
-      infoText: function(data, matches) {
-        if (data.me != matches.target) {
-          return {
-            en: 'Prey on ' + data.ShortName(matches.target),
-            fr: 'Prière sur ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      response: Responses.preyOn(),
     },
     {
       id: 'T10 Cyclonic Tether',
@@ -79,7 +68,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Cyclonic on YOU',
+            de: 'Zyklon-Chaos auf DIR',
             fr: 'Chaos cyclonique sur VOUS',
+            cn: '连线点名',
           };
         }
       },
@@ -87,7 +78,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Cyclonic on ' + data.ShortName(matches.target),
+            de: 'Zyklon-Chaos auf ' + data.ShortName(matches.target),
             fr: 'Chaos cyclonique sur ' + data.ShortName(matches.target),
+            cn: '连线点' + data.ShortName(matches.target),
           };
         }
       },
@@ -97,9 +90,8 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Engage!': 'Start!',
         'Imdugud': 'Imdugud',
-        'The Alpha Concourse will be sealed off': 'bis sich der Zugang zur Alpha-Emergenzzone schließt',
+        'The Alpha Concourse': 'Alpha-Emergenzzone',
       },
       'replaceText': {
         'Crackle Hiss': 'Knisterndes Fauchen',
@@ -109,7 +101,7 @@
         'Electric Burst': 'Stromstoß',
         'Electrocharge': 'Elektro-Ladung',
         'Heat Lightning': 'Hitzeblitz',
-        'Random + Charge': 'Zufall + Wilde Rage',
+        'Random \\+ Charge': 'Zufall + Wilde Rage',
         'Son': 'Sohn',
         'Spike Flail': 'Dornendresche',
         'Wild Charge': 'Wilde Rage',
@@ -118,30 +110,28 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        'Engage!': 'À l\'attaque',
         'Imdugud': 'Imdugud',
-        'The Alpha Concourse will be sealed off': 'Fermeture du secteur des croyants',
+        'The Alpha Concourse': 'secteur des croyants',
       },
       'replaceText': {
+        '1x Son / 1x Daughter Adds': 'Adds 1x Fils / 1x Fille',
+        '2x Son / 2x Daughter Adds': 'Adds 2x Fils / 2x Fille',
         'Crackle Hiss': 'Crachat crépitant',
         'Critical Rip': 'Griffure critique',
         'Cyclonic Chaos': 'Chaos cyclonique',
-        'Daughter': 'Fille',
         'Electric Burst': 'Salve électrique',
         'Electrocharge': 'Charge électrique',
         'Heat Lightning': 'Éclair de chaleur',
-        'Random + Charge': 'Aléatoire + Charge',
-        'Son': 'Fils',
+        'Random \\+ Charge': 'Aléatoire + Charge',
         'Spike Flail': 'Fléau à pointes',
         'Wild Charge': 'Charge sauvage',
       },
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '戦闘開始！',
         'Imdugud': 'イムドゥグド',
-        'The Alpha Concourse will be sealed off': 'The Alpha Concourse will be sealed off', // FIXME
       },
       'replaceText': {
         'Crackle Hiss': 'クラックルヒス',
@@ -151,7 +141,7 @@
         'Electric Burst': 'エレクトリックバースト',
         'Electrocharge': 'エレクトロチャージ',
         'Heat Lightning': 'ヒートライトニング',
-        'Random + Charge': 'Random + Charge', // FIXME
+        'Random \\+ Charge': 'Random + Charge', // FIXME
         'Son': 'Son', // FIXME
         'Spike Flail': 'スパイクフレイル',
         'Wild Charge': 'ワイルドチャージ',
@@ -159,10 +149,9 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '战斗开始！',
         'Imdugud': '伊姆都古德',
-        'The Alpha Concourse will be sealed off': 'The Alpha Concourse will be sealed off', // FIXME
       },
       'replaceText': {
         'Crackle Hiss': '雷光电闪',
@@ -172,7 +161,7 @@
         'Electric Burst': '电光爆发',
         'Electrocharge': '蓄电',
         'Heat Lightning': '惊电',
-        'Random + Charge': 'Random + Charge', // FIXME
+        'Random \\+ Charge': 'Random + Charge', // FIXME
         'Son': 'Son', // FIXME
         'Spike Flail': '刃尾横扫',
         'Wild Charge': '狂野冲锋',
@@ -180,10 +169,9 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '전투 시작!',
         'Imdugud': '임두구드',
-        'The Alpha Concourse will be sealed off': 'The Alpha Concourse will be sealed off', // FIXME
       },
       'replaceText': {
         'Crackle Hiss': '파직파직 번개',
@@ -193,7 +181,7 @@
         'Electric Burst': '전하 폭발',
         'Electrocharge': '전하 충전',
         'Heat Lightning': '뜨거운 번개',
-        'Random + Charge': 'Random + Charge', // FIXME
+        'Random \\+ Charge': 'Random + Charge', // FIXME
         'Son': 'Son', // FIXME
         'Spike Flail': '가시 매타작',
         'Wild Charge': '야성의 돌진',

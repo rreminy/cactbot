@@ -145,13 +145,22 @@ let testInvalidCapturingGroupRegex = function(file, contents) {
     let containsMatches = false;
     let containsMatchesParam = false;
 
-    for (let j = 0; j < triggerFunctions.length; j++) {
-      let currentTriggerFunction = currentTrigger[triggerFunctions[j]];
-      if (typeof currentTriggerFunction !== 'undefined' && currentTriggerFunction !== null) {
-        containsMatches |= currentTriggerFunction.toString().includes('matches');
-        containsMatchesParam |= getParamNames(currentTriggerFunction).includes('matches');
+    let verifyTrigger = (trigger) => {
+      for (let j = 0; j < triggerFunctions.length; j++) {
+        let currentTriggerFunction = trigger[triggerFunctions[j]];
+        if (currentTriggerFunction === null)
+          continue;
+        if (typeof currentTriggerFunction !== 'undefined') {
+          containsMatches |= currentTriggerFunction.toString().includes('matches');
+          containsMatchesParam |= getParamNames(currentTriggerFunction).includes('matches');
+        }
+        if (triggerFunctions[j] === 'response' && typeof currentTriggerFunction === 'object') {
+          // Treat a response object as its own trigger and look at all the functions it returns.
+          verifyTrigger(currentTriggerFunction);
+        }
       }
-    }
+    };
+    verifyTrigger(currentTrigger);
 
     let captures = -1;
 
@@ -201,6 +210,149 @@ let testInvalidTriggerKeys = function(file, contents) {
   }
 };
 
+let testValidIds = function(file, contents) {
+  let json = eval(contents);
+
+  let prefix = null;
+  let brokenPrefixes = false;
+  let ids = new Set();
+
+  for (let set of [json[0].triggers, json[0].timelineTriggers]) {
+    if (!set)
+      continue;
+    for (let trigger of set) {
+      if (!trigger.id) {
+        console.error(`${file}: Missing id field in trigger ${trigger.regex}`);
+        exitCode = 1;
+        continue;
+      }
+
+      // Triggers must be unique.
+      if (ids.has(trigger.id)) {
+        console.error(`${file}: duplicate id: '${trigger.id}`);
+        exitCode = 1;
+      }
+      ids.add(trigger.id);
+
+      // Only show one broken prefix per file.
+      if (brokenPrefixes)
+        continue;
+
+      if (prefix === null) {
+        prefix = trigger.id;
+        continue;
+      }
+
+      // Find common prefix.
+      let idx = 0;
+      let len = Math.min(prefix.length, trigger.id.length);
+      for (idx = 0; idx < len; ++idx) {
+        if (prefix[idx] != trigger.id[idx])
+          break;
+      }
+      if (idx == 0) {
+        console.error(`${file}: No common id prefix in '${prefix}' and '${trigger.id}'`);
+        exitCode = 1;
+        brokenPrefixes = true;
+        continue;
+      }
+      prefix = prefix.substr(0, idx);
+    }
+  }
+
+  // If there's at least two ids, then the prefix must be a full word.
+  // e.g. you can have two triggers like "Prefix Thing 1" and "Prefix Thing 2"
+  // you cannot have two triggers like "O4N Thing 1" and "O4S Thing 2",
+  // as the prefix "O4" is not a full word (and have a space after it,
+  // as "Prefix " does.  This is a bit rigid, but prevents many typos.
+  if (ids.size > 1 && !brokenPrefixes && prefix && prefix.length > 0) {
+    if (prefix[prefix.length - 1] != ' ') {
+      console.error(`${file}: id prefix '${prefix}' is not a full word, must end in a space`);
+      exitCode = 1;
+    }
+  }
+};
+
+let testResponseHasNoFriends = function(file, contents) {
+  let json = eval(contents);
+
+  let bannedItems = [
+    'alarmText',
+    'alertText',
+    'infoText',
+    'tts',
+  ];
+
+  for (let set of [json[0].triggers, json[0].timelineTriggers]) {
+    if (!set)
+      continue;
+    for (let trigger of set) {
+      if (!trigger.response)
+        continue;
+      for (let item of bannedItems) {
+        if (trigger[item]) {
+          console.error(`${file}: ${trigger.id} cannot have both 'response' and '${item}'`);
+          exitCode = 1;
+        }
+      }
+    }
+  }
+};
+
+let testTriggerFieldsSorted = function(file, contents) {
+  let json = eval(contents);
+
+  // This is the order in which they are run.
+  const triggerOrder = [
+    'id',
+    'disabled',
+    'regex',
+    // Other regexes are not important in ordering.
+    'beforeSeconds',
+    'condition',
+    'preRun',
+    'delaySeconds',
+    'durationSeconds',
+    'suppressSeconds',
+    // This is where the delay happens.
+    'promise',
+    // This is where the promise delay happens.
+    'sound',
+    'soundVolume',
+    'response',
+    'alarmText',
+    'alertText',
+    'infoText',
+    'groupTTS',
+    'tts',
+    'run',
+  ];
+
+  for (let set of [json[0].triggers, json[0].timelineTriggers]) {
+    if (!set)
+      continue;
+    for (let trigger of set) {
+      let lastIdx = -1;
+
+      let keys = Object.keys(trigger);
+
+      for (let field of triggerOrder) {
+        if (typeof trigger[field] === 'undefined')
+          continue;
+
+        let thisIdx = keys.indexOf(field);
+        if (thisIdx === -1)
+          continue;
+        if (thisIdx <= lastIdx) {
+          console.error(`${file}: in ${trigger.id}, field '${keys[lastIdx]}' must precede '${keys[thisIdx]}'`);
+          exitCode = 1;
+        }
+        lastIdx = thisIdx;
+      }
+    }
+  }
+};
+
 let testTriggerFile = function(file) {
   let contents = fs.readFileSync(file) + '';
 
@@ -215,6 +367,9 @@ let testTriggerFile = function(file) {
     testUnnecessaryGroupRegex(file, contents);
     testInvalidCapturingGroupRegex(file, contents);
     testInvalidTriggerKeys(file, contents);
+    testValidIds(file, contents);
+    testResponseHasNoFriends(file, contents);
+    testTriggerFieldsSorted(file, contents);
   } catch (e) {
     console.error(`Trigger error in ${file}.`);
     console.error(e);

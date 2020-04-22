@@ -1,17 +1,17 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Final Coil Of Bahamut - Turn \(4\)$/,
+  zoneRegex: {
+    en: /^The Final Coil Of Bahamut - Turn \(4\)$/,
+    cn: /^巴哈姆特大迷宫 \(真源之章4\)$/,
+  },
   timelineFile: 't13.txt',
   timelineTriggers: [
     {
       id: 'T13 Dive Warning',
       regex: /Megaflare Dive/,
       beforeSeconds: 5,
-      infoText: {
-        en: 'Stack Center for Dives',
-        fr: 'Packé au centre pour les dives',
-      },
+      response: Responses.stackMiddle(),
     },
   ],
   triggers: [
@@ -32,7 +32,9 @@
         if (data.gigaflare) {
           return {
             en: 'Stack Center for Dives',
-            fr: 'Packé au centre pour les dives',
+            de: 'In der Mitte sammeln für Sturzbombe',
+            fr: 'Packez-vous au centre pour les plongeons',
+            cn: '中间集合等待俯冲',
           };
         }
       },
@@ -53,7 +55,9 @@
         if (matches.target == data.me) {
           return {
             en: 'Flatten on YOU',
-            fr: 'Applatissement sur VOUS',
+            de: 'Einebnen auf DIR',
+            fr: 'Compression sur VOUS',
+            cn: '死刑',
           };
         }
       },
@@ -63,7 +67,9 @@
         if (data.role == 'healer' || data.job == 'BLU') {
           return {
             en: 'Flatten on ' + data.ShortName(matches.target),
-            fr: 'Applatissement sur ' + data.ShortName(matches.target),
+            de: 'Einebnen auf ' + data.ShortName(matches.target),
+            fr: 'Compression sur ' + data.ShortName(matches.target),
+            cn: '死刑点' + data.ShortName(matches.target),
           };
         }
       },
@@ -76,7 +82,9 @@
       },
       alertText: {
         en: 'Megaflare Stack',
-        fr: 'MégaBrasier package',
+        de: 'Megaflare Sammeln',
+        fr: 'MégaBrasier Packez-vous',
+        cn: '百万核爆集合',
       },
     },
     {
@@ -85,10 +93,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Earthshaker on YOU',
-        fr: 'Secousse sur VOUS',
-      },
+      response: Responses.earthshaker(),
     },
     {
       id: 'T13 Tempest Wing',
@@ -103,7 +108,9 @@
       },
       infoText: {
         en: 'Tempest Tether on YOU',
+        de: 'Sturm Verbindung auf DIR',
         fr: 'Liens de tempête sur VOUS',
+        cn: '风圈点名',
       },
     },
     {
@@ -118,7 +125,9 @@
         if (matches.target == data.me) {
           return {
             en: 'Akh Morn on YOU',
+            de: 'Akh Morn auf DIR',
             fr: 'Akh Morn sur VOUS',
+            cn: '死亡轮回点名',
           };
         }
       },
@@ -126,7 +135,9 @@
         if (matches.target != data.me) {
           return {
             en: 'Akh Morn on ' + data.ShortName(matches.target),
+            de: 'Akh Morn auf ' + data.ShortName(matches.target),
             fr: 'Akh Morn sur ' + data.ShortName(matches.target),
+            cn: '死亡轮回点' + data.ShortName(matches.target),
           };
         }
       },
@@ -137,7 +148,6 @@
       'locale': 'de',
       'replaceSync': {
         'Bahamut Prime': 'Prim-Bahamut',
-        'Engage!': 'Start!',
         'The Storm of Meracydia': 'Sturm von Meracydia',
       },
       'replaceText': {
@@ -146,7 +156,6 @@
         'Dark Aether': 'Dunkeläther',
         'Double Dive': 'Doppelschwinge',
         'Earth Shaker': 'Erdstoß',
-        'Enrage': 'Finalangriff',
         'Flare Breath': 'Flare-Atem',
         'Flare Star': 'Flare-Stern',
         'Flatten': 'Einstampfen',
@@ -170,7 +179,6 @@
       'locale': 'fr',
       'replaceSync': {
         'Bahamut Prime': 'Primo-Bahamut',
-        'Engage!': 'À l\'attaque',
         'The Storm of Meracydia': 'Tempête de Méracydia',
       },
       'replaceText': {
@@ -179,16 +187,15 @@
         'Dark Aether': 'éther sombre',
         'Double Dive': 'Plongeon double',
         'Earth Shaker': 'Secousse',
-        'Enrage': 'Enrage',
         'Flare Breath': 'Souffle brasier',
         'Flare Star': 'Astre flamboyant',
-        'Flatten': 'Aplatissement',
+        'Flatten': 'Compression',
         'Gigaflare': 'GigaBrasier',
         'Gust Add': 'Add Bourrasque',
-        'MF Pepperoni': 'MF Pepperoni',
-        'MF Share': 'MégaBrasier Partage',
-        'MF Spread': 'MégaBrasier Dispersion',
-        'MF Tower': 'MégaBrasier Tour',
+        'MF Pepperoni': 'MB Zones au sol',
+        'MF Share': 'MB Partagez',
+        'MF Spread': 'MB Écartez',
+        'MF Tower': 'MB Tour',
         'Megaflare': 'MégaBrasier',
         'Pain Add': 'Add Douleur',
         'Rage Of Bahamut': 'Courroux de Bahamut',
@@ -203,7 +210,6 @@
       'locale': 'ja',
       'replaceSync': {
         'Bahamut Prime': 'バハムート・プライム',
-        'Engage!': '戦闘開始！',
         'The Storm of Meracydia': 'メラシディアン・ストーム',
       },
       'replaceText': {
@@ -212,7 +218,6 @@
         'Dark Aether': 'ダークエーテル',
         'Double Dive': 'ダブルダイブ',
         'Earth Shaker': 'アースシェイカー',
-        'Enrage': 'Enrage',
         'Flare Breath': 'フレアブレス',
         'Flare Star': 'フレアスター',
         'Flatten': '押しつぶす',
@@ -236,7 +241,6 @@
       'locale': 'cn',
       'replaceSync': {
         'Bahamut Prime': '至尊巴哈姆特',
-        'Engage!': '战斗开始！',
         'The Storm of Meracydia': '美拉西迪亚的怒雨',
       },
       'replaceText': {
@@ -245,7 +249,6 @@
         'Dark Aether': '暗以太',
         'Double Dive': '双重俯冲',
         'Earth Shaker': '大地摇动',
-        'Enrage': 'Enrage', // FIXME
         'Flare Breath': '核爆吐息',
         'Flare Star': '耀星',
         'Flatten': '跺脚',
@@ -269,7 +272,6 @@
       'locale': 'ko',
       'replaceSync': {
         'Bahamut Prime': '바하무트 프라임',
-        'Engage!': '전투 시작!',
         'The Storm of Meracydia': '메라시디아의 폭풍',
       },
       'replaceText': {
@@ -278,7 +280,6 @@
         'Dark Aether': '어둠의 에테르',
         'Double Dive': '이중 강하',
         'Earth Shaker': '요동치는 대지',
-        'Enrage': 'Enrage', // FIXME
         'Flare Breath': '타오르는 숨결',
         'Flare Star': '타오르는 별',
         'Flatten': '압사',

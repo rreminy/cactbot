@@ -1,26 +1,23 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Bowl Of Embers$/,
+  zoneRegex: {
+    en: /^The Bowl Of Embers$/,
+    cn: /^伊弗利特讨伐战$/,
+  },
   timelineFile: 'ifrit_nm.txt',
   timelineTriggers: [
     {
       id: 'IfritNM Inner',
       regex: /Radiant Plume \(inner\)/,
       beforeSeconds: 3.5,
-      infoText: {
-        en: 'Get Out',
-        fr: 'A l\'extérieur',
-      },
+      response: Responses.getOut(),
     },
     {
       id: 'IfritNM Outer',
       regex: /Radiant Plume \(outer\)/,
       beforeSeconds: 3.5,
-      infoText: {
-        en: 'Get In',
-        fr: 'A l\'intérieur',
-      },
+      response: Responses.getIn(),
     },
     {
       id: 'IfritNM Nail Add',
@@ -28,7 +25,9 @@
       beforeSeconds: 0.5,
       infoText: {
         en: 'Kill Nail',
+        de: 'infernalische Fessel zerstören',
         fr: 'Détruisez le clou',
+        cn: '击杀火狱之楔',
       },
     },
   ],
@@ -38,17 +37,13 @@
     {
       'locale': 'de',
       'replaceSync': {
-        '--sync--': '--sync--',
-        'Engage!': 'Start!',
         'Ifrit': 'Ifrit',
         'Succumb': 'Succumb', // FIXME
         'Surrender': 'Surrender', // FIXME
       },
       'replaceText': {
-        '(inner)': '(innen)',
-        '(outer)': '(außen)',
-        '--targetable--': '--anvisierbar--',
-        '--untargetable--': '--nich anvisierbar--',
+        'inner': 'innen',
+        'outer': 'außen',
         'Eruption': 'Eruption',
         'Hellfire': 'Höllenfeuer',
         'Incinerate': 'Einäschern',
@@ -60,21 +55,17 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        '--sync--': '--Synchronisation--',
-        'Engage!': 'À l\'attaque',
         'Ifrit': 'Ifrit',
         'Succumb': 'Succumb', // FIXME
         'Surrender': 'Surrender', // FIXME
       },
       'replaceText': {
-        '(inner)': '(intérieur)',
-        '(outer)': '(extérieur)',
-        '--targetable--': '--Ciblable--',
-        '--untargetable--': '--Impossible à cibler--',
+        'inner': 'intérieur',
+        'outer': 'extérieur',
         'Eruption': 'Éruption',
         'Hellfire': 'Flammes de l\'enfer',
         'Incinerate': 'Incinération',
-        'Nail Add': 'Add : Clou',
+        'Nail Add': 'Add Clou',
         'Radiant Plume': 'Panache radiant',
         'Vulcan Burst': 'Explosion volcanique',
       },
@@ -82,17 +73,13 @@
     {
       'locale': 'ja',
       'replaceSync': {
-        '--sync--': '--sync--',
-        'Engage!': '戦闘開始！',
         'Ifrit': 'イフリート',
         'Succumb': 'Succumb', // FIXME
         'Surrender': 'Surrender', // FIXME
       },
       'replaceText': {
-        '(inner)': '(inner)', // FIXME
-        '(outer)': '(outer)', // FIXME
-        '--targetable--': '--targetable--',
-        '--untargetable--': '--untargetable--',
+        'inner': 'inner', // FIXME
+        'outer': 'outer', // FIXME
         'Eruption': 'エラプション',
         'Hellfire': '地獄の火炎',
         'Incinerate': 'インシネレート',
@@ -104,17 +91,13 @@
     {
       'locale': 'cn',
       'replaceSync': {
-        '--sync--': '--sync--', // FIXME
-        'Engage!': '战斗开始！',
         'Ifrit': '伊弗利特',
         'Succumb': 'Succumb', // FIXME
         'Surrender': 'Surrender', // FIXME
       },
       'replaceText': {
-        '(inner)': '(inner)', // FIXME
-        '(outer)': '(outer)', // FIXME
-        '--targetable--': '--targetable--', // FIXME
-        '--untargetable--': '--untargetable--', // FIXME
+        'inner': 'inner', // FIXME
+        'outer': 'outer', // FIXME
         'Eruption': '地火喷发',
         'Hellfire': '地狱之火炎',
         'Incinerate': '烈焰焚烧',
@@ -126,17 +109,13 @@
     {
       'locale': 'ko',
       'replaceSync': {
-        '--sync--': '--sync--', // FIXME
-        'Engage!': '전투 시작!',
         'Ifrit': '이프리트',
         'Succumb': 'Succumb', // FIXME
         'Surrender': 'Surrender', // FIXME
       },
       'replaceText': {
-        '(inner)': '(inner)', // FIXME
-        '(outer)': '(outer)', // FIXME
-        '--targetable--': '--targetable--', // FIXME
-        '--untargetable--': '--untargetable--', // FIXME
+        'inner': 'inner', // FIXME
+        'outer': 'outer', // FIXME
         'Eruption': '용암 분출',
         'Hellfire': '지옥의 화염',
         'Incinerate': '소각',

@@ -58,7 +58,7 @@
       <HintPath>..\ThirdParty\ACT\Advanced Combat Tracker.exe</HintPath>
     </Reference>
     <Reference Include="FFXIV_ACT_Plugin.Common">
-      <HintPath>..\ThirdParty\ACT\SDK\FFXIV_ACT_Plugin.Common.dll</HintPath>
+      <HintPath>..\ThirdParty\FFXIV_ACT\SDK\FFXIV_ACT_Plugin.Common.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=0.11.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="CactbotEventSource.cs" />
     <Compile Include="CactbotEventSourceConfig.cs" />
+    <Compile Include="FateWatcher.cs" />
     <Compile Include="FFXIVPlugin.cs" />
     <Compile Include="VersionChecker.cs" />
     <Compile Include="FFXIVProcess.cs" />

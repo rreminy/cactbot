@@ -2,7 +2,10 @@
 
 // The Temple of the Fist
 [{
-  zoneRegex: /^The Temple Of The Fist$/,
+  zoneRegex: {
+    en: /^The Temple Of The Fist$/,
+    cn: /^修行古刹星导寺$/,
+  },
   timelineFile: 'temple_of_the_fist.txt',
   timelineTriggers: [
     {
@@ -12,9 +15,7 @@
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank';
       },
-      infoText: {
-        en: 'Tank buster',
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Temple Cardinal Shift',
@@ -23,9 +24,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'AoE',
-      },
+      response: Responses.aoe(),
     },
   ],
   triggers: [
@@ -40,9 +39,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'AoE',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Temple Electric Burst Smriti',
@@ -55,9 +52,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'AoE',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Temple Fourfold Shear',
@@ -67,18 +62,7 @@
       regexJa: Regexes.startsUsing({ id: '1FD9', source: 'アブダ' }),
       regexCn: Regexes.startsUsing({ id: '1FD9', source: '额部陀' }),
       regexKo: Regexes.startsUsing({ id: '1FD9', source: '아부다' }),
-      infoText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Tank buster on YOU',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Tank buster on ' + data.shortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Temple Moonseal',
@@ -88,6 +72,9 @@
       },
       infoText: {
         en: 'Stand in blue',
+        de: 'Im Blauen stehen',
+        fr: 'Allez dans le bleu',
+        cn: '站在蓝色区域',
       },
     },
     {
@@ -98,6 +85,9 @@
       },
       infoText: {
         en: 'Stand in red',
+        de: 'Im Roten stehen',
+        fr: 'Allez dans le rouge',
+        cn: '站在红色区域',
       },
     },
     {
@@ -108,16 +98,7 @@
       regexJa: Regexes.startsUsing({ id: '1FDC', source: 'アブダ', capture: false }),
       regexCn: Regexes.startsUsing({ id: '1FDC', source: '额部陀', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1FDC', source: '아부다', capture: false }),
-      alertText: {
-        en: 'front/back are safe',
-        de: 'Vorne/Hinten sicher',
-        fr: 'Allez devant ou derrière',
-      },
-      tts: {
-        en: 'go front or back',
-        de: 'nach vorn oder hinten',
-        fr: 'allez devant ou derrière',
-      },
+      response: Responses.goFrontBack(),
     },
     {
       id: 'Temple Fore And Aft',
@@ -127,16 +108,7 @@
       regexJa: Regexes.startsUsing({ id: '1FDB', source: 'アブダ', capture: false }),
       regexCn: Regexes.startsUsing({ id: '1FDB', source: '额部陀', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1FDB', source: '아부다', capture: false }),
-      alertText: {
-        en: 'sides are safe',
-        de: 'Seiten sind sicher',
-        fr: 'Allez à gauche ou à droite',
-      },
-      tts: {
-        en: 'go sides',
-        de: 'zur Seite',
-        fr: 'allez sur les côtés',
-      },
+      response: Responses.goSides(),
     },
     {
       id: 'Temple Killer Instinct',
@@ -148,8 +120,9 @@
       regexKo: Regexes.startsUsing({ id: '1FDE', source: '아부다', capture: false }),
       alertText: {
         en: 'watch for safe',
-        de: 'nach Sicherheit schauen',
+        de: 'nach sicherer Position schauen',
         fr: 'trouvez une zone safe',
+        cn: '前往安全区',
       },
     },
     {
@@ -163,9 +136,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'AoE',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Temple Touch Of Slaughter',
@@ -181,6 +152,8 @@
       infoText: function(data, matches) {
         return {
           en: 'Heal ' + data.shortName(matches.target) + ' soon',
+          fr: 'Soignez ' + data.shortName(matches.target) + ' bientôt',
+          cn: '马上奶 ' + data.shortName(matches.target),
         };
       },
     },
@@ -194,6 +167,9 @@
       regexKo: Regexes.ability({ id: '1FE9', source: '쌍표범 이본', capture: false }),
       infoText: {
         en: 'Avoid floating heads',
+        de: 'Weiche den fliegenden Köpfen aus',
+        fr: 'Evitez les têtes',
+        cn: '避开漂浮的头',
       },
     },
     {
@@ -206,6 +182,9 @@
       regexKo: Regexes.startsUsing({ id: '1FED', source: '쌍표범 이본', capture: false }),
       infoText: {
         en: 'Away from marker',
+        de: 'Weg von den Markierungen',
+        fr: 'Loin de la marque',
+        cn: '远离标记',
       },
     },
     {
@@ -216,150 +195,181 @@
       regexJa: Regexes.startsUsing({ id: '1FEE', source: '双豹のイヴォン' }),
       regexCn: Regexes.startsUsing({ id: '1FEE', source: '双豹伊沃恩' }),
       regexKo: Regexes.startsUsing({ id: '1FEE', source: '쌍표범 이본' }),
-      alertText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Stack marker on YOU',
-          };
-        }
-        return {
-          en: 'Stack on ' +data.shortName(matches.target),
-        };
-      },
+      response: Responses.stackOn(),
     },
   ],
   timelineReplace: [
     {
       'locale': 'de',
       'replaceSync': {
-        'Coeurl Sruti': 'Coeurl Sruti',
-        'Coeurl Smriti': 'Coeurl Smriti',
         'Arbuda': 'Arbuda',
+        'Coeurl Smriti': 'Coeurl Smriti',
+        'Coeurl Sruti': 'Coeurl Sruti',
+        'Guidance': 'Unterweisung',
+        'Harmony': 'Harmonie',
         'Ivon Coeurlfist': 'Ivon Coeurlfaust',
+        'Tourmaline Pond': 'Turmalinteich',
       },
       'replaceText': {
+        '--Smriti Appears--': '--Smriti Appears--', // FIXME
+        'Basic Instinct': 'Kampfinstinkt',
+        'Cardinal Shift': 'Großrotation',
+        'Coeurl Whisper': 'Coeurl-Flüstern',
+        'Electric Burst': 'Stromstoß',
+        'Fourfold Shear': 'Vierschere',
+        'Front/Back\\?Sides\\?': 'Front/Back?Sides?', // FIXME
+        'Furious Fists': 'Todeskralle',
+        'Heat Lightning': 'Hitzeblitz',
+        'Hellseal': 'Höllensiegel',
+        'Hurricane Kick': 'Hurrikan-Tritt',
+        'Impact': 'Impakt',
+        'Killer Instinct': 'Vorausahnung',
         'Pounce': 'Raubtiertatze',
         'Radial Blaster': 'Radial-Blaster',
-        'Wide Blaster': 'Weitwinkel-Blaster',
-        'Electric Burst': 'Stromstoß',
-        'Heat Lightning': 'Hitzeblitz',
-        'Basic Instinct': 'Kampfinstinkt',
-
-        'Cardinal Shift': 'Großrotation',
-        'Fourfold Shear': 'Vierschere',
-        'Killer Instinct': 'Vorausahnung',
-        'Hellseal': 'Höllensiegel',
-        'Tapas': 'Kasteiung',
-
-        'Spirit Wave': 'Mentale Welle',
-        'Hurricane Kick': 'Hurrikan-Tritt',
-        'Touch of Slaughter': 'Hauch des Gemetzels',
-        'Coeurl Whisper': 'Coeurl-Flüstern',
+        'Rhalgr\'s Piece': 'Gewalt des Zerstörers',
         'Silent Roar': 'Stilles Brüllen',
-        'Rhalgr\'s Piece': 'Gewalt Des Zerstörers',
+        'Spirit Wave': 'Mentale Welle',
+        'Tapas': 'Kasteiung',
         'The Rose Of Destruction': 'Zermalmender Geist',
-        'Furious Fists': 'Todeskralle',
-        'Impact': 'Einschlag',
+        'Touch of Slaughter': 'Hauch des Gemetzels',
+        'Wide Blaster': 'Weitwinkel-Blaster',
       },
     },
     {
       'locale': 'fr',
       'replaceSync': {
-        'Coeurl Sruti': 'Coeurl Sruti',
-        'Coeurl Smriti': 'Coeurl Smriti',
         'Arbuda': 'Arbuda',
-        'Ivon Coeurlfist': 'Ivon Le Coeurl',
+        'Coeurl Smriti': 'Coeurl smriti',
+        'Coeurl Sruti': 'Coeurl sruti',
+        'Guidance': 'la Conduite',
+        'Harmony': 'l\'Harmonie',
+        'Ivon Coeurlfist': 'Ivon le Coeurl',
+        'Tourmaline Pond': 'l\'étang de Tourmaline',
       },
       'replaceText': {
-        'Pounce': 'Attaque Subite',
-        'Radial Blaster': 'Fulguration Radiale',
-        'Wide Blaster': 'Fulguration Large',
-        'Basic Instinct': 'Instinct Profond',
-        'Electric Burst': 'Salve électrique',
-        'Heat Lightning': 'Éclair De Chaleur',
-
-        'Cardinal Shift': 'Rotation Cardinale',
-        'Fourfold Shear': 'Quadruple Cisaille',
-        'Killer Instinct': 'Instinct Meurtrier',
-        'Hellseal': 'Sceau Infernal',
-        'Tapas': 'Tapas',
-
-        'Spirit Wave': 'Onde Spirituelle',
-        'Hurricane Kick': 'Coup De Pied Ouragan',
-        'Touch of Slaughter': 'Toucher massacreur',
+        '--Smriti Appears--': '-- Apparition de Smriti --',
+        'Basic Instinct': 'Instinct profond',
+        'Cardinal Shift': 'Rotation cardinale',
         'Coeurl Whisper': 'Murmure du Coeurl',
-        'Silent Roar': 'Hurlement Silencieux',
-        'Rhalgr\'s Piece': 'Force De Rhalgr',
-        'The Rose Of Destruction': 'Rose de la destruction',
-        'Furious Fists': 'Poings Furieux',
+        'Electric Burst': 'Salve électrique',
+        'Fourfold Shear': 'Quadruple cisaille',
+        'Front/Back\\?Sides\\?': 'Devant/Derrière\\?Côtés\\?',
+        'Furious Fists': 'Poings furieux',
+        'Heat Lightning': 'Éclair de chaleur',
+        'Hellseal': 'Sceau infernal',
+        'Hurricane Kick': 'Coup de pied ouragan',
         'Impact': 'Impact',
+        'Killer Instinct': 'Instinct meurtrier',
+        'Pounce': 'Attaque subite',
+        'Radial Blaster': 'Fulguration radiale',
+        'Rhalgr\'s Piece': 'Force de Rhalgr',
+        'Silent Roar': 'Hurlement silencieux',
+        'Spirit Wave': 'Onde spirituelle',
+        'Tapas': 'Tapas',
+        'The Rose Of Destruction': 'Rose de la destruction',
+        'Touch of Slaughter': 'Toucher massacreur',
+        'Wide Blaster': 'Fulguration large',
       },
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Coeurl Sruti': 'クァール・シュルティ',
-        'Coeurl Smriti': 'クァール・スムリティ',
         'Arbuda': 'アブダ',
+        'Coeurl Smriti': 'クァール・スムリティ',
+        'Coeurl Sruti': 'クァール・シュルティ',
         'Ivon Coeurlfist': '双豹のイヴォン',
       },
       'replaceText': {
+        '--Smriti Appears--': '--Smriti Appears--', // FIXME
+        'Basic Instinct': '闘争本能',
+        'Cardinal Shift': '四剣大回転',
+        'Coeurl Whisper': '双豹招来',
+        'Electric Burst': 'エレクトリックバースト',
+        'Fourfold Shear': '四連双斬',
+        'Front/Back\\?Sides\\?': 'Front/Back?Sides?', // FIXME
+        'Furious Fists': '双豹蒼連撃',
+        'Heat Lightning': 'ヒートライトニング',
+        'Hellseal': '試練の刻印',
+        'Hurricane Kick': '霊魂旋風脚',
+        'Impact': 'インパクト',
+        'Killer Instinct': '見切り',
         'Pounce': 'パウンス',
         'Radial Blaster': 'ラディアルブラスター',
-        'Wide Blaster': 'ワイドブラスター',
-        'Basic Instinct': '闘争本能',
-        'Electric Burst': 'エレクトリックバースト',
-        'Heat Lightning': 'ヒートライトニング',
-
-        'Cardinal Shift': '四剣大回転',
-        'Fourfold Shear': '四連双斬',
-        'Killer Instinct': '見切り',
-        'Hellseal': '試練の刻印',
-        'Tapas': '苦苔',
-
-        'Spirit Wave': '真霊波',
-        'Hurricane Kick': '霊魂旋風脚',
-        'Touch of Slaughter': '霊魂秘孔拳',
-        'Coeurl Whisper': '双豹招来',
-        'Silent Roar': '双豹撃',
         'Rhalgr\'s Piece': '壊神拳',
+        'Silent Roar': '双豹撃',
+        'Spirit Wave': '真霊波',
+        'Tapas': '苦行',
         'The Rose Of Destruction': '闘霊弾',
-        'Furious Fists': '双豹蒼連撃',
-        'Impact': 'ラールガーズインパクト',
+        'Touch of Slaughter': '霊魂秘孔拳',
+        'Wide Blaster': 'ワイドブラスター',
       },
     },
     {
       'locale': 'cn',
       'replaceSync': {
-        'Coeurl Sruti': '凶豹所闻',
-        'Coeurl Smriti': '凶豹所忆',
         'Arbuda': '额部陀',
+        'Coeurl Smriti': '凶豹所忆',
+        'Coeurl Sruti': '凶豹所闻',
         'Ivon Coeurlfist': '双豹伊沃恩',
       },
       'replaceText': {
+        '--Smriti Appears--': '--凶豹出现--',
+        'Basic Instinct': '斗争本能',
+        'Cardinal Shift': '四剑大回旋',
+        'Coeurl Whisper': '双豹招来',
+        'Electric Burst': '电光爆发',
+        'Fourfold Shear': '四连双斩',
+        'Front/Back\\?Sides\\?': '前/后?两侧?',
+        'Furious Fists': '双豹苍连击',
+        'Heat Lightning': '惊电',
+        'Hellseal': '试炼刻印',
+        'Hurricane Kick': '灵魂旋风脚',
+        'Impact': '冲击',
+        'Killer Instinct': '预判',
         'Pounce': '爪袭',
         'Radial Blaster': '放射冲击波',
-        'Wide Blaster': '广域冲击波',
-        'Basic Instinct': '斗争本能',
-        'Electric Burst': '电光爆发',
-        'Heat Lightning': '惊电',
-
-        'Cardinal Shift': '四剑大回旋',
-        'Fourfold Shear': '四连双斩',
-        'Killer Instinct': '预判',
-        'Hellseal': '试炼刻印',
-        'Tapas': '苦苔',
-
-        'Spirit Wave': '真灵波',
-        'Hurricane Kick': '灵魂旋风脚',
-        'Touch of Slaughter': '灵魂秘孔拳',
-        'Coeurl Whisper': '双豹招来',
-        'Silent Roar': '双豹击',
         'Rhalgr\'s Piece': '破坏神拳',
-        // FIXME This didn't show up when using translate_fight
-        'The Rose Of Destruction': 'The Rose Of Destruction',
-        'Furious Fists': '双豹苍连击',
-        'Impact': '拉尔戈冲击',
+        'Silent Roar': '双豹击',
+        'Spirit Wave': '真灵波',
+        'Tapas': '苦行',
+        'The Rose Of Destruction': '斗灵弹',
+        'Touch of Slaughter': '灵魂秘孔拳',
+        'Wide Blaster': '广域冲击波',
+      },
+    },
+    {
+      'locale': 'ko',
+      'missingTranslations': true,
+      'replaceSync': {
+        'Arbuda': '아부다',
+        'Coeurl Smriti': '커얼 스므리티',
+        'Coeurl Sruti': '커얼 슈루티',
+        'Ivon Coeurlfist': '쌍표범 이본',
+      },
+      'replaceText': {
+        '--Smriti Appears--': '--Smriti Appears--', // FIXME
+        'Basic Instinct': '투쟁 본능',
+        'Cardinal Shift': '사중 대회전',
+        'Coeurl Whisper': '쌍표범 소환',
+        'Electric Burst': '전하 폭발',
+        'Fourfold Shear': '사연속 베기',
+        'Front/Back\\?Sides\\?': 'Front/Back?Sides?', // FIXME
+        'Furious Fists': '쌍표창연격',
+        'Heat Lightning': '뜨거운 번개',
+        'Hellseal': '시련의 각인',
+        'Hurricane Kick': '영혼의 선풍각',
+        'Impact': '임팩트',
+        'Killer Instinct': '간파',
+        'Pounce': '덮치기',
+        'Radial Blaster': '방사형 블래스터',
+        'Rhalgr\'s Piece': '파신권',
+        'Silent Roar': '쌍표격',
+        'Spirit Wave': '진령파',
+        'Tapas': '고행',
+        'The Rose Of Destruction': '투령탄',
+        'Touch of Slaughter': '영혼의 혈도 찌르기',
+        'Wide Blaster': '광범위 블래스터',
       },
     },
   ],

@@ -19,13 +19,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-        cn: 'AOE',
-        ko: '광역공격',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'E4N Earthen Fury',
@@ -43,7 +37,7 @@
         de: 'AoE + DoT',
         fr: 'Dégâts de zone + dot',
         cn: 'AOE + dot',
-        ko: '광역공격 + 도트뎀',
+        ko: '전체공격 + 도트뎀',
       },
     },
     {
@@ -54,37 +48,10 @@
       regexJa: Regexes.startsUsing({ id: '40F9', source: 'タイタン' }),
       regexCn: Regexes.startsUsing({ id: '40F9', source: '泰坦' }),
       regexKo: Regexes.startsUsing({ id: '40F9', source: '타이탄' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            cn: '死刑点名',
-            ko: '나에게 탱버',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            cn: '死刑 ->' + data.ShortName(matches.target),
-            ko: '탱버 ->' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'tank' || data.role == 'healer';
       },
-      infoText: function(data, matches) {
-        if (matches.target != data.me && data.role == 'tank') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            cn: '死刑 ->' + data.ShortName(matches.target),
-            ko: '탱버 ->' + data.ShortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'E4N Massive Landslide',
@@ -97,7 +64,7 @@
       alertText: {
         en: 'Stand In Front',
         de: 'Vor ihm stehen',
-        fr: 'Se placer devant',
+        fr: 'Placez-vous devant',
         cn: '面前躲避',
         ko: '정면이 안전',
       },
@@ -115,7 +82,7 @@
       infoText: {
         en: 'Hide Behind Boulder',
         de: 'Hinter Felsen verstecken',
-        fr: 'Se cacher derrière le rocher',
+        fr: 'Cachez-vous derrière le rocher',
         cn: '躲在石头后',
         ko: '돌 뒤에 숨기',
       },
@@ -128,13 +95,7 @@
       regexJa: Regexes.startsUsing({ id: '40F6', source: 'タイタン', capture: false }),
       regexCn: Regexes.startsUsing({ id: '40F6', source: '泰坦', capture: false }),
       regexKo: Regexes.startsUsing({ id: '40F6', source: '타이탄', capture: false }),
-      infoText: {
-        en: 'Knockback',
-        de: 'Knockback',
-        fr: 'Poussée',
-        cn: '击退',
-        ko: '넉백',
-      },
+      response: Responses.knockback('info'),
     },
     {
       id: 'E4N Fault Zone',
@@ -147,7 +108,7 @@
       alertText: {
         en: 'Stand On Flank',
         de: 'Auf seiner Flanke stehen',
-        fr: 'Se placer sur le flanc',
+        fr: 'Placez-vous sur le flanc',
         cn: '两侧躲避',
         ko: '넓은쪽 옆면이 안전',
       },
@@ -157,7 +118,6 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Engage!': 'Start!',
         'Titan': 'Titan',
         'Bomb Boulder': 'Bomber-Brocken',
         'Massive Boulder': 'Riesiger Felsen',
@@ -173,15 +133,12 @@
         'Voice Of The Land': 'Aufschrei der Erde',
         'Left/Right Landslide': 'Linker/Rechter Bergsturz',
         'Leftward Landslide': 'Linker Bergsturz',
-        '--untargetable--': '--nich anvisierbar--',
         'Explosion': 'Explosion',
         'Evil Earth': 'Grimm der Erde',
         'Aftershock': 'Nachbeben',
         'Magnitude 5.0': 'Magnitude 5.0',
-        '--targetable--': '--anvisierbar--',
         'Seismic Wave': 'Seismische Welle',
         'Crumbling Down': 'Felsfall',
-        'Enrage': 'Finalangriff',
         'Rightward Landslide': 'Rechter Bergsturz',
         'Massive Landslide': 'Gigantischer Bergsturz',
         'Earthen Gauntlets': 'Gaia-Armberge',
@@ -189,7 +146,7 @@
         'Bury': 'Begraben',
         'Earthen Fury': 'Gaias Zorn',
         'Stonecrusher': 'Felsbrecher',
-        'Landslide': 'Bergsturz',
+        '(?<! )Landslide': 'Bergsturz',
       },
       '~effectNames': {
         'Brink of Death': 'Sterbenselend',
@@ -199,16 +156,14 @@
     },
     {
       'locale': 'fr',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': 'À l\'attaque',
         'Titan': 'Titan',
         'Bomb Boulder': 'Bombo Rocher',
       },
       'replaceText': {
         'Fault Line': 'Ligne de faille',
         'Earthen Wheels': 'Pas tellurique',
-        '--sync--': '--Synchronisation--',
-        '--Reset--': '--Réinitialisation--',
         'Geocrush': 'Broie-terre',
         'Earthen Armor': 'Armure tellurique',
         'Fault Zone': 'Faille tectonique',
@@ -217,15 +172,12 @@
         'Voice of the Land': 'Hurlement tellurique',
         'Left/Right Landslide': 'Glissement senestre/dextre',
         'Leftward Landslide': 'Glissement senestre',
-        '--untargetable--': '--Impossible à cibler--',
         'Explosion': 'Explosion',
         'Evil Earth': 'Terre maléfique',
         'Aftershock': 'Répercussion',
         'Magnitude 5.0': 'Magnitude 5',
-        '--targetable--': '--Ciblable--',
         'Seismic Wave': 'Ondes sismiques',
         'Crumbling Down': 'Chute de monolithes',
-        'Enrage': 'Enrage',
         'Rightward Landslide': 'Glissement dextre',
         'Massive Landslide': 'Glissement apocalyptique',
         'Earthen Gauntlets': 'Poing tellurique',
@@ -233,7 +185,7 @@
         'Bury': 'Ensevelissement',
         'Earthen Fury': 'Fureur tellurique',
         'Stonecrusher': 'Éruption tellurique',
-        'Landslide': 'Glissement de terrain',
+        '(?<! )Landslide': 'Glissement de terrain',
       },
       '~effectNames': {
         'Brink of Death': 'Mourant',
@@ -243,8 +195,8 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '戦闘開始！',
         'Titan': 'タイタン',
         'Bomb Boulder': 'ボムボルダー',
       },
@@ -272,7 +224,7 @@
         'Cobalt Bomb': 'コバルトボム',
         'Bury': '衝撃',
         'Stonecrusher': 'ロッククラッシュ',
-        'Landslide': 'ランドスライド',
+        '(?<! )Landslide': 'ランドスライド',
       },
       '~effectNames': {
         'Dropsy': '水毒',
@@ -284,7 +236,6 @@
     {
       'locale': 'cn',
       'replaceSync': {
-        'Engage!': '战斗开始！',
         'Titan': '泰坦',
         'Bomb Boulder': '爆破岩石',
         'Massive Boulder': '巨大岩石',
@@ -313,7 +264,7 @@
         'Cobalt Bomb': '钴弹',
         'Bury': '塌方',
         'Stonecrusher': '崩岩',
-        'Landslide': '地裂',
+        '(?<! )Landslide': '地裂',
       },
       '~effectNames': {
         'Dropsy': '水毒',
@@ -325,7 +276,6 @@
     {
       'locale': 'ko',
       'replaceSync': {
-        'Engage!': '전투 시작!',
         'Titan': '타이탄',
         'Bomb Boulder': '바위폭탄',
         'Massive Boulder': '거대 바위',
@@ -354,7 +304,7 @@
         'Cobalt Bomb': '코발트 폭탄',
         'Bury': '충격',
         'Stonecrusher': '암석 붕괴',
-        'Landslide': '산사태',
+        '(?<! )Landslide': '산사태',
       },
       '~effectNames': {
         'Dropsy': '물독',

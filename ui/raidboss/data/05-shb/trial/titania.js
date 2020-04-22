@@ -2,7 +2,10 @@
 
 // Titania Normal Mode
 [{
-  zoneRegex: /^The Dancing Plague$/,
+  zoneRegex: {
+    en: /^The Dancing Plague$/,
+    cn: /^缇坦妮雅歼灭战$/,
+  },
   timelineFile: 'titania.txt',
   triggers: [
     {
@@ -16,12 +19,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        ja: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Titania Phantom Out',
@@ -31,11 +29,7 @@
       regexJa: Regexes.startsUsing({ id: '3D5D', source: 'ティターニア', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3D5D', source: '缇坦妮雅', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3D5D', source: '티타니아', capture: false }),
-      alertText: {
-        en: 'Out',
-        de: 'Raus',
-        fr: 'Dehors',
-      },
+      response: Responses.getOut(),
     },
     {
       id: 'Titania Phantom In',
@@ -45,11 +39,7 @@
       regexJa: Regexes.startsUsing({ id: '3D5E', source: 'ティターニア', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3D5E', source: '缇坦妮雅', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3D5E', source: '티타니아', capture: false }),
-      alertText: {
-        en: 'In',
-        de: 'Rein',
-        fr: 'Dedans',
-      },
+      response: Responses.getIn(),
     },
     {
       id: 'Titania Mist Failure',
@@ -59,10 +49,7 @@
       regexJa: Regexes.addedCombatant({ name: '水の精', capture: false }),
       regexCn: Regexes.addedCombatant({ name: '水精', capture: false }),
       regexKo: Regexes.addedCombatant({ name: '물의 정령', capture: false }),
-      infoText: {
-        en: 'Kill Extra Add',
-        de: 'Adds angreifen',
-      },
+      response: Responses.killExtraAdd(),
     },
     {
       id: 'Titania Mist',
@@ -76,6 +63,7 @@
         en: 'Water Positions',
         de: 'Wasser Positionen',
         fr: 'Position pour l\'eau',
+        cn: '水毒',
       },
     },
     {
@@ -90,7 +78,8 @@
       alertText: {
         en: 'Stack In Puddles',
         de: 'In einer Fläche sammeln',
-        fr: 'Packez-vous',
+        fr: 'Packez dans les Flaques d\'eau',
+        cn: '水圈集合',
       },
     },
     {
@@ -101,24 +90,7 @@
       regexJa: Regexes.startsUsing({ id: '3D5B', source: 'ティターニア' }),
       regexCn: Regexes.startsUsing({ id: '3D5B', source: '缇坦妮雅' }),
       regexKo: Regexes.startsUsing({ id: '3D5B', source: '티타니아' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Cleave on YOU',
-            de: 'Tank Cleave auf DIR',
-            fr: 'Tank cleave sur vous',
-          };
-        }
-      },
-      infoText: function(data, matches) {
-        if (matches.target != data.me) {
-          return {
-            en: 'Tank Cleave on ' + data.ShortName(matches.target),
-            fr: 'Tank cleave sur ' + data.ShortName(matches.target),
-            de: 'Tank Cleave auf ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankCleave(),
     },
     {
       id: 'Titania Frost Rune 1',
@@ -132,6 +104,9 @@
         en: 'Get Middle, Shiva Circles',
         de: 'In die Mitte, Shiva Kreise',
         fr: 'Allez au milieu, comme sur Shiva',
+        ja: 'シヴァの輪っか',
+        cn: '中间集合, 九连环',
+        ko: '시바 얼음 장판',
       },
     },
     {
@@ -143,11 +118,7 @@
       regexCn: Regexes.startsUsing({ id: '3D2A', source: '缇坦妮雅', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3D2A', source: '티타니아', capture: false }),
       delaySeconds: 6.5,
-      infoText: {
-        en: 'Run Out',
-        de: 'Nach drausen rennen',
-        fr: 'Courez dehors',
-      },
+      response: Responses.getOut('info'),
     },
     {
       id: 'Titania Frost Rune 3',
@@ -158,11 +129,7 @@
       regexCn: Regexes.ability({ id: '3D4E', source: '缇坦妮雅', capture: false }),
       regexKo: Regexes.ability({ id: '3D4E', source: '티타니아', capture: false }),
       suppressSeconds: 60,
-      infoText: {
-        en: 'Run In',
-        de: 'In die Mitte rennen',
-        fr: 'Courez dedans',
-      },
+      response: Responses.getIn('info'),
     },
     {
       id: 'Titania Growth Rune',
@@ -175,7 +142,8 @@
       infoText: {
         en: 'Avoid Roots',
         de: 'Ranken vermeiden',
-        fr: 'Racines',
+        fr: 'Evitez les Racines',
+        cn: '躲避树根',
       },
     },
     {
@@ -184,11 +152,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Ecartez-vous',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Titania Peasebomb Markers',
@@ -196,29 +160,12 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Ecartez-vous',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Titania Pucks Breath Markers',
       regex: Regexes.headMarker({ id: '00A1' }),
-      alertText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Auf DIR sammeln',
-            fr: 'Package sur VOUS',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          de: 'Auf ' + data.ShortName(matches.target) + ' sammeln',
-          fr: 'Packez-vous sur' + data.ShortName(matches.target),
-        };
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'Titania Knockback',
@@ -232,6 +179,9 @@
         en: 'Diagonal Knockback Soon',
         de: 'diagonaler Knockback bald',
         fr: 'Poussée en diagonale bientôt',
+        ja: '対角に飛ぶ',
+        cn: '对角击退准备',
+        ko: '곧 대각선 넉백',
       },
     },
     {
@@ -247,11 +197,15 @@
           return {
             en: 'Group Adds East (on Mustardseed)',
             de: 'Adds im Osten sammeln (bei Senfsamen)',
+            fr: 'Groupe sur l\'Add Est (Pousse-de-moutarde)',
+            cn: '东边小怪 (芥子)',
           };
         }
         return {
           en: 'Kill Mustardseed (East)',
           de: 'Senfsamen angreifen (Osten)',
+          fr: 'Tuez Pousse-de-moutarde (Est)',
+          cn: '击杀芥子 (东)',
         };
       },
     },
@@ -265,7 +219,6 @@
         'Spirit of Flame': 'Feuerfee',
         'Peaseblossom': 'Bohnenblüte',
         'Mustardseed': 'Senfsamen',
-        'Engage!': 'Start!',
       },
       'replaceText': {
         'Being Mortal': 'Sterblichkeit',
@@ -273,7 +226,7 @@
         'Divination Rune': 'Prophezeiungsrune',
         'Flame Hammer': 'Flammenhammer',
         'Flame Rune': 'Flammenrune',
-        'Frost Rune': 'Frostrune',
+        'Frost Rune(?! )': 'Frostrune',
         'Frost Rune Middle': 'Frostrune Mitte',
         'Gentle Breeze': 'Sanfte Brise',
         'Growth Rune': 'Wachstumsrune',
@@ -282,18 +235,87 @@
         'Love-In-Idleness': 'Liebevoller Müßiggang',
         'Midsummer Night\'s Dream': 'Mittsommernachtstraum',
         'Mist Rune': 'Nebelrune',
-        'Pease': 'Bohne',
+        '(?<! )Pease(?!\\w)': 'Bohne',
         'Peasebomb': 'Bohnenbombe',
         'Phantom Rune': 'Phantomrune',
         'Puck\'s Breath': 'Pucks Atem',
         'Puck\'s Caprice': 'Pucks Laune',
         'Puck\'s Rebuke': 'Pucks Tadel',
         'Pummel': 'Deftige Dachtel',
-        '--targetable--': '--anvisierbar--',
-        '--untargetable--': '--nicht anvisierbar--',
         'Uplift': 'Feenring',
         'War And Pease': 'Böhnchen und Tönchen',
       },
+    },
+    {
+      'locale': 'fr',
+      'replaceSync': {
+        'Titania': 'Titania',
+        'Puck': 'Puck',
+        'Spirit of Flame': 'Esprit Des Flammes',
+        'Peaseblossom': 'Fleur-de-pois',
+        'Mustardseed': 'Pousse-de-moutarde',
+      },
+      'replaceText': {
+        'Being Mortal': 'Deuil des vivants',
+        'Bright Sabbath': 'Sabbat en plein jour',
+        'Divination Rune': 'Rune de malice',
+        'Flame Hammer': 'Marteau de feu',
+        'Flame Rune': 'Rune de feu',
+        'Frost Rune(?! )': 'Rune de gel',
+        'Frost Rune Middle': 'Rune de gel milieu',
+        'Gentle Breeze': 'Douce Brise',
+        'Growth Rune': 'Rune de racine',
+        'Hard Swipe': 'Fauchage brutal',
+        'Leafstorm': 'Tempête de feuilles',
+        'Love-In-Idleness': 'Pensées sauvages',
+        'Midsummer Night\'s Dream': 'Songe d\'une nuit d\'été',
+        'Mist Rune': 'Rune d\'eau',
+        '(?<! )Pease(?!\\w)': 'Explosion de haricot',
+        'Peasebomb': 'Haricot explosif',
+        'Phantom Rune': 'Rune d\'illusion',
+        'Puck\'s Breath': 'Haleine de Puck',
+        'Puck\'s Caprice': 'Toquade de Puck',
+        'Puck\'s Rebuke': 'Réprimande de Puck',
+        'Pummel': 'Torgnole',
+        'Uplift': 'Exhaussement',
+        'War And Pease': 'La fin des haricots',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Titania': '缇坦妮雅',
+        'Puck': '帕克',
+        'Spirit of Flame': '炎精',
+        'Peaseblossom': '豌豆花',
+        'Mustardseed': '芥子',
+      },
+      'replaceText': {
+        'Being Mortal': '终有一死',
+        'Bright Sabbath': '欢快的安息日',
+        'Divination Rune': '魔之符文',
+        'Flame Hammer': '烈火锤',
+        'Flame Rune': '火之符文',
+        'Frost Rune(?! )': '冰之符文(?! )',
+        'Frost Rune Middle': '冰之符文 中间',
+        'Gentle Breeze': '青翠柔风',
+        'Growth Rune': '根之符文',
+        'Hard Swipe': '强烈重击',
+        'Leafstorm': '绿叶风暴',
+        'Love-In-Idleness': '爱懒花',
+        'Midsummer Night\'s Dream': '仲夏夜之梦',
+        'Mist Rune': '水之符文',
+        '(?<! )Pease(?!\\w)': '(?<! )爆炸(?!\\w)',
+        'Peasebomb': '豌豆炸弹',
+        'Phantom Rune': '幻之符文',
+        'Puck\'s Breath': '帕克的吐息',
+        'Puck\'s Caprice': '帕克的随想',
+        'Puck\'s Rebuke': '帕克的指责',
+        'Pummel': '殴打',
+        'Uplift': '隆起',
+        'War And Pease': '豌豆大爆炸',
+      },
+      '~effectNames': {},
     },
   ],
 }];

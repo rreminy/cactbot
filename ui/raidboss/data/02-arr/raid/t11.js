@@ -1,7 +1,10 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Final Coil Of Bahamut - Turn \(2\)$/,
+  zoneRegex: {
+    en: /^The Final Coil Of Bahamut - Turn \(2\)$/,
+    cn: /^巴哈姆特大迷宫 \(真源之章2\)$/,
+  },
   timelineFile: 't11.txt',
   triggers: [
     {
@@ -15,7 +18,9 @@
       alertText: function(data, matches) {
         return {
           en: 'Stun on ' + data.ShortName(matches.target),
+          de: 'Stun auf ' + data.ShortName(matches.target),
           fr: 'Stun sur ' + data.ShortName(matches.target),
+          cn: '击昏' + data.ShortName(matches.target),
         };
       },
     },
@@ -27,14 +32,10 @@
       regexJa: Regexes.ability({ source: 'カーリア', id: 'B74', capture: false }),
       regexCn: Regexes.ability({ source: '卡利亚', id: 'B74', capture: false }),
       regexKo: Regexes.ability({ source: '칼리야', id: 'B74', capture: false }),
-      alertText: function(data) {
-        if (data.firstSeed)
-          return;
-        return {
-          en: 'Spread => Stack',
-          fr: 'Ecarté -> Packé',
-        };
+      condition: function(data) {
+        return !data.firstSeed;
       },
+      response: Responses.spreadThenStack(),
       run: function(data) {
         if (!data.firstSeed)
           data.firstSeed = 'river';
@@ -48,14 +49,10 @@
       regexJa: Regexes.ability({ id: 'B75', source: 'カーリア', capture: false }),
       regexCn: Regexes.ability({ id: 'B75', source: '卡利亚', capture: false }),
       regexKo: Regexes.ability({ id: 'B75', source: '칼리야', capture: false }),
-      alertText: function(data) {
-        if (data.firstSeed)
-          return;
-        return {
-          en: 'Stack => Spread',
-          fr: 'Packé -> Ecarté',
-        };
+      condition: function(data) {
+        return !data.firstSeed;
       },
+      response: Responses.stackThenSpread(),
       run: function(data) {
         if (!data.firstSeed)
           data.firstSeed = 'sea';
@@ -69,14 +66,10 @@
       regexJa: Regexes.ability({ id: 'B76', source: 'カーリア', capture: false }),
       regexCn: Regexes.ability({ id: 'B76', source: '卡利亚', capture: false }),
       regexKo: Regexes.ability({ id: 'B76', source: '칼리야', capture: false }),
-      infoText: function(data) {
-        if (!data.firstSeed)
-          return;
-        return {
-          en: 'Stack',
-          fr: 'Packé',
-        };
+      condition: function(data) {
+        return !data.firstSeed;
       },
+      response: Responses.stack(),
       run: function(data) {
         delete data.firstSeed;
       },
@@ -89,14 +82,10 @@
       regexJa: Regexes.ability({ id: 'B77', source: 'カーリア', capture: false }),
       regexCn: Regexes.ability({ id: 'B77', source: '卡利亚', capture: false }),
       regexKo: Regexes.ability({ id: 'B77', source: '칼리야', capture: false }),
-      infoText: function(data) {
-        if (!data.firstSeed)
-          return;
-        return {
-          en: 'Spread',
-          fr: 'Ecarté',
-        };
+      condition: function(data) {
+        return !data.firstSeed;
       },
+      response: Responses.spread(),
       run: function(data) {
         delete data.firstSeed;
       },
@@ -112,7 +101,9 @@
       sound: 'Long',
       infoText: {
         en: 'Out of Middle',
+        de: 'Raus aus der Mitte',
         fr: 'En dehors du centre',
+        cn: '离开中间',
       },
     },
     {
@@ -128,7 +119,9 @@
       },
       alarmText: {
         en: 'Lightning on YOU',
-        fr: 'Eclair sur VOUS',
+        de: 'Blitz auf DIR',
+        fr: 'Éclair sur VOUS',
+        cn: '雷点名',
       },
     },
     {
@@ -142,7 +135,9 @@
       sound: 'Long',
       infoText: {
         en: 'Final Phase',
+        de: 'Finale Phase',
         fr: 'Phase finale',
+        cn: 'P3',
       },
     },
     {
@@ -192,7 +187,9 @@
           return;
         return {
           en: 'Red Tethers With ' + data.ShortName(partner),
+          de: 'Rote Verbindung mit ' + data.ShortName(partner),
           fr: 'Liens rouges avec ' + data.ShortName(partner),
+          cn: '红线连' + data.ShortName(partner),
         };
       },
     },
@@ -217,7 +214,9 @@
           return;
         return {
           en: 'Blue Tethers With ' + data.ShortName(partner),
+          de: 'Blaue Verbindung mit ' + data.ShortName(partner),
           fr: 'Liens bleus avec ' + data.ShortName(partner),
+          cn: '蓝线连' + data.ShortName(partner),
         };
       },
     },
@@ -239,15 +238,12 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Engage!': 'Start!',
         'Kaliya': 'Kaliya',
-        'The Core Override is no longer sealed': 'Der Zugang zur Kern-Steuereinheit öffnet sich wieder',
-        'The Core Override will be sealed off': 'bis sich der Zugang zur Kern-Steuereinheit schließt',
+        'The Core Override': 'Kern-Steuereinheit',
       },
       'replaceText': {
         'Barofield': 'Baro-Feld',
         'Emergency Mode': 'Notprogramm',
-        'Enrage': 'Finalangriff',
         'Main Head': 'Hauptkopf',
         'Nanospore Jet': 'Nanosporen-Strahl',
         'Nerve Cloud': 'Nervenwolke',
@@ -262,38 +258,32 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        'Engage!': 'À l\'attaque',
         'Kaliya': 'Kaliya',
-        'The Core Override is no longer sealed': 'Ouverture de l\'unité de contrôle du Cœur',
-        'The Core Override will be sealed off': 'Fermeture de l\'unité de contrôle du Cœur',
+        'The Core Override': 'l\'unité de contrôle du Cœur',
       },
       'replaceText': {
         'Barofield': 'Barotraumatisme',
         'Emergency Mode': 'Mode d\'urgence',
-        'Enrage': 'Enrage',
         'Main Head': 'Tête principale',
         'Nanospore Jet': 'Jet de magismoparticules',
         'Nerve Cloud': 'Nuage neurotoxique',
         'Nerve Gas': 'Gaz neurotoxique',
         'Resonance': 'Résonance',
         'Secondary Head': 'Tête secondaire',
-        'Seed Of The Rivers': 'Germe de la rivière',
-        'Seed Of The Sea': 'Germe de la mer',
+        'Seed Of The Rivers/Sea': 'Germe de la rivière/mer',
+        'Seed Of The Sea/Rivers': 'Germe de la mer/rivière',
         'Stun': 'Étourdissement',
       },
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '戦闘開始！',
         'Kaliya': 'カーリア',
-        'The Core Override is no longer sealed': 'The Core Override is no longer sealed', // FIXME
-        'The Core Override will be sealed off': 'The Core Override will be sealed off', // FIXME
       },
       'replaceText': {
         'Barofield': 'バロフィールド',
         'Emergency Mode': 'イマージャンシーモード',
-        'Enrage': 'Enrage',
         'Main Head': 'メインヘッド',
         'Nanospore Jet': '魔科学粒子散布',
         'Nerve Cloud': 'ナーブクラウド',
@@ -307,16 +297,13 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '战斗开始！',
         'Kaliya': '卡利亚',
-        'The Core Override is no longer sealed': 'The Core Override is no longer sealed', // FIXME
-        'The Core Override will be sealed off': 'The Core Override will be sealed off', // FIXME
       },
       'replaceText': {
         'Barofield': '气压领域',
         'Emergency Mode': '紧急模式',
-        'Enrage': 'Enrage', // FIXME
         'Main Head': '主首',
         'Nanospore Jet': '魔科学粒子散布',
         'Nerve Cloud': '神经云',
@@ -330,16 +317,13 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '전투 시작!',
         'Kaliya': '칼리야',
-        'The Core Override is no longer sealed': 'The Core Override is no longer sealed', // FIXME
-        'The Core Override will be sealed off': 'The Core Override will be sealed off', // FIXME
       },
       'replaceText': {
         'Barofield': '압력 필드',
         'Emergency Mode': '비상 모드',
-        'Enrage': 'Enrage', // FIXME
         'Main Head': '가운뎃머리',
         'Nanospore Jet': '마과학 입자 살포',
         'Nerve Cloud': '신경 구름',

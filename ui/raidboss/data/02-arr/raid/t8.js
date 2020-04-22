@@ -1,31 +1,30 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Second Coil Of Bahamut - Turn \(3\)$/,
+  zoneRegex: {
+    en: /^The Second Coil Of Bahamut - Turn \(3\)$/,
+    cn: /^巴哈姆特大迷宫 \(入侵之章3\)$/,
+  },
   timelineFile: 't8.txt',
   triggers: [
     {
       id: 'T8 Stack',
       regex: Regexes.headMarker({ id: '0011' }),
-      infoText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Laser Stack on YOU',
-            fr: 'Package laser sur VOUS',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          fr: 'Package sur ' + data.ShortName(matches.target),
-        };
-      },
+      response: Responses.stackOn('info'),
     },
     {
       id: 'T8 Landmine Start',
       regex: Regexes.message({ line: 'Landmines have been scattered', capture: false }),
+      regexDe: Regexes.message({ line: 'Die Landminen haben sich verteilt', capture: false }),
+      regexFr: Regexes.message({ line: 'Des mines ont été répandues', capture: false }),
+      regexJa: Regexes.message({ line: '地雷が散布された', capture: false }),
+      regexCn: Regexes.message({ line: '地雷分布在了各处', capture: false }),
+      regexKo: Regexes.message({ line: '지뢰가 뿌려졌습니다', capture: false }),
       alertText: {
         en: 'Explode Landmines',
-        fr: 'Explosion mines',
+        de: 'Landminen explodieren',
+        fr: 'Explosez les mines',
+        cn: '引爆地雷',
       },
       run: function(data) {
         data.landmines = {};
@@ -65,7 +64,9 @@
       infoText: function(data, matches) {
         return {
           en: 'Missile Tether (on ' + data.ShortName(matches.source) + ')',
+          de: 'Raketen Tether (auf ' + data.ShortName(matches.source) + ')',
           fr: 'Lien missile sur ' + data.ShortName(matches.source),
+          cn: '导弹连线(on ' + data.ShortName(matches.source) + ')',
         };
       },
     },
@@ -81,7 +82,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Brainjack on YOU',
+            de: 'Gehirnwäsche auf DIR',
             fr: 'Détournement cérébral sur VOUS',
+            cn: '洗脑点名',
           };
         }
       },
@@ -89,7 +92,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Brainjack on ' + data.ShortName(matches.target),
+            de: 'Gehirnwäsche auf ' + data.ShortName(matches.target),
             fr: 'Détournement cérébral sur ' + data.ShortName(matches.target),
+            cn: '洗脑点' + data.ShortName(matches.target),
           };
         }
       },
@@ -106,7 +111,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Allagan Field on YOU',
+            de: 'Allagisches Feld auf DIR',
             fr: 'Champ allagois sur VOUS',
+            cn: '亚拉戈领域点名',
           };
         }
       },
@@ -114,7 +121,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Allagan Field on ' + data.ShortName(matches.target),
+            de: 'Allagisches Feld auf ' + data.ShortName(matches.target),
             fr: 'Champ allagois sur ' + data.ShortName(matches.target),
+            cn: '亚拉戈领域点' + data.ShortName(matches.target),
           };
         }
       },
@@ -129,7 +138,9 @@
       regexKo: Regexes.addedCombatant({ name: '드레드노트', capture: false }),
       infoText: {
         en: 'Dreadnaught Add',
-        fr: 'Add cuirassé',
+        de: 'Brummonaut Add',
+        fr: 'Add Cuirassé',
+        cn: '恐慌装甲出现',
       },
     },
   ],
@@ -138,10 +149,8 @@
       'locale': 'de',
       'replaceSync': {
         'Allagan Field': 'Allagisches Feld',
-        'Engage!': 'Start!',
         'The Avatar': 'Avatar',
-        'The central bow is no longer sealed': 'Der Zugang zum Rumpf-Zentralsektor öffnet sich wieder',
-        'The central bow will be sealed off': 'bis sich der Zugang zum Rumpf-Zentralsektor schließt',
+        'The central bow': 'Rumpf-Zentralsektor',
       },
       'replaceText': {
         'Allagan Field': 'Allagisches Feld',
@@ -159,10 +168,8 @@
       'locale': 'fr',
       'replaceSync': {
         'Allagan Field': 'Champ allagois',
-        'Engage!': 'À l\'attaque',
         'The Avatar': 'Bio-tréant',
-        'The central bow is no longer sealed': 'Ouverture de l\'axe central',
-        'The central bow will be sealed off': 'Fermeture de l\'axe central',
+        'The central bow': 'l\'axe central - proue',
       },
       'replaceText': {
         'Allagan Field': 'Champ allagois',
@@ -178,12 +185,10 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
         'Allagan Field': 'アラガンフィールド',
-        'Engage!': '戦闘開始！',
         'The Avatar': 'アバター',
-        'The central bow is no longer sealed': 'The central bow is no longer sealed', // FIXME
-        'The central bow will be sealed off': 'The central bow will be sealed off', // FIXME
       },
       'replaceText': {
         'Allagan Field': 'アラガンフィールド',
@@ -199,12 +204,10 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
         'Allagan Field': '亚拉戈领域',
-        'Engage!': '战斗开始！',
         'The Avatar': '降世化身',
-        'The central bow is no longer sealed': 'The central bow is no longer sealed', // FIXME
-        'The central bow will be sealed off': 'The central bow will be sealed off', // FIXME
       },
       'replaceText': {
         'Allagan Field': '亚拉戈领域',
@@ -220,12 +223,10 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
         'Allagan Field': '알라그 필드',
-        'Engage!': '전투 시작!',
         'The Avatar': '아바타',
-        'The central bow is no longer sealed': 'The central bow is no longer sealed', // FIXME
-        'The central bow will be sealed off': 'The central bow will be sealed off', // FIXME
       },
       'replaceText': {
         'Allagan Field': '알라그 필드',

@@ -12,6 +12,7 @@
   zoneRegex: {
     en: /^Alphascape V2.0 \(Savage\)$/,
     cn: /^欧米茄零式时空狭缝 \(阿尔法幻境2\)$/,
+    ko: /^차원의 틈 오메가: 알파편\(영웅\) \(2\)$/,
   },
   timelineFile: 'o10s.txt',
   triggers: [
@@ -23,35 +24,7 @@
       regexJa: Regexes.startsUsing({ id: '31AA', source: 'ミドガルズオルム' }),
       regexCn: Regexes.startsUsing({ id: '31AA', source: '尘世幻龙' }),
       regexKo: Regexes.startsUsing({ id: '31AA', source: '미드가르드오름' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            cn: '死刑减伤',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            cn: data.ShortName(matches.target) + '吃死刑',
-          };
-        }
-      },
-      tts: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'buster',
-            de: 'basta',
-            fr: 'tankbuster',
-            ja: 'バスター',
-            cn: '死刑',
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'O10S Fire Marker',
@@ -64,6 +37,7 @@
             fr: 'Feu sur VOUS',
             ja: 'マーカー on YOU',
             cn: '火点名',
+            ko: '불징 대상자',
           };
         }
       },
@@ -83,6 +57,7 @@
         de: 'Tod von unten',
         fr: 'Désastre terrestre',
         cn: '地之灾厄',
+        ko: '디버프 확인',
       },
     },
     {
@@ -96,6 +71,7 @@
         de: 'Tod von oben',
         fr: 'Désastre Céleste',
         cn: '天之灾厄',
+        ko: '디버프 확인',
       },
     },
     {
@@ -119,7 +95,7 @@
       },
     },
     {
-      id: 'O10N Horizontal Spin 1',
+      id: 'O10S Horizontal Spin 1',
       regex: Regexes.ability({ id: '31AC', source: 'Midgardsormr', capture: false }),
       regexDe: Regexes.ability({ id: '31AC', source: 'Midgardsormr', capture: false }),
       regexFr: Regexes.ability({ id: '31AC', source: 'Midgardsormr', capture: false }),
@@ -132,13 +108,14 @@
         fr: 'Tour suivant : Dedans/Dehors',
         ja: '中か外',
         cn: '下一转：靠近或远离',
+        ko: '안쪽 / 바깥쪽',
       },
       run: function(data) {
         data.lastSpinWasHorizontal = true;
       },
     },
     {
-      id: 'O10N Vertical Spin 1',
+      id: 'O10S Vertical Spin 1',
       regex: Regexes.ability({ id: '31AD', source: 'Midgardsormr', capture: false }),
       regexDe: Regexes.ability({ id: '31AD', source: 'Midgardsormr', capture: false }),
       regexFr: Regexes.ability({ id: '31AD', source: 'Midgardsormr', capture: false }),
@@ -151,13 +128,14 @@
         fr: 'Tour suivant : Cardinaux ou Coins',
         ja: '角かマーカー',
         cn: '下一转：靠边火角落',
+        ko: '십자 / 대각선',
       },
       run: function(data) {
         data.lastSpinWasHorizontal = false;
       },
     },
     {
-      id: 'O10N Horizontal Spin 2',
+      id: 'O10S Horizontal Spin 2',
       regex: Regexes.ability({ id: '31AE', source: 'Midgardsormr', capture: false }),
       regexDe: Regexes.ability({ id: '31AE', source: 'Midgardsormr', capture: false }),
       regexFr: Regexes.ability({ id: '31AE', source: 'Midgardsormr', capture: false }),
@@ -175,6 +153,7 @@
             fr: 'Sortez !',
             ja: '外へ',
             cn: '远离',
+            ko: '밖으로',
           };
         }
         return {
@@ -183,11 +162,12 @@
           fr: 'Allez sur les cardinaux',
           ja: 'マーカーへ',
           cn: '靠边',
+          ko: '십자 산개',
         };
       },
     },
     {
-      id: 'O10N Vertical Spin 2',
+      id: 'O10S Vertical Spin 2',
       regex: Regexes.ability({ id: '31B0', source: 'Midgardsormr', capture: false }),
       regexDe: Regexes.ability({ id: '31B0', source: 'Midgardsormr', capture: false }),
       regexFr: Regexes.ability({ id: '31B0', source: 'Midgardsormr', capture: false }),
@@ -205,6 +185,7 @@
             fr: 'Sous le boss !',
             ja: '中へ',
             cn: '靠近',
+            ko: '안으로',
           };
         }
         return {
@@ -213,6 +194,7 @@
           fr: 'Allez dans les coins',
           ja: '角へ',
           cn: '角落',
+          ko: '구석 산개',
         };
       },
     },
@@ -221,53 +203,45 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Engage!': 'Start!',
+        'Ancient Dragon': 'antik(?:e|er|es|en) Drache',
+        'Immortal Key': 'unsterblich(?:e|er|es|en) Schlüssel',
         'Midgardsormr': 'Midgardsormr',
-        'Ancient Dragon': 'Antiker Drache',
-        'Immortal Key': 'Unsterblicher Schlüssel',
       },
       'replaceText': {
-        '--targetable--': '--anvisierbar--',
-        '--untargetable--': '--nich anvisierbar--',
+        'ready': 'ready', // FIXME
         'Akh Morn': 'Akh Morn',
         'Akh Rhai': 'Akh Rhai',
         'Azure Wings': 'Azurschwingen',
         'Bloodied Maw': 'Blutiger Schlund',
+        'Cardinals': 'Kanten',
         'Cauterize': 'Kauterisieren',
         'Coil': 'Angriff',
+        'Corners': 'Ecken',
         'Crimson Breath': 'Purpurschwingen',
         'Crimson Wings': 'Purpurschwingen',
         'Dark Wave': 'Dunkle Welle',
         'Dry Ice': 'Trockeneis',
         'Earth Shaker': 'Erdstoß',
-        'Enrage': 'Finalangriff',
         'Exaflare': 'Exaflare',
         'Flame Blast': 'Flammenhölle',
+        'Flip': 'Rolle',
         'Frost Breath': 'Frostiger Atem',
         'Horrid Roar': 'Entsetzliches Brüllen',
         'Hot Tail': 'Schwelender Schweif',
+        'In/Out': 'Rein/Raus',
+        '(?<!\/)Out': 'Raus',
         'Northern Cross': 'Kreuz des Nordens',
+        'Position': 'Position',
         'Protostar': 'Protostern',
         'Rime Wreath': 'Frostkalter Reif',
+        'Shaker/Thunder': 'Erdstoß/Blitz',
+        'Signal': 'Signal',
+        'Spin': 'Drehung',
         'Stygian Maw': 'Stygischer Schlund',
         'Tail End': 'Schweifspitze',
         'Thunderstorm': 'Gewitter',
         'Time Immemorial': 'Urknall',
         'Touchdown': 'Himmelssturz',
-        'attack': 'Attacke',
-        'Flip': 'Rolle',
-        'Spin': 'Drehung',
-        'Cardinals': 'Kanten',
-        'Corners': 'Ecken',
-        'In': 'Rein',
-        'Out': 'Raus',
-        'Flip/Spin': 'Rolle/Drehung',
-        'In/Out': 'Rein/Raus',
-        'Corners/Cardinals': 'Ecken/Kanten',
-        'Shaker/Thunder': 'Erdstoß/Blitz',
-        ' ready': ' bereit',
-        'Signal': 'Signal',
-        'Position': 'Position',
       },
       '~effectNames': {
         'Arcane Bulwark': 'Magische Barriere',
@@ -283,58 +257,45 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        'Engage!': 'À l\'attaque',
+        'Ancient Dragon': 'dragon ancien',
+        'Immortal Key': 'clef immortelle',
         'Midgardsormr': 'Midgardsormr',
-        'Ancient Dragon': 'Dragon Ancien',
-        'Immortal Key': 'Clef Immortelle',
       },
       'replaceText': {
-        '--Reset--': '--Réinitialisation--',
-        '--sync--': '--Synchronisation--',
-        '--targetable--': '--Ciblable--',
-        '--untargetable--': '--Impossible à cibler--',
+        'ready': 'ready', // FIXME
         'Akh Morn': 'Akh Morn',
         'Akh Rhai': 'Akh Rhai',
         'Azure Wings': 'Ailes azur',
         'Bloodied Maw': 'Gueule ensanglantée',
+        'Cardinals': 'Cardinaux',
         'Cauterize': 'Cautérisation',
         'Coil': 'Charge',
-        'Crimson Breath': 'Haleine cramoisie',
+        'Corners': 'Coins',
+        'Crimson Breath': 'Souffle écarlate',
         'Crimson Wings': 'Ailes pourpres',
         'Dark Wave': 'Vague de ténèbres',
         'Dry Ice': 'Poussière glaçante',
         'Earth Shaker': 'Secousse',
-        'Enrage': 'Enrage',
         'Exaflare': 'ExaBrasier',
-        'Flame Blast': 'Explosion de flamme',
+        'Flame Blast': 'Fournaise',
+        'Flip': 'Tour vertical',
         'Frost Breath': 'Souffle glacé',
         'Horrid Roar': 'Rugissement horrible',
         'Hot Tail': 'Queue calorifique',
+        'In/Out': 'Dedans/Dehors',
+        '(?<!\/)Out': 'Dehors',
         'Northern Cross': 'Croix du nord',
+        'Position': 'Position', // FIXME
         'Protostar': 'Proto-étoile',
         'Rime Wreath': 'Enveloppe de givre',
+        'Shaker/Thunder': 'Secousse/Tempête',
+        'Signal': 'Signal', // FIXME
+        'Spin': 'Tour horizontal',
         'Stygian Maw': 'Gueule ténébreuse',
         'Tail End': 'Pointe de queue',
         'Thunderstorm': 'Tempête de foudre',
         'Time Immemorial': 'Big bang',
         'Touchdown': 'Atterrissage',
-        'attack': 'Attaque',
-
-        'Flip': 'Tour vertical',
-        'Spin': 'Tour horizontal',
-        'Cardinals': 'Cardinaux',
-        'In': 'Dedans',
-        'Out': 'Dehors',
-        'Flip/Spin': 'Tour Hz/Vt',
-        'In/Out': 'Dedans/Dehors',
-        'Corners/Cardinals': 'Coins/Cardinaux',
-        'Shaker/Thunder': 'Secousse/Tempête',
-        ' ready': ' prêt',
-
-        // FIXME
-        'Corners': 'Corners',
-        'Signal': 'Signal',
-        'Position': 'Position',
       },
       '~effectNames': {
         'Arcane Bulwark': 'Barrière magique',
@@ -350,18 +311,20 @@
     {
       'locale': 'ja',
       'replaceSync': {
-        'Engage!': '戦闘開始！',
-        'Midgardsormr': 'ミドガルズオルム',
         'Ancient Dragon': 'エンシェントドラゴン',
         'Immortal Key': '竜の楔',
+        'Midgardsormr': 'ミドガルズオルム',
       },
       'replaceText': {
+        'ready': 'ready', // FIXME
         'Akh Morn': 'アク・モーン',
         'Akh Rhai': 'アク・ラーイ',
         'Azure Wings': '蒼翼の焔',
         'Bloodied Maw': '紅牙の焔',
+        'Cardinals': 'Cardinals', // FIXME
         'Cauterize': 'カータライズ',
-        'Coil': '',
+        'Coil': 'Coil',
+        'Corners': 'Corners', // FIXME
         'Crimson Breath': 'クリムゾンブレス',
         'Crimson Wings': '紅翼の焔',
         'Dark Wave': 'ダークウェーブ',
@@ -369,33 +332,24 @@
         'Earth Shaker': 'アースシェイカー',
         'Exaflare': 'エクサフレア',
         'Flame Blast': 'フレイムブラスト',
+        'Flip': 'Flip', // FIXME
         'Frost Breath': 'フロストブレス',
         'Horrid Roar': 'ホリッドロア',
         'Hot Tail': 'ヒートテイル',
+        'In/Out': 'In/Out', // FIXME
+        '(?<!\/)Out': 'Out', // FIXME
         'Northern Cross': 'ノーザンクロス',
+        'Position': 'Position', // FIXME
         'Protostar': 'プロトスター',
         'Rime Wreath': 'ライムリリース',
-        'Stygian Maw': '',
+        'Shaker/Thunder': 'Shaker/Thunder', // FIXME
+        'Signal': 'Signal', // FIXME
+        'Spin': 'ぶん回す',
+        'Stygian Maw': '黒牙の焔',
         'Tail End': 'テイルエンド',
         'Thunderstorm': 'サンダーストーム',
         'Time Immemorial': '天地開闢',
         'Touchdown': 'タッチダウン',
-        'attack': '攻撃',
-
-        // FIXME
-        'Flip': 'Flip',
-        'Spin': 'Spin',
-        'Cardinals': 'Cardinals',
-        'Corners': 'Corners',
-        'In': 'In',
-        'Out': 'Out',
-        'Flip/Spin': 'Flip/Spin',
-        'In/Out': 'In/Out',
-        'Corners/Cardinals': 'Corners/Cardinals',
-        'Shaker/Thunder': 'Shaker/Thunder',
-        ' ready': ' ready',
-        'Signal': 'Signal',
-        'Position': 'Position',
       },
       '~effectNames': {
         'Arcane Bulwark': '魔法障壁',
@@ -411,22 +365,20 @@
     {
       'locale': 'cn',
       'replaceSync': {
-        'I am Midgardsormr': '我乃尘世幻龙',
         'Ancient Dragon': '远古之龙',
-        'Ancient dragon': '远古之龙',
-        'Engage!': '战斗开始！',
         'Immortal Key': '龙之楔',
-        'Immortal key': '龙之楔',
         'Midgardsormr': '尘世幻龙',
-        'ancient dragon': '远古之龙',
-        'immortal key': '龙之楔',
       },
       'replaceText': {
+        'ready': '准备',
         'Akh Morn': '死亡轮回',
         'Akh Rhai': '天光轮回',
         'Azure Wings': '苍翼之焰',
-        'Cauterize': '灼热俯冲',
-        'Coil': '',
+        'Bloodied Maw': '红牙之焰',
+        'Cardinals': '边',
+        'Cauterize': '低温俯冲',
+        'Coil': '横转',
+        'Corners': '角',
         'Crimson Breath': '深红吐息',
         'Crimson Wings': '红翼之焰',
         'Dark Wave': '黑暗波动',
@@ -434,32 +386,24 @@
         'Earth Shaker': '大地摇动',
         'Exaflare': '百京核爆',
         'Flame Blast': '烈焰十字爆',
+        'Flip': '竖转',
         'Frost Breath': '寒霜吐息',
         'Horrid Roar': '恐惧咆哮',
         'Hot Tail': '燃烧之尾',
+        'In/Out': '靠近/远离',
+        '(?<!\/)Out': '远离',
         'Northern Cross': '北十字星',
+        'Position': '站位',
         'Protostar': '原恒星',
         'Rime Wreath': '白霜环绕',
-        'Stygian Maw': '',
+        'Shaker/Thunder': '大地摇动/闪雷风暴',
+        'Signal': '信号',
+        'Spin': '回转',
+        'Stygian Maw': '黑牙之焰  ',
         'Tail End': '煞尾',
         'Thunderstorm': '闪雷风暴',
         'Time Immemorial': '开天辟地',
         'Touchdown': '空降',
-        'attack': '攻击',
-        // FIXME
-        'Flip': '横转',
-        'Spin': '竖转',
-        'Cardinals': '靠边',
-        'Corners': '角落',
-        'In': '靠近',
-        'Out': '远离',
-        'Flip/Spin': 'Flip/Spin',
-        'In/Out': '靠近/远离',
-        'Corners/Cardinals': '靠边/角落',
-        'Shaker/Thunder': '大地摇动/闪雷风暴',
-        ' ready': ' ready',
-        'Signal': 'Signal',
-        'Position': '站位',
       },
       '~effectNames': {
         'Arcane Bulwark': '魔法障壁',
@@ -470,6 +414,60 @@
         'Landborne': '地之力',
         'Skyborne': '天之力',
         'Thin Ice': '冰面',
+      },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Midgardsormr': '미드가르드오름',
+        'Ancient Dragon': '고룡',
+        'Immortal Key': '용의 말뚝',
+      },
+      'replaceText': {
+        ' ready': ' 준비 완료',
+        'Akh Morn': '아크 몬',
+        'Akh Rhai': '아크 라이',
+        'Azure Wings': '창익의 불꽃',
+        'Bloodied Maw': '홍아의 불꽃',
+        'Cardinals': '맵 측면',
+        'Cauterize': '인두질',
+        'Coil': 'Coil', // FIXME
+        'Corners': '구석',
+        'Crimson Breath': '진홍빛 숨결',
+        'Crimson Wings': '홍익의 불꽃',
+        'Dark Wave': '어둠의 파동',
+        'Dry Ice': '지면 동결',
+        'Earth Shaker': '요동치는 대지',
+        'Exaflare': '엑사플레어',
+        'Flame Blast': '화염 작렬',
+        'Flip': '앞회전',
+        'Frost Breath': '서리 숨결',
+        'Horrid Roar': '소름끼치는 포효',
+        'Hot Tail': '뜨거운 꼬리',
+        'In/Out': '안/밖',
+        '(?<!\/)Out': '밖',
+        'Northern Cross': '북십자성',
+        'Position': '위치',
+        'Protostar': '원시별',
+        'Rime Wreath': '분노의 서릿발',
+        'Shaker/Thunder': '어스/번개',
+        'Signal': '신호',
+        'Spin': '마구 돌리기',
+        'Stygian Maw': '흑아의 불꽃',
+        'Tail End': '꼬리 쓸기',
+        'Thunderstorm': '번개 폭풍',
+        'Time Immemorial': '천지개벽',
+        'Touchdown': '착지',
+      },
+      '~effectNames': {
+        'Arcane Bulwark': '마법 장벽',
+        'Crumbling Bulwark': '마법 장벽 붕괴',
+        'Death from Above': '하늘의 재앙',
+        'Death from Below': '땅의 재앙',
+        'Defenseless': '마법 장벽 불가',
+        'Landborne': '땅의 힘',
+        'Skyborne': '하늘의 힘',
+        'Thin Ice': '얼음 바닥',
       },
     },
   ],

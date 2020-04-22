@@ -1,11 +1,11 @@
 'use strict';
 
 // Because apparently people don't understand uppercase greek letters,
-// only uppercase alphabetic letters.
+// add a special case to not uppercase them.
 function triggerUpperCase(str) {
   if (!str)
     return str;
-  return str.replace(/\w/g, (x) => x.toUpperCase());
+  return str.replace(/[^αβγδ]/g, (x) => x.toUpperCase());
 }
 
 function onTriggerException(trigger, e) {
@@ -30,6 +30,23 @@ class PopupText {
     this.infoText = document.getElementById('popup-text-info');
     this.alertText = document.getElementById('popup-text-alert');
     this.alarmText = document.getElementById('popup-text-alarm');
+
+    if (this.options.BrowserTTS) {
+      this.ttsEngine = new BrowserTTSEngine();
+      this.ttsSay = function(text) {
+        this.ttsEngine.play(text);
+      };
+    } else {
+      this.ttsSay = function(text) {
+        let cmd = { 'call': 'cactbotSay', 'text': text };
+        window.callOverlayHandler(cmd);
+      };
+    }
+
+    // check to see if we need user interaction to play audio
+    // only if audio is enabled in options
+    if (Options.audioAllowed)
+      AutoplayHelper.CheckAndPrompt();
 
     this.partyTracker = new PartyTracker();
     addOverlayListener('PartyChanged', (e) => {
@@ -59,6 +76,21 @@ class PopupText {
   }
 
   OnPlayerChange(e) {
+    // allow override of player via query parameter
+    // only apply override if player is in party
+    if (Options.PlayerNameOverride !== null) {
+      let tmpJob = null;
+      if (Options.PlayerJobOverride !== null)
+        tmpJob = Options.PlayerJobOverride;
+      else if (this.partyTracker.inParty(Options.PlayerNameOverride))
+        tmpJob = this.partyTracker.jobName(this.me);
+      // if there's any issue with looking up player name for
+      // override, don't perform override
+      if (tmpJob !== null) {
+        e.detail.job = tmpJob;
+        e.detail.name = Options.PlayerNameOverride;
+      }
+    }
     if (this.job != e.detail.job || this.me != e.detail.name)
       this.OnJobChange(e);
     this.data.currentHP = e.detail.currentHP;
@@ -222,7 +254,7 @@ class PopupText {
         timelines,
         replacements,
         timelineTriggers,
-        timelineStyles
+        timelineStyles,
     );
   }
 
@@ -359,8 +391,6 @@ class PopupText {
     if ('preRun' in trigger)
       trigger.preRun(this.data, matches);
 
-    let that = this;
-
     let ValueOrFunction = (f) => {
       let result = (typeof(f) == 'function') ? f(this.data, matches) : f;
       // All triggers return either a string directly, or an object
@@ -426,6 +456,11 @@ class PopupText {
       playSounds = false;
       showText = false;
     }
+    if (!this.options.audioAllowed) {
+      playSpeech = false;
+      playGroupSpeech = false;
+      playSounds = false;
+    }
 
     let f = () => {
       let addText = (container, e) => {
@@ -454,6 +489,7 @@ class PopupText {
       // Otherwise, if multiple alarm/alert/info are specified
       // it will pick one sound in the order of alarm > alert > info.
       let soundUrl = ValueOrFunction(trigger.sound);
+      let triggerSoundVol = ValueOrFunction(trigger.soundVolume);
       let soundVol = 1;
 
       let defaultTTSText;
@@ -463,6 +499,10 @@ class PopupText {
         // Can't use ValueOrFunction here as r returns a non-localizable object.
         let r = trigger.response;
         response = (typeof(r) == 'function') ? r(this.data, matches) : r;
+
+        // Turn falsy values into a default no-op response.
+        if (!response)
+          response = {};
       }
 
       let alarmText = triggerOptions.AlarmText || trigger.alarmText || response.alarmText;
@@ -471,17 +511,17 @@ class PopupText {
         defaultTTSText = defaultTTSText || text;
         if (text && showText) {
           text = triggerUpperCase(text);
-          let holder = that.alarmText.getElementsByClassName('holder')[0];
+          let holder = this.alarmText.getElementsByClassName('holder')[0];
           let div = makeTextElement(text, 'alarm-text');
-          addText.bind(that)(holder, div);
+          addText.bind(this)(holder, div);
           window.setTimeout(
-              removeText.bind(that, holder, div),
-              (duration.fromTrigger || duration.alarmText) * 1000
+              removeText.bind(this, holder, div),
+              (duration.fromTrigger || duration.alarmText) * 1000,
           );
 
           if (!soundUrl) {
-            soundUrl = that.options.AlarmSound;
-            soundVol = that.options.AlarmSoundVolume;
+            soundUrl = this.options.AlarmSound;
+            soundVol = this.options.AlarmSoundVolume;
           }
         }
       }
@@ -492,17 +532,17 @@ class PopupText {
         defaultTTSText = defaultTTSText || text;
         if (text && showText) {
           text = triggerUpperCase(text);
-          let holder = that.alertText.getElementsByClassName('holder')[0];
+          let holder = this.alertText.getElementsByClassName('holder')[0];
           let div = makeTextElement(text, 'alert-text');
-          addText.bind(that)(holder, div);
+          addText.bind(this)(holder, div);
           window.setTimeout(
-              removeText.bind(that, holder, div),
-              (duration.fromTrigger || duration.alertText) * 1000
+              removeText.bind(this, holder, div),
+              (duration.fromTrigger || duration.alertText) * 1000,
           );
 
           if (!soundUrl) {
-            soundUrl = that.options.AlertSound;
-            soundVol = that.options.AlertSoundVolume;
+            soundUrl = this.options.AlertSound;
+            soundVol = this.options.AlertSoundVolume;
           }
         }
       }
@@ -512,17 +552,17 @@ class PopupText {
         let text = ValueOrFunction(infoText);
         defaultTTSText = defaultTTSText || text;
         if (text && showText) {
-          let holder = that.infoText.getElementsByClassName('holder')[0];
+          let holder = this.infoText.getElementsByClassName('holder')[0];
           let div = makeTextElement(text, 'info-text');
-          addText.bind(that)(holder, div);
+          addText.bind(this)(holder, div);
           window.setTimeout(
-              removeText.bind(that, holder, div),
-              (duration.fromTrigger || duration.infoText) * 1000
+              removeText.bind(this, holder, div),
+              (duration.fromTrigger || duration.infoText) * 1000,
           );
 
           if (!soundUrl) {
-            soundUrl = that.options.InfoSound;
-            soundVol = that.options.InfoSoundVolume;
+            soundUrl = this.options.InfoSound;
+            soundVol = this.options.InfoSoundVolume;
           }
         }
       }
@@ -575,18 +615,15 @@ class PopupText {
       if (trigger.sound && soundUrl) {
         let namedSound = soundUrl + 'Sound';
         let namedSoundVolume = soundUrl + 'SoundVolume';
-        if (namedSound in that.options) {
-          soundUrl = that.options[namedSound];
-          if (namedSoundVolume in that.options)
-            soundVol = that.options[namedSoundVolume];
+        if (namedSound in this.options) {
+          soundUrl = this.options[namedSound];
+          if (namedSoundVolume in this.options)
+            soundVol = this.options[namedSoundVolume];
         }
       }
 
-      if ('soundVolume' in trigger)
-        soundVol = ValueOrFunction(trigger.soundVolume);
-
       soundUrl = triggerOptions.SoundOverride || soundUrl;
-      soundVol = triggerOptions.VolumeOverride || soundVol;
+      soundVol = triggerOptions.VolumeOverride || triggerSoundVol || soundVol;
 
       // Text to speech overrides all other sounds.  This is so
       // that a user who prefers tts can still get the benefit
@@ -595,26 +632,31 @@ class PopupText {
       // not cause tts to play over top of sounds or noises.
       if (ttsText && playSpeech) {
         // Heuristics for auto tts.
+        // * In case this is an integer.
+        ttsText = ttsText.toString();
         // * Remove a bunch of chars.
-        ttsText = ttsText.replace(/[#!]/, '');
+        ttsText = ttsText.replace(/[#!]/g, '');
         // * slashes between mechanics
         ttsText = ttsText.replace('/', ' ');
+        // * arrows helping visually simple to understand e.g. ↖ Front left / Back right ↘
+        ttsText = ttsText.replace(/[↖-↙]/g, '');
+        // * Korean TTS reads wrong with '1번째'
+        ttsText = ttsText.replace('1번째', '첫번째');
         // * arrows at the front or the end are directions, e.g. "east =>"
-        ttsText = ttsText.replace(/[-=]>\s*$/, '');
-        ttsText = ttsText.replace(/^\s*<[-=]/, '');
+        ttsText = ttsText.replace(/[-=]>\s*$/g, '');
+        ttsText = ttsText.replace(/^\s*<[-=]/g, '');
         // * arrows in the middle are a sequence, e.g. "in => out => spread"
         let lang = this.options.AlertsLanguage || this.options.Language || 'en';
         let arrowReplacement = {
           en: ' then ',
-          cn: ' 然后 ',
+          cn: '然后',
           de: ' dann ',
           fr: ' puis ',
-          ja: ' ', // FIXME
+          ja: 'や',
           ko: ' 그리고 ',
         };
-        ttsText = ttsText.replace(/\s*(<[-=]|[=-]>)\s*/, arrowReplacement[lang]);
-        let cmd = { 'call': 'cactbotSay', 'text': ttsText };
-        window.callOverlayHandler(cmd);
+        ttsText = ttsText.replace(/\s*(<[-=]|[=-]>)\s*/g, arrowReplacement[lang]);
+        this.ttsSay(ttsText);
       } else if (soundUrl && playSounds) {
         let audio = new Audio(soundUrl);
         audio.volume = soundVol;
@@ -622,22 +664,51 @@ class PopupText {
       }
 
       if ('run' in trigger)
-        trigger.run(that.data, matches);
+        trigger.run(this.data, matches);
+    };
+
+    let promiseThenTrigger = () => {
+      // Put the resolution of the `promise` field inside this function so that
+      // It occurs after delaySeconds.
+      let promise = null;
+      if ('promise' in trigger) {
+        if (typeof trigger.promise === 'function') {
+          promise = trigger.promise(this.data, matches);
+          // Make sure we actually get a Promise back from the function
+          if (Promise.resolve(promise) !== promise) {
+            console.error('Trigger ' + trigger.id + ': promise function did not return a promise');
+            promise = null;
+          }
+        } else {
+          console.error('Trigger ' + trigger.id + ': promise defined but not a function');
+        }
+      }
+
+      let runTriggerBody = () => {
+        try {
+          f();
+        } catch (e) {
+          onTriggerException(trigger, e);
+        }
+      };
+
+      // Only if there is a promise, run the trigger asynchronously.
+      // Otherwise, run it immediately.  Otherwise, multiple triggers
+      // might run their condition/preRun prior to all of the alerts.
+      if (promise)
+        promise.then(runTriggerBody);
+      else
+        runTriggerBody();
     };
 
     // Run immediately?
     if (!delay) {
-      f();
+      promiseThenTrigger();
       return;
     }
 
-    this.timers.push(window.setTimeout(() => {
-      try {
-        f();
-      } catch (e) {
-        onTriggerException(trigger, e);
-      }
-    }, delay * 1000));
+    this.timers.push(window.setTimeout(promiseThenTrigger,
+        delay * 1000));
   }
 
   Test(zone, log) {

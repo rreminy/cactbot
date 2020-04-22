@@ -75,14 +75,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'aoe',
-        fr: 'Dégâts de zone',
-        ja: 'aoe',
-        cn: 'AOE',
-        ko: '전체 공격',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'E2S Quietus',
@@ -95,14 +88,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'aoe',
-        fr: 'Dégâts de zone',
-        ja: 'aoe',
-        cn: 'AOE',
-        ko: '전체 공격',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'E2S Shadowflame Tank',
@@ -115,14 +101,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Tank Buster on YOU',
-        de: 'Tankbuster auf DIR',
-        fr: 'Tankbuster sur VOUS',
-        ja: '自分にタンクバスター',
-        cn: '死刑点名',
-        ko: '탱버 대상자',
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'E2S Shadowflame Healer',
@@ -169,14 +148,7 @@
       regexJa: Regexes.startsUsing({ id: '3E4F', source: 'ヴォイドウォーカー', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3E4F', source: '虚无行者', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3E4F', source: '보이드워커', capture: false }),
-      alertText: {
-        en: 'Sides',
-        de: 'Seiten',
-        fr: 'Côtés',
-        ja: '横へ',
-        cn: '两侧',
-        ko: '보스 측면으로 이동',
-      },
+      response: Responses.goSides(),
     },
     {
       id: 'E2S Doomvoid Slicer',
@@ -186,14 +158,7 @@
       regexJa: Regexes.startsUsing({ id: '3E50', source: 'ヴォイドウォーカー', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3E50', source: '虚无行者', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3E50', source: '보이드워커', capture: false }),
-      infoText: {
-        en: 'Get Under',
-        de: 'Unter den Boss',
-        fr: 'Sous le boss',
-        ja: '中へ',
-        cn: '脚下',
-        ko: '보스 아래로',
-      },
+      response: Responses.getUnder(),
     },
     {
       id: 'E2S Empty Hate',
@@ -203,14 +168,7 @@
       regexJa: Regexes.startsUsing({ id: '3E59', source: 'エレボスの巨腕', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3E59', source: '厄瑞玻斯的巨腕', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3E59', source: '에레보스의 팔', capture: false }),
-      infoText: {
-        en: 'Knockback',
-        de: 'Knockback',
-        fr: 'Poussée',
-        ja: 'ノックバック',
-        cn: '击退',
-        ko: '넉백',
-      },
+      response: Responses.knockback('info'),
     },
     {
       id: 'E2S Empty Rage',
@@ -235,26 +193,7 @@
       condition: function(data) {
         return !data.waiting;
       },
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Auf DIR stacken',
-            fr: 'Package sur VOUS',
-            ja: '自分にスタック',
-            cn: '集合',
-            ko: '쉐어징 대상자',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          de: 'Auf ' + data.ShortName(matches.target) + ' stacken',
-          fr: 'Package sur ' + data.ShortName(matches.target),
-          ja: data.ShortName(matches.target) + 'にスタック',
-          cn: data.ShortName(matches.target) + ' 处集合',
-          ko: '"' + data.ShortName(matches.target) + '"에게 모이세요',
-        };
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'E2S Unholy Darkness Collect',
@@ -288,26 +227,7 @@
       condition: function(data, matches) {
         return !data.hellWind && data.spell[matches.target] == 'stack';
       },
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Auf DIR stacken',
-            fr: 'Package sur VOUS',
-            ja: '自分にスタック',
-            cn: '集合',
-            ko: '쉐어징 대상자',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          de: 'Auf ' + data.ShortName(matches.target) + ' stacken',
-          fr: 'Package sur ' + data.ShortName(matches.target),
-          ja: data.ShortName(matches.target) + 'にスタック',
-          cn: data.ShortName(matches.target) + ' 处集合',
-          ko: '"' + data.ShortName(matches.target) + '"에게 모이세요',
-        };
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'E2S Dark Fire No Waiting',
@@ -315,14 +235,7 @@
       condition: function(data, matches) {
         return !data.waiting && data.me == matches.target;
       },
-      alertText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Dispersez-vous',
-        ja: '散開',
-        cn: '散开',
-        ko: '산개',
-      },
+      response: Responses.spread('alert'),
     },
     {
       id: 'E2S Dark Fire Collect',
@@ -347,7 +260,7 @@
         fr: 'Feu retardé',
         ja: 'マーカーついた(ディレイ)',
         cn: '延迟火',
-        ko: '지연술 원형징',
+        ko: '지연술 파이가',
       },
     },
     {
@@ -356,14 +269,7 @@
       condition: function(data, matches) {
         return data.me == matches.target && data.spell[data.me] == 'fire';
       },
-      alertText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Dispersez-vous',
-        ja: '散開',
-        cn: '散开',
-        ko: '산개',
-      },
+      response: Responses.spread('alert'),
     },
     {
       id: 'E2S Shadoweye No Waiting',
@@ -371,17 +277,13 @@
       condition: function(data) {
         return !data.waiting;
       },
-      alertText: function(data, matches) {
-        if (data.me != matches.target) {
-          return {
-            en: 'Look Away from ' + data.ShortName(matches.target),
-            de: 'Von ' + data.ShortName(matches.target) + ' weg schauen',
-            fr: 'Ne regardez pas '+ data.ShortName(matches.target),
-            ja: data.ShortName(matches.target) + 'を見ないで',
-            cn: '背对 ' + data.ShortName(matches.target),
-            ko: '"' + data.ShortName(matches.target) + '" 바라보지 마세요',
-          };
-        }
+      response: Responses.lookAwayFrom('alert'),
+    },
+    {
+      id: 'E2S Shadoweye No Waiting You',
+      regex: Regexes.headMarker({ id: '00B3' }),
+      condition: function(data) {
+        return !data.waiting;
       },
       infoText: function(data, matches) {
         if (data.me == matches.target) {
@@ -391,7 +293,7 @@
             fr: 'Œil de l\'ombre sur VOUS',
             ja: '自分に目',
             cn: '石化眼点名',
-            ko: '눈징 대상자',
+            ko: '나에게 눈징',
           };
         }
       },
@@ -428,15 +330,15 @@
       condition: function(data, matches) {
         return data.spell[matches.target] == 'eye' && matches.target == data.me;
       },
-      suppressSeconds: 10,
       delaySeconds: 2,
+      suppressSeconds: 10,
       infoText: {
         en: 'Eye on YOU',
         de: 'Auge auf DIR',
         fr: 'Œil sur VOUS',
         ja: '自分に目',
         cn: '石化眼点名',
-        ko: '눈징 대상자',
+        ko: '나에게 눈징',
       },
     },
     {
@@ -445,20 +347,11 @@
       condition: function(data, matches) {
         return data.spell[matches.target] == 'eye' && data.spell[data.me] != 'eye';
       },
-      suppressSeconds: 10,
       delaySeconds: 2,
+      suppressSeconds: 10,
       // Let's just assume these people are stacked.
       // We could call out both names, but it's probably unnecessary.
-      alertText: function(data, matches) {
-        return {
-          en: 'Look Away from ' + data.ShortName(matches.target),
-          de: 'Von ' + data.ShortName(matches.target) + ' weg schauen',
-          fr: 'Ne regardez pas ' + data.ShortName(matches.target),
-          ja: data.ShortName(matches.target) + 'を見ないで',
-          cn: '背对 ' + data.ShortName(matches.target),
-          ko: '"' + data.ShortName(matches.target) + '" 바라보지 말기',
-        };
-      },
+      response: Responses.lookAwayFrom(),
     },
     {
       id: 'E2S Flare No Waiting',
@@ -674,10 +567,8 @@
       'locale': 'de',
       'replaceSync': {
         'Voidwalker': 'Nichtswandler',
-        'Engage!': 'Start!',
       },
       'replaceText': {
-        'attack': 'Attacke',
         'Unknown Ability': 'Unknown Ability',
         'Unholy Darkness': 'Unheiliges Dunkel',
         'Spell-In-Waiting': 'Verzögerung',
@@ -688,10 +579,9 @@
         'Hell Wind': 'Höllenwind',
         'Flare': 'Flare',
         'Entropy': 'Entropie',
-        'Enrage': 'Finalangriff',
         'Empty Hate/Rage': 'Lockende Leere/Gähnender Abgrund',
         'Empty Rage': 'Lockende Leere',
-        'Empty Hate': 'Gähnender Abgrund',
+        'Empty Hate(?!/)': 'Gähnender Abgrund',
         'Doomvoid Slicer': 'Nichtsmarter-Sense',
         'Doomvoid Guillotine': 'Nichtsmarter-Fallbeil',
         'Doomvoid Cleaver': 'Nichtsmarter-Schlachter',
@@ -703,8 +593,6 @@
         'Slicer/Guillotine': 'Sense/Fallbeil',
         'Guillotine/Cleaver': 'Fallbeil/Schlachter',
         'Cycle Of ?': '? Chaos',
-        '--untargetable--': '--nich anvisierbar--',
-        '--targetable--': '--anvisierbar--',
       },
       '~effectNames': {
         'Stone Curse': 'Steinfluch',
@@ -725,10 +613,8 @@
       'locale': 'fr',
       'replaceSync': {
         'Voidwalker': 'Marcheuse Du Néant',
-        'Engage!': 'À l\'attaque',
       },
       'replaceText': {
-        'attack': 'Attaque',
         'Unknown Ability': 'Unknown Ability',
         'Unholy Darkness': 'Miracle sombre',
         'Spell-In-Waiting': 'Déphasage incantatoire',
@@ -739,20 +625,15 @@
         'Hell Wind': 'Vent infernal',
         'Flare': 'Brasier',
         'Entropy': 'Entropie',
-        'Enrage': 'Enrage',
         'Empty Hate/Rage': 'Vaine malice/cruauté',
         'Empty Rage': 'Vaine cruauté',
-        'Empty Hate': 'Vaine malice',
+        'Empty Hate(?!/)': 'Vaine malice',
         'Doomvoid Slicer': 'Entaille du néant ravageur',
         'Doomvoid Guillotine': 'Guillotine du néant ravageur',
         'Doomvoid Cleaver': 'Couperet du néant ravageur',
         'Dark Fire III': 'Méga Feu ténébreux',
         'Cycle of Retribution': 'Multi-taillade vengeresse',
         'Cycle of Chaos': 'Multi-taillade chaotique',
-        '--untargetable--': '--Impossible à cibler--',
-        '--targetable--': '--Ciblable--',
-        '--sync--': '--Synchronisation--',
-        '--Reset--': '--Réinitialisation--',
         'Slicer/Guillotine': 'Entaille/Guillotine',
         'Light/Dark Circles': 'Cercle Lumière/Ombre',
         'Cycle Of': 'Cycle',
@@ -776,12 +657,11 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
         'Voidwalker': 'ヴォイドウォーカー',
-        'Engage!': '戦闘開始！',
       },
       'replaceText': {
-        'attack': '攻撃',
         'Unknown Ability': 'Unknown Ability',
         'Unholy Darkness': 'ダークホーリー',
         'Spell-In-Waiting': 'ディレイスペル',
@@ -794,7 +674,7 @@
         'Entropy': 'エントロピー',
         'Empty Hate/Rage': '虚ろなる害意/悪意',
         'Empty Rage': '虚ろなる害意',
-        'Empty Hate': '虚ろなる悪意',
+        'Empty Hate(?!/)': '虚ろなる悪意',
         'Doomvoid Slicer': 'ドゥームヴォイド・スライサー',
         'Doomvoid Guillotine': 'ドゥームヴォイド・ギロチン',
         'Doomvoid Cleaver': 'ドゥームヴォイド・クリーバー',
@@ -822,10 +702,8 @@
       'replaceSync': {
         'The Hand Of Erebos': '厄瑞玻斯的巨腕',
         'Voidwalker': '虚无行者',
-        'Engage!': '战斗开始！',
       },
       'replaceText': {
-        'attack': '攻击',
         'Unholy Darkness': '黑暗神圣',
         'Spell-In-Waiting': '延迟咏唱',
         'Shadowflame': '暗影炎',
@@ -837,7 +715,7 @@
         'Entropy': '熵',
         'Empty Hate/Rage': '空无的恶意/恶念',
         'Empty Rage': '空无的恶念',
-        'Empty Hate': '空无的恶意',
+        'Empty Hate(?!/)': '空无的恶意',
         'Slicer/Guillotine': '虚无切/虚无断',
         'Cleaver/Slicer?': '虚无劈/虚无切?',
         'Guillotine/Cleaver?': '虚无断/虚无劈?',
@@ -862,10 +740,8 @@
       'locale': 'ko',
       'replaceSync': {
         'Voidwalker': '보이드워커',
-        'Engage!': '전투 시작!',
       },
       'replaceText': {
-        'attack': '공격',
         'Unholy Darkness': '다크 홀리',
         'Spell-In-Waiting': '지연술',
         'Shadowflame': '그림자 불꽃',
@@ -875,10 +751,9 @@
         'Hell Wind': '황천의 바람',
         'Flare': '플레어',
         'Entropy': '엔트로피',
-        'Enrage': '전멸기',
         'Empty Hate/Rage': '공허한 악의/적의',
         'Empty Rage': '공허한 적의',
-        'Empty Hate': '공허한 악의',
+        'Empty Hate(?!/)': '공허한 악의',
         'Doomvoid Slicer': '파멸의 보이드 베기',
         'Doomvoid Guillotine': '파멸의 보이드 절단',
         'Doomvoid Cleaver': '파멸의 보이드 살육',
@@ -890,8 +765,6 @@
         'Slicer/Guillotine': '베기/절단',
         'Guillotine/Cleaver': '절단/살육',
         'Cycle Of ?': '? 연속검',
-        '--untargetable--': '--타겟불가능--',
-        '--targetable--': '--타겟가능--',
       },
       '~effectNames': {
         'Stone Curse': '석화의 저주',

@@ -11,11 +11,16 @@ let Options = {
   LongSound: '../../resources/sounds/BigWigs/Long.ogg',
   PullSound: '../../resources/sounds/PowerAuras/sonar.ogg',
 
+  audioAllowed: true,
+
   DisabledTriggers: {},
 
   PerTriggerOptions: {},
 
   Triggers: [],
+
+  PlayerNameOverride: null,
+  PlayerJobOverride: null,
 };
 
 let gTimelineController;
@@ -41,6 +46,26 @@ UserConfig.getUserConfigLocation('raidboss', function(e) {
     Options.TimelineEnabled = !!parseInt(timeline);
     if (!previous && Options.TimelineEnabled)
       console.log('Enabling timeline via query parameter');
+  }
+  let audio = params.get('audio');
+  if (audio !== null) {
+    let previous = Options.audioAllowed;
+    Options.audioAllowed = !!parseInt(audio);
+    if (!previous && Options.audioAllowed)
+      console.log('Enabling audio via query parameter');
+  }
+
+  let PlayerNameOverride = params.get('player');
+  if (PlayerNameOverride !== null)
+    Options.PlayerNameOverride = PlayerNameOverride;
+
+  let PlayerJobOverride = params.get('job');
+  if (PlayerJobOverride !== null)
+    Options.PlayerJobOverride = PlayerJobOverride;
+
+  if (PlayerNameOverride !== null || PlayerJobOverride !== null) {
+    Options.BrowserTTS = true;
+    console.log('Enabling player name override via query parameter, name: ' + PlayerNameOverride + ', job: ' + PlayerJobOverride);
   }
 
   let container = document.getElementById('container');

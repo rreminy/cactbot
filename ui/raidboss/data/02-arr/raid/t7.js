@@ -1,7 +1,10 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Second Coil Of Bahamut - Turn \(2\)$/,
+  zoneRegex: {
+    en: /^The Second Coil Of Bahamut - Turn \(2\)$/,
+    cn: /^巴哈姆特大迷宫 \(入侵之章2\)$/,
+  },
   timelineFile: 't7.txt',
   triggers: [
     {
@@ -18,7 +21,9 @@
       },
       infoText: {
         en: 'Silence Ram\'s Voice',
-        fr: 'Silence Voix du bélier',
+        de: 'Verstumme Stimme des Widders',
+        fr: 'Interrompez Voix du bélier',
+        cn: '沉默寒冰咆哮',
       },
     },
     {
@@ -35,7 +40,9 @@
       },
       infoText: {
         en: 'Silence Dragon\'s Voice',
-        fr: 'Silence Voix du dragon',
+        de: 'Verstumme Stimme des Drachens',
+        fr: 'Interrompez Voix du dragon',
+        cn: '沉默雷电咆哮',
       },
     },
     {
@@ -53,7 +60,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Tail Slap in 10',
-        fr: 'Gifle caudale dans 10',
+        de: 'Schweifklapser in 10',
+        fr: 'Gifle caudale dans 10s',
+        cn: '10秒内死刑',
       },
     },
     {
@@ -66,7 +75,9 @@
       regexKo: Regexes.addedCombatant({ name: '르노', capture: false }),
       infoText: {
         en: 'Renaud Add',
+        de: 'Renaud Add',
         fr: 'Add Renaud',
+        cn: '雷诺出现',
       },
     },
     {
@@ -77,15 +88,17 @@
       regexJa: Regexes.gainsEffect({ effect: '呪詛の声' }),
       regexCn: Regexes.gainsEffect({ effect: '诅咒之声' }),
       regexKo: Regexes.gainsEffect({ effect: '저주의 목소리' }),
-      delaySeconds: function(data, matches) {
-        return matches.duration - 3;
-      },
       condition: function(data, matches) {
         return data.me == matches.target;
       },
+      delaySeconds: function(data, matches) {
+        return matches.duration - 3;
+      },
       alertText: {
         en: 'Voice Soon',
-        fr: 'Voix bientôt',
+        de: 'Stimme Der Verwünschung bald',
+        fr: 'Voix maudite bientôt',
+        cn: '诅咒之声即将判定',
       },
     },
     {
@@ -101,7 +114,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Shriek on YOU',
-            fr: 'Cri sur VOUS',
+            de: 'Schrei Der Verwünschung auf DIR',
+            fr: 'Cri maudit sur VOUS',
+            cn: '诅咒之嚎点名',
           };
         }
       },
@@ -109,7 +124,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Shriek on ' + data.ShortName(matches.target),
-            fr: 'Cri sur ' + data.ShortName(matches.target),
+            de: 'Schrei Der Verwünschung auf ' + data.ShortName(matches.target),
+            fr: 'Cri maudit sur ' + data.ShortName(matches.target),
+            cn: '诅咒之嚎点' + data.ShortName(matches.target),
           };
         }
       },
@@ -128,12 +145,16 @@
         if (data.me == matches.target) {
           return {
             en: 'Shriek Soon',
-            fr: 'Cri bientôt',
+            de: 'Schrei Der Verwünschung bald',
+            fr: 'Cri maudit bientôt',
+            cn: '诅咒之嚎即将判定',
           };
         }
         return {
           en: 'Dodge Shriek',
-          fr: 'Esquivez le cri',
+          de: 'Schrei Der Verwünschung ausweichen',
+          fr: 'Esquivez le cri maudit',
+          cn: '躲避诅咒之嚎',
         };
       },
     },
@@ -175,10 +196,7 @@
       regexJa: Regexes.startsUsing({ id: '7BB', source: 'ラミア・プロセクター', capture: false }),
       regexCn: Regexes.startsUsing({ id: '7BB', source: '拉米亚解剖女王', capture: false }),
       regexKo: Regexes.startsUsing({ id: '7BB', source: '라미아 시체해부자', capture: false }),
-      alertText: {
-        en: 'Look Away!',
-        fr: 'Regardez ailleurs !',
-      },
+      response: Responses.lookAway(),
     },
     {
       id: 'T7 Petrifaction 2',
@@ -188,10 +206,7 @@
       regexJa: Regexes.startsUsing({ id: '7B1', source: 'メリュジーヌ', capture: false }),
       regexCn: Regexes.startsUsing({ id: '7B1', source: '美瑠姬奴', capture: false }),
       regexKo: Regexes.startsUsing({ id: '7B1', source: '멜뤼진', capture: false }),
-      alertText: {
-        en: 'Look Away!',
-        fr: 'Regardez ailleurs !',
-      },
+      response: Responses.lookAway(),
     },
     {
       id: 'T7 Tail',
@@ -203,7 +218,9 @@
       regexKo: Regexes.startsUsing({ id: '7B2', source: '멜뤼진', capture: false }),
       alertText: {
         en: 'Venomous Tail',
+        de: 'Venomschweif',
         fr: 'Queue venimeuse',
+        cn: '猛毒之尾',
       },
     },
   ],
@@ -211,9 +228,7 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Bioweapon Storage is no longer sealed': 'Das Biowaffen-Magazin öffnet sich erneut',
-        'Bioweapon Storage will be sealed off': 'bis sich das Biowaffen-Magazin schließt',
-        'Engage!': 'Start!',
+        'Bioweapon Storage': 'Biowaffen-Magazin',
         'Lamia Prosector': 'Lamia-Prosektorin',
         'Melusine': 'Melusine',
       },
@@ -234,9 +249,7 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        'Bioweapon Storage is no longer sealed': 'Ouverture de l\'Entrepôt d\'armes biologiques',
-        'Bioweapon Storage will be sealed off': 'Fermeture de l\'Entrepôt d\'armes biologiques',
-        'Engage!': 'À l\'attaque',
+        'Bioweapon Storage': 'l\'entrepôt d\'armes biologiques',
         'Lamia Prosector': 'Lamia dissectrice',
         'Melusine': 'Mélusine',
       },
@@ -256,10 +269,8 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Bioweapon Storage is no longer sealed': 'Bioweapon Storage is no longer sealed', // FIXME
-        'Bioweapon Storage will be sealed off': 'Bioweapon Storage will be sealed off', // FIXME
-        'Engage!': '戦闘開始！',
         'Lamia Prosector': 'ラミア・プロセクター',
         'Melusine': 'メリュジーヌ',
       },
@@ -279,10 +290,8 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
-        'Bioweapon Storage is no longer sealed': 'Bioweapon Storage is no longer sealed', // FIXME
-        'Bioweapon Storage will be sealed off': 'Bioweapon Storage will be sealed off', // FIXME
-        'Engage!': '战斗开始！',
         'Lamia Prosector': '拉米亚解剖女王',
         'Melusine': '美瑠姬奴',
       },
@@ -302,10 +311,8 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
-        'Bioweapon Storage is no longer sealed': 'Bioweapon Storage is no longer sealed', // FIXME
-        'Bioweapon Storage will be sealed off': 'Bioweapon Storage will be sealed off', // FIXME
-        'Engage!': '전투 시작!',
         'Lamia Prosector': '라미아 시체해부자',
         'Melusine': '멜뤼진',
       },

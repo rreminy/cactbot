@@ -3,7 +3,11 @@
 // The Grand Cosmos
 
 [{
-  zoneRegex: /^The Grand Cosmos$/,
+  zoneRegex: {
+    en: /^The Grand Cosmos$/,
+    cn: /^魔法宫殿宇宙宫$/,
+    ko: /^그랑 코스모스$/,
+  },
   timelineFile: 'the_grand_cosmos.txt',
   triggers: [
     {
@@ -12,49 +16,17 @@
       regexDe: Regexes.startsUsing({ id: '4769', source: 'Einsiedler' }),
       regexFr: Regexes.startsUsing({ id: '4769', source: 'Ermite Du Palais' }),
       regexJa: Regexes.startsUsing({ id: '4769', source: '宮殿の隠者' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            ja: '自分にタンクバスター',
-            cn: '死刑点名',
-          };
-        }
+      regexCn: Regexes.startsUsing({ id: '4769', source: '宫殿的隐者' }),
+      regexKo: Regexes.startsUsing({ id: '4769', source: '궁전의 은자' }),
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
-      infoText: function(data, matches) {
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            ja: data.ShortName(matches.target) + 'にタンクバスター',
-            cn: '死刑 -> ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Cosmos Dark Pulse',
       regex: Regexes.headMarker({ id: '003E' }),
-      infoText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Auf DIR sammeln',
-            ja: '自分にシェア',
-            fr: 'Package sur VOUS',
-            cn: '集合点名',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          de: 'Auf ' + data.ShortName(matches.target) + ' sammeln',
-          fr: 'Package sur ' + data.ShortName(matches.target),
-          cn: '靠近 ' + data.ShortName(matches.target) + '集合',
-        };
-      },
+      response: Responses.stackOn('info'),
     },
     {
       id: 'Cosmos Dark Well Far Winds',
@@ -62,13 +34,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        ja: '散開',
-        fr: 'Ecartez-vous',
-        cn: '分散',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Cosmos Immortal Anathema',
@@ -76,16 +42,12 @@
       regexDe: Regexes.startsUsing({ id: '49A3', source: 'Einsiedler', capture: false }),
       regexFr: Regexes.startsUsing({ id: '49A3', source: 'Ermite Du Palais', capture: false }),
       regexJa: Regexes.startsUsing({ id: '49A3', source: '宮殿の隠者', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '49A3', source: '宫殿的隐者', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '49A3', source: '궁전의 은자', capture: false }),
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        ja: 'AoE',
-        fr: 'Dégâts de zone',
-        cn: 'AOE',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Cosmos Tribulation',
@@ -93,11 +55,15 @@
       regexDe: Regexes.startsUsing({ id: '476B', source: 'Einsiedler', capture: false }),
       regexFr: Regexes.startsUsing({ id: '476B', source: 'Ermite Du Palais', capture: false }),
       regexJa: Regexes.startsUsing({ id: '476B', source: '宮殿の隠者', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '476B', source: '宫殿的隐者', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '476B', source: '궁전의 은자', capture: false }),
       delaySeconds: 8,
       alertText: {
         en: 'Avoid Brooms',
         de: 'Besen ausweichen',
         fr: 'Evitez les balais',
+        ko: '빗자루 피하기',
+        cn: '躲扫把',
       },
     },
     {
@@ -106,28 +72,9 @@
       regexDe: Regexes.startsUsing({ id: '471B', source: 'Leanan Sidhe' }),
       regexFr: Regexes.startsUsing({ id: '471B', source: 'Leannan Sith' }),
       regexJa: Regexes.startsUsing({ id: '471B', source: 'リャナンシー' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            ja: '自分にタンクバスター',
-            cn: '死刑点名',
-          };
-        }
-      },
-      infoText: function(data, matches) {
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            ja: data.ShortName(matches.target) + 'にタンクバスター',
-            cn: '死刑 -> ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      regexCn: Regexes.startsUsing({ id: '471B', source: '凉南希' }),
+      regexKo: Regexes.startsUsing({ id: '471B', source: '랴난시' }),
+      response: Responses.tankBuster(),
     },
     {
       id: 'Cosmos Ode To Lost Love',
@@ -135,16 +82,12 @@
       regexDe: Regexes.startsUsing({ id: '471C', source: 'Leanan Sidhe', capture: false }),
       regexFr: Regexes.startsUsing({ id: '471C', source: 'Leannan Sith', capture: false }),
       regexJa: Regexes.startsUsing({ id: '471C', source: 'リャナンシー', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '471C', source: '凉南希', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '471C', source: '랴난시', capture: false }),
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        ja: 'AoE',
-        fr: 'Dégâts de zone',
-        cn: 'AOE',
-      },
+      response: Responses.aoe(),
     },
     {
       // Can't use added combatant here as all these adds exist.
@@ -154,14 +97,10 @@
       regexDe: Regexes.ability({ id: '368', source: 'Keim Des Geliebten', capture: false }),
       regexFr: Regexes.ability({ id: '368', source: 'Bague De L\'Amoureux', capture: false }),
       regexJa: Regexes.ability({ id: '368', source: 'ラヴァーズリング', capture: false }),
+      regexCn: Regexes.ability({ id: '368', source: '恋人之戒', capture: false }),
+      regexKo: Regexes.ability({ id: '368', source: '연인의 반지', capture: false }),
       suppressSeconds: 60,
-      infoText: {
-        en: 'Kill Extra Add',
-        de: 'Add angreifen',
-        ja: '水の精倒して',
-        fr: 'Tuez l\'add',
-        cn: '击杀小怪',
-      },
+      response: Responses.killExtraAdd(),
     },
     {
       id: 'Cosmos Gardener\'s Hymn',
@@ -169,26 +108,28 @@
       regexDe: Regexes.startsUsing({ id: '471E', source: 'Leanan Sidhe', capture: false }),
       regexFr: Regexes.startsUsing({ id: '471E', source: 'Leannan Sith', capture: false }),
       regexJa: Regexes.startsUsing({ id: '471E', source: 'リャナンシー', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '471E', source: '凉南希', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '471E', source: '랴난시', capture: false }),
       infoText: {
         en: 'put seeds on dirt',
         de: 'Samen auf den nicht bewachsenen Boden legen',
         fr: 'Placez les graines sur la terre',
+        ko: '씨앗 자라지 못하게 하기',
+        cn: '种子搬离AOE',
       },
     },
     {
       id: 'Cosmos Ronkan Cure II',
-      regex: Regexes.startsUsing({ id: '4931', source: 'Ser Hamonth', capture: false }),
-      regexDe: Regexes.startsUsing({ id: '4931', source: 'Sir Hamonth', capture: false }),
-      regexFr: Regexes.startsUsing({ id: '4931', source: 'Sire Hamonth', capture: false }),
-      regexJa: Regexes.startsUsing({ id: '4931', source: '幻影騎士ハモンス', capture: false }),
+      regex: Regexes.startsUsing({ id: '4931', source: 'Ser Hamonth' }),
+      regexDe: Regexes.startsUsing({ id: '4931', source: 'Sir Hamonth' }),
+      regexFr: Regexes.startsUsing({ id: '4931', source: 'Sire Hamonth' }),
+      regexJa: Regexes.startsUsing({ id: '4931', source: '幻影騎士ハモンス' }),
+      regexCn: Regexes.startsUsing({ id: '4931', source: '幻影骑士哈蒙斯' }),
+      regexKo: Regexes.startsUsing({ id: '4931', source: '환영기사 하몬스' }),
       condition: function(data) {
         return data.CanStun();
       },
-      infoText: {
-        en: 'Stun Hamonth',
-        de: 'Sir Hamonth unterbrechen',
-        fr: 'Etoudissez Hamonth',
-      },
+      response: Responses.stun('info'),
     },
     {
       id: 'Cosmos Captive Bolt',
@@ -196,28 +137,9 @@
       regexDe: Regexes.startsUsing({ id: '4764', source: 'Lugus' }),
       regexFr: Regexes.startsUsing({ id: '4764', source: 'Lugus' }),
       regexJa: Regexes.startsUsing({ id: '4764', source: 'ルゴス' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            ja: '自分にタンクバスター',
-            cn: '死刑点名',
-          };
-        }
-      },
-      infoText: function(data, matches) {
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            ja: data.ShortName(matches.target) + 'にタンクバスター',
-            cn: '死刑 -> ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      regexCn: Regexes.startsUsing({ id: '4764', source: '卢格斯' }),
+      regexKo: Regexes.startsUsing({ id: '4764', source: '루구스' }),
+      response: Responses.tankBuster(),
     },
     {
       id: 'Cosmos Culling Blade',
@@ -225,16 +147,12 @@
       regexDe: Regexes.startsUsing({ id: '4765', source: 'Lugus', capture: false }),
       regexFr: Regexes.startsUsing({ id: '4765', source: 'Lugus', capture: false }),
       regexJa: Regexes.startsUsing({ id: '4765', source: 'ルゴス', capture: false }),
+      regexCn: Regexes.startsUsing({ id: '4765', source: '卢格斯', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '4765', source: '루구스', capture: false }),
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        ja: 'AoE',
-        fr: 'Dégâts de zone',
-        cn: 'AOE',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Cosmos Black Flame 1',
@@ -242,13 +160,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        ja: '散開',
-        fr: 'Ecartez-vous',
-        cn: '分散',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Cosmos Black Flame 2',
@@ -261,6 +173,8 @@
         en: 'Dodge Crosses',
         de: 'Den Kreuzen ausweichen',
         fr: 'Evitez les croix',
+        ko: '십자 장판 피하기',
+        cn: '躲避交叉',
       },
     },
     {
@@ -269,13 +183,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        ja: '散開',
-        fr: 'Ecartez-vous',
-        cn: '分散',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Cosmos Mortal Flame 2',
@@ -288,6 +196,8 @@
         en: 'Touch Furniture',
         de: 'Einrichtung berühren',
         fr: 'Touchez un élément de décor',
+        ko: '가구에 불 옮기기',
+        cn: '传火家具',
       },
     },
     {
@@ -296,11 +206,9 @@
       regexDe: Regexes.startsUsing({ id: '4763', source: 'Lugus', capture: false }),
       regexFr: Regexes.startsUsing({ id: '4763', source: 'Lugus', capture: false }),
       regexJa: Regexes.startsUsing({ id: '4763', source: 'ルゴス', capture: false }),
-      infoText: {
-        en: 'Left',
-        de: 'Links',
-        fr: 'Gauche',
-      },
+      regexCn: Regexes.startsUsing({ id: '4763', source: '卢格斯', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '4763', source: '루구스', capture: false }),
+      response: Responses.goLeft('info'),
     },
     {
       id: 'Cosmos Scorching Right',
@@ -308,11 +216,9 @@
       regexDe: Regexes.startsUsing({ id: '4762', source: 'Lugus', capture: false }),
       regexFr: Regexes.startsUsing({ id: '4762', source: 'Lugus', capture: false }),
       regexJa: Regexes.startsUsing({ id: '4762', source: 'ルゴス', capture: false }),
-      infoText: {
-        en: 'Right',
-        de: 'Rechts',
-        fr: 'Droite',
-      },
+      regexCn: Regexes.startsUsing({ id: '4762', source: '卢格斯', capture: false }),
+      regexKo: Regexes.startsUsing({ id: '4762', source: '루구스', capture: false }),
+      response: Responses.goRight('info'),
     },
     {
       id: 'Cosmos Fire\'s Domain',
@@ -329,12 +235,17 @@
             en: 'Point Tether Away From Furniture',
             de: 'Verbindung weg von der Einrichtung zeigen',
             fr: 'Placez le liens loin des décors',
+            ko: '징: 장판이 가구에 닿지 않게 하기',
+            cn: '连线不要打到家具',
           };
         }
         return {
           en: 'Tether on YOU',
           de: 'Verbindung auf DIR',
           fr: 'Lien sur vous',
+          ko: '징 대상자',
+          ja: '線ついた',
+          cn: '连线点名',
         };
       },
     },
@@ -343,14 +254,13 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Enslaved Love': 'versklavt[a] Liebhaber',
+        'Enslaved Love': 'versklavt(?:e|er|es|en) Liebhaber',
         'Leannan Sith': 'Leanan Sidhe',
         'Lugus': 'Lugus',
         'Seeker of Solitude': 'Einsiedler',
-        'The Chamber of Celestial Song will be sealed off': 'bis sich der Zugang zu[rm]? den Großen Vergnügungen schließt',
-        'The Font of Quintessence will be sealed off': 'bis sich der Zugang zu[rm]? Broderieparterre schließt',
-        'The Martial Court will be sealed off': 'bis sich der Zugang zu[rm]? Kleine Stufenarkade schließt',
-        'is no longer sealed': 'öffnet sich wieder',
+        'The Chamber of Celestial Song': 'Großen Vergnügungen',
+        'The Font of Quintessence': 'Broderieparterre',
+        'The Martial Court': 'Kleinen Stufenarkade',
       },
       'replaceText': {
         'Black Flame': 'Finsterer Flammenwind',
@@ -360,7 +270,7 @@
         'Dark Shock': 'Angriff aus dem Dunkeln',
         'Dark Well': 'Dunkles Bersten',
         'Direct Seeding': 'Bedecktbesamung',
-        'Far Wind': 'Heller Sturm',
+        '(?<! )Far Wind': 'Heller Sturm',
         'Fire\'s Domain': 'Heißer Höllensturm',
         'Fire\'s Ire': 'Holistisches Höllenfeuer',
         'Gardener\'s Hymn': 'Wiegenlied der Sprösslinge',
@@ -373,7 +283,6 @@
         'Otherworldly Heat': 'Sengendes Seelenbrennen',
         'Plummet': 'Ausloten',
         'Scorching Left/Right': 'Linker/Rechter Höllenhieb',
-        'Scorching Right': 'Rechter Höllenhieb',
         'Shadowbolt': 'Schattenramme',
         'Storm Of Color': 'Frühlingssturm',
         'Tribulation': 'Schwermütiges Zaudern',
@@ -386,10 +295,9 @@
         'Leannan Sith': 'Leannan Sith',
         'Lugus': 'Lugus',
         'Seeker of Solitude': 'Ermite du Palais',
-        'is no longer sealed': 'Ouverture ',
-        'The Martial Court will be sealed off': 'Fermeture de La Cour martiale',
-        'The Font of Quintessence will be sealed off': 'Fermeture de La Source de Quintessence',
-        'The Chamber of Celestial Song will be sealed off': 'Fermeture du Chœur céleste',
+        'The Martial Court': 'La Cour martiale',
+        'The Font of Quintessence': 'La Source de Quintessence',
+        'The Chamber of Celestial Song': 'Chœur céleste',
       },
       'replaceText': {
         'Black Flame': 'Torrent fuligineux',
@@ -399,7 +307,7 @@
         'Dark Shock': 'Onde ténébreuse',
         'Dark Well': 'Déflagration ténébreuse',
         'Direct Seeding': 'Semis direct',
-        'Far Wind': 'Claire tempête',
+        '(?<! )Far Wind': 'Claire tempête',
         'Fire\'s Domain': 'Fournaise infernale',
         'Fire\'s Ire': 'Étincelle infernale',
         'Gardener\'s Hymn': 'Ballade du bourgeonnement',
@@ -411,8 +319,7 @@
         'Ode To Lost Love': 'Rhapsodie de l\'amour fou',
         'Otherworldly Heat': 'Croix de feu',
         'Plummet': 'Piqué',
-        'Scorching Left/Right': 'Scrutement Gauche/Droite', // FIXME
-        'Scorching Right': 'Scrutement Gauche',
+        'Scorching Left/Right': 'Scrutement Gauche/Droite',
         'Shadowbolt': 'Éclair ombreux',
         'Storm Of Color': 'Orage de printemps',
         'Tribulation': 'Tribulation',
@@ -425,10 +332,6 @@
         'Leannan Sith': 'リャナンシー',
         'Lugus': 'ルゴス',
         'Seeker of Solitude': '宮殿の隠者',
-        'The Chamber of Celestial Song will be sealed off': 'The Chamber of Celestial Song will be sealed off', // FIXME
-        'The Font of Quintessence will be sealed off': 'The Font of Quintessence will be sealed off', // FIXME
-        'The Martial Court will be sealed off': 'The Martial Court will be sealed off', // FIXME
-        'is no longer sealed': 'is no longer sealed', // FIXME
       },
       'replaceText': {
         'Black Flame': '黒炎流',
@@ -438,7 +341,7 @@
         'Dark Shock': '黒の衝撃',
         'Dark Well': '黒の爆砕',
         'Direct Seeding': 'ダイレクトシーディング',
-        'Far Wind': '晴嵐',
+        '(?<! )Far Wind': '晴嵐',
         'Fire\'s Domain': '炎獄殺',
         'Fire\'s Ire': '炎獄閃',
         'Gardener\'s Hymn': '萌芽への謡',
@@ -450,11 +353,85 @@
         'Ode To Lost Love': '狂愛の歌声',
         'Otherworldly Heat': '鬼炎斬',
         'Plummet': 'プラメット',
-        'Scorching Left/Right': 'Scorching Left/Right', // FIXME
-        'Scorching Right': '右辺炎獄斬',
+        'Scorching Left/Right': '左/右辺炎獄斬',
         'Shadowbolt': 'シャドウボルト',
         'Storm Of Color': '春嵐',
         'Tribulation': 'トリビュレーション',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Enslaved Love': '被奴役的爱',
+        'Leannan Sith': '凉南希',
+        'Lugus': '卢格斯',
+        'Seeker of Solitude': '宫殿的隐者',
+        'The Chamber of Celestial Song': '演奏之间',
+        'The Font of Quintessence': '春水涌泉',
+        'The Martial Court': '兵棋之间',
+      },
+      'replaceText': {
+        'Black Flame': '黑炎流',
+        'Captive Bolt': '破碎斩',
+        'Culling Blade': '冲击斩',
+        'Dark Pulse': '黑暗波动',
+        'Dark Shock': '黑暗冲击',
+        'Dark Well': '黑暗爆碎',
+        'Direct Seeding': '直接播种',
+        '(?<! )Far Wind': '(?<! )远风',
+        'Fire\'s Domain': '炎狱杀',
+        'Fire\'s Ire': '炎狱闪',
+        'Gardener\'s Hymn': '育芽之谣',
+        'Immortal Anathema': '不朽的诅咒',
+        'Ireful Wind': '强风',
+        'Mortal Flame': '必灭之炎',
+        'Ode To Fallen Petals': '花雨之歌',
+        'Ode To Far Winds': '晴岚之歌',
+        'Ode To Lost Love': '狂爱之歌',
+        'Otherworldly Heat': '鬼炎斩',
+        'Plummet': '掉落',
+        'Scorching Left/Right': '左/右炎狱斩',
+        'Shadowbolt': '暗影雷',
+        'Storm Of Color': '春风',
+        'Tribulation': '苦难',
+      },
+      '~effectNames': {},
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Enslaved Love': '예속된 사랑',
+        'Leannan Sith': '랴난시',
+        'Lugus': '루구스',
+        'Seeker of Solitude': '궁전의 은자',
+        'The Chamber of Celestial Song': '연주실',
+        'The Font of Quintessence': '봄바람 샘',
+        'The Martial Court': '전술실',
+      },
+      'replaceText': {
+        'Black Flame': '흑염류',
+        'Captive Bolt': '파쇄참',
+        'Culling Blade': '충격참',
+        'Dark Pulse': '검은 파동',
+        'Dark Shock': '검은 충격',
+        'Dark Well': '검은 폭쇄',
+        'Direct Seeding': '곧뿌림',
+        '(?<! )Far Wind': '산바람',
+        'Fire\'s Domain': '염옥살',
+        'Fire\'s Ire': '염옥섬',
+        'Gardener\'s Hymn': '새싹을 위한 노래',
+        'Immortal Anathema': '불멸 혐오',
+        'Ireful Wind': '강풍',
+        'Mortal Flame': '필멸의 불꽃',
+        'Ode To Fallen Petals': '꽃바람의 노래',
+        'Ode To Far Winds': '산바람의 노래',
+        'Ode To Lost Love': '광적인 사랑 노래',
+        'Otherworldly Heat': '귀염참',
+        'Plummet': '낙하',
+        'Scorching Left/Right': '염옥 좌측/우측베기',
+        'Shadowbolt': '그림자 번개',
+        'Storm Of Color': '봄바람',
+        'Tribulation': '환난',
       },
     },
   ],

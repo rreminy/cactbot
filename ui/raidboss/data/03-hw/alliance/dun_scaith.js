@@ -1,27 +1,21 @@
 'use strict';
 
 [{
-  zoneRegex: /^Dun Scaith$/,
+  zoneRegex: {
+    en: /^Dun Scaith$/,
+    cn: /^影之国$/,
+  },
   timelineFile: 'dun_scaith.txt',
   triggers: [
     // Basic stack occurs across all encounters except Deathgaze.
     {
       id: 'Dun Scaith Generic Stack-up',
       regex: Regexes.headMarker({ id: '003E' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-        };
-      },
+      response: Responses.stackOn(),
     },
     // DEATHGAZE
     {
-      id: 'Dun Scaith Void Death',
+      id: 'Dun Scaith Void Death Circle',
       regex: Regexes.startsUsing({ id: ['1C7F', '1C90'], source: 'Deathgaze Hollow', capture: false }),
       regexDe: Regexes.startsUsing({ id: ['1C7F', '1C90'], source: 'Nihil-Thanatos', capture: false }),
       regexFr: Regexes.startsUsing({ id: ['1C7F', '1C90'], source: 'Mortalis Nihil', capture: false }),
@@ -31,7 +25,9 @@
       suppressSeconds: 5,
       alertText: {
         en: 'Out of death circle',
+        de: 'Raus aus den Todeskreisen',
         fr: 'Sortez du cercle de mort',
+        cn: '离开圈内并扯断连线',
       },
     },
     {
@@ -50,7 +46,9 @@
       },
       alertText: {
         en: 'Cleanse Doom soon!',
+        de: 'Verhängnis bald reinigen!',
         fr: 'Guerrissez Glas bientot',
+        cn: '尽快驱散死亡宣告！',
       },
     },
     {
@@ -64,10 +62,7 @@
       regexCn: Regexes.startsUsing({ id: '1C8B', source: '虚空死亡凝视', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1C8B', source: '공허의 저승파수꾼', capture: false }),
       suppressSeconds: 5,
-      alertText: {
-        en: 'Knockback soon--Get in front of ice pillar',
-        fr: 'Poussée bientot - Placez-vous devant les pilliers de glace',
-      },
+      response: Responses.knockback(),
     },
     {
       id: 'Dun Scaith Void Sprite',
@@ -80,7 +75,9 @@
       suppressSeconds: 10,
       infoText: {
         en: 'Kill sprites',
+        de: 'Exergone töten',
         fr: 'Tuez les adds',
+        cn: '击杀虚无元精',
       },
     },
     {
@@ -91,7 +88,9 @@
       },
       infoText: {
         en: 'Drop Tornado outside',
+        de: 'Wirbel draußen ablegen',
         fr: 'Déposez les tornades à l\'extérieur',
+        cn: '场地边缘放风圈',
       },
     },
     {
@@ -106,13 +105,10 @@
       regexCn: Regexes.startsUsing({ id: ['1C7B', '1C8D'], source: '虚空死亡凝视', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['1C7B', '1C8D'], source: '공허의 저승파수꾼', capture: false }),
       suppressSeconds: 5,
-      alertText: {
-        en: 'Knockback from center',
-        fr: 'Poussée depuis le centre',
-      },
+      response: Responses.knockback(),
     },
     {
-      id: 'Dun Scaith Void Death',
+      id: 'Dun Scaith Void Death Squares',
       regex: Regexes.startsUsing({ id: '1C82', source: 'Deathgaze Hollow', capture: false }),
       regexDe: Regexes.startsUsing({ id: '1C82', source: 'Nihil-Thanatos', capture: false }),
       regexFr: Regexes.startsUsing({ id: '1C82', source: 'Mortalis Nihil', capture: false }),
@@ -122,7 +118,9 @@
       suppressSeconds: 5,
       alertText: {
         en: 'Avoid death squares',
+        de: 'Weiche den Todes-Feldern aus',
         fr: 'Evitez les carrés mortels',
+        cn: '离开即死区域',
       },
     },
     // FERDIAD
@@ -134,7 +132,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Drop scythe outside',
+            de: 'Sense draußen ablegen',
             fr: 'Posez à l\'extérieur',
+            cn: '场地边缘放镰刀',
           };
         }
       },
@@ -147,22 +147,7 @@
       regexJa: Regexes.startsUsing({ id: '1C98', source: 'フェルディア・ホロー' }),
       regexCn: Regexes.startsUsing({ id: '1C98', source: '虚空弗迪亚' }),
       regexKo: Regexes.startsUsing({ id: '1C98', source: '공허의 페르디아' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank buster on YOU',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-      },
-      infoText: function(data, matches) {
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       // Wailing Atomos is blue, Cursed Atomos is yellow.
@@ -178,13 +163,17 @@
         if (matches.id == '1C9F') {
           return {
             en: 'Avoid Untethered Blue',
+            de: 'Weiche dem nicht verbundenen blauem Atomos aus',
             fr: 'Evitez Gueule bleue non-liée',
+            cn: '远离蓝色小怪',
           };
         }
         if (matches.id == '1CA0') {
           return {
             en: 'Go to Untethered Blue',
+            de: 'Gehe zu dem nicht verbundenen blauem Atomos',
             fr: 'Allez vers la Gueule bleue non-liée',
+            cn: '靠近蓝色小怪',
           };
         }
       },
@@ -201,13 +190,17 @@
         if (matches.id == '1C9F') {
           return {
             en: 'Avoid Untethered Yellow',
+            de: 'Weiche dem nicht verbundenen gelben Atomos aus',
             fr: 'Evitez Gueule jaune non-liée',
+            cn: '远离黄色小怪',
           };
         }
         if (matches.id == '1CA0') {
           return {
             en: 'Go to Untethered Yellow',
+            de: 'Gehe zu dem nicht verbundenen gelben Atomos',
             fr: 'Allez vers la Gueule jaune non-liée',
+            cn: '靠近黄色小怪',
           };
         }
       },
@@ -222,7 +215,9 @@
       regexKo: Regexes.startsUsing({ id: '1CAA', source: '공허의 페르디아', capture: false }),
       infoText: {
         en: 'Avoid puddles',
+        de: 'Flächen ausweichen',
         fr: 'Evitez les zones au sol',
+        cn: '离开圈圈',
       },
     },
     {
@@ -237,7 +232,9 @@
       suppressSeconds: 10,
       alertText: {
         en: 'Change puddles to water',
+        de: 'Ändere Flächen zu Wasser',
         fr: 'Changez en eau',
+        cn: '将地上的圈踩成蓝色',
       },
     },
     {
@@ -252,7 +249,9 @@
       suppressSeconds: 10,
       alertText: {
         en: 'Change puddles to fire',
+        de: 'Ändere Flächen zu Feuer',
         fr: 'Changez en feu',
+        cn: '将地上的圈踩成红色',
       },
     },
     // PROTO-ULTIMA
@@ -268,7 +267,9 @@
       regexKo: Regexes.startsUsing({ id: '1D96', source: '프로토 알테마', capture: false }),
       infoText: {
         en: 'Dodge trident laser',
+        de: 'Weiche dem Laser aus',
         fr: 'Evitez le laser',
+        cn: '躲避三向激光',
       },
     },
     {
@@ -283,10 +284,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      alertText: {
-        en: 'Raid Damage',
-        fr: 'Raid buster',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Dun Scaith Prey Markers',
@@ -300,7 +298,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Prey--Avoid party and keep moving',
+            de: 'Markiert - Weg von der Gruppe und bleib in Bewegung',
             fr: 'Marquage - Evitez les autres et bougez',
+            cn: '离开人群并保持移动',
           };
         }
       },
@@ -313,20 +313,24 @@
       regexJa: Regexes.startsUsing({ id: '1DA4', source: 'プロトアルテマ', capture: false }),
       regexCn: Regexes.startsUsing({ id: '1DA4', source: '究极神兵原型', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1DA4', source: '프로토 알테마', capture: false }),
-      suppressSeconds: 1,
       preRun: function(data) {
         data.flareStarCount = (data.flareStarCount || 0) + 1;
       },
+      suppressSeconds: 1,
       alertText: function(data) {
         if (data.flareStarCount == 1) {
           return {
             en: 'Out of center--Wait for outer ring then keep going',
+            de: 'Raus aus der Mitte - Warte auf den äuseren Ring',
             fr: 'Loin du centre - Attendez l\'anneau extérieur et continuez',
+            cn: '远离中心--在外圈内等待再进行移动',
           };
         }
         return {
           en: 'Avoid flares--Wait for outer ring then keep going',
+          de: 'Flares ausweichen - Warte auf den äuseren Ring',
           fr: 'Evitez les explosions - Attendez l\'anneau extérieur et continuez',
+          cn: '避免爆炸--在外圈内等待再进行移动',
         };
       },
     },
@@ -340,7 +344,9 @@
       regexKo: Regexes.startsUsing({ id: '1DAB', source: '프로토 알테마', capture: false }),
       alertText: {
         en: 'Avoid line AoE',
+        de: 'Weiche der Linien AoE aus',
         fr: 'Evitez l\'AoE en ligne',
+        cn: '躲避直线AOE',
       },
     },
     {
@@ -356,7 +362,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Avoid Bit AoEs',
+        de: 'Weiche den Bit AoEs aus',
         fr: 'Evitez les AoE des forets',
+        cn: '躲避小型AOE',
       },
     },
     {
@@ -370,7 +378,9 @@
       suppressSeconds: 5,
       alertText: {
         en: 'Kill collectors',
+        de: 'Ätherakkumulator besiegen',
         fr: 'Détruisez les accumulateurs',
+        cn: '击杀以太收集器',
       },
     },
     // SCATHACH
@@ -386,7 +396,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Avoid arm slaps',
+        de: 'Weiche den Armschlägen aus',
         fr: 'Evitez les bras',
+        cn: '站在boss背后方向',
       },
     },
     {
@@ -398,10 +410,7 @@
       regexCn: Regexes.ability({ id: '1D[12]B', source: '斯卡哈', capture: false }),
       regexKo: Regexes.ability({ id: '1D[12]B', source: '스카하크', capture: false }),
       suppressSeconds: 5,
-      alertText: {
-        en: 'Out of melee',
-        fr: 'Sortez du CaC',
-      },
+      response: Responses.outOfMelee(),
     },
     {
       id: 'Dun Scaith Thirty Arrows',
@@ -413,7 +422,9 @@
       regexKo: Regexes.startsUsing({ id: '1D2F', source: '스카하크', capture: false }),
       infoText: {
         en: 'Avoid line AoEs',
+        de: 'Weiche den Linien AoEs aus',
         fr: 'Evitez les AoE en ligne',
+        cn: '躲开boss正面路线',
       },
     },
     {
@@ -427,10 +438,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      alertText: {
-        en: 'Raid damage',
-        fr: 'Raid buster',
-      },
+      response: Responses.aoe(),
     },
     {
       // Ordinarily we wouldn't use a game log line for this.
@@ -440,12 +448,10 @@
       regexDe: Regexes.message({ line: 'Schatten sammeln sich auf dem Boden', capture: false }),
       regexFr: Regexes.message({ line: 'Le pouvoir des ombres se concentre sur le sol', capture: false }),
       regexJa: Regexes.message({ line: '床に影の力が集束していく', capture: false }),
+      regexCn: Regexes.message({ line: '影之力正在向地面聚集', capture: false }),
+      regexKo: Regexes.message({ line: '바닥에 그림자의 힘이 모여듭니다', capture: false }),
       suppressSeconds: 5,
-      infoText: {
-        en: 'Stop moving',
-        de: 'Nicht bewegen!',
-        fr: 'Ne bougez plus !',
-      },
+      response: Responses.stopMoving(),
     },
     {
       id: 'Dun Scaith Shadow Limb Spawn',
@@ -458,7 +464,9 @@
       suppressSeconds: 5,
       alertText: {
         en: 'Kill the hands',
+        de: 'Besiege die Hand',
         fr: 'Tuez les mains',
+        cn: '击杀影之手',
       },
     },
     {
@@ -471,7 +479,9 @@
       regexKo: Regexes.startsUsing({ id: '1CD1', source: '콘라', capture: false }),
       alertText: {
         en: 'Avoid AoE, Kill Connla',
+        de: 'Weiche AoE aus, besiege Connla',
         fr: 'Evitez les AoE, tuez Connla',
+        cn: '躲避AOE后击杀康拉',
       },
     },
     // These triggers are common to both Scathach and Diabolos
@@ -483,7 +493,9 @@
         if (matches.target == data.me) {
           return {
             en: 'Take orb outside',
+            de: 'Orb nach außen bringen',
             fr: 'Prenez l\'orb à l\'extérieur',
+            cn: '把球带出人群，移动到球不再出现为止',
           };
         }
       },
@@ -496,10 +508,7 @@
       regexJa: Regexes.startsUsing({ id: ['1D23', '1C1A'], source: ['スカアハ', 'ディアボロス・ホロー'], capture: false }),
       regexCn: Regexes.startsUsing({ id: ['1D23', '1C1A'], source: ['斯卡哈', '虚空迪亚波罗斯'], capture: false }),
       regexKo: Regexes.startsUsing({ id: ['1D23', '1C1A'], source: ['스카하크', '공허의 디아볼로스'], capture: false }),
-      infoText: {
-        en: 'Away from front',
-        fr: 'Ne restez pas devant',
-      },
+      response: Responses.awayFromFront(),
     },
     // DIABOLOS
     {
@@ -510,10 +519,7 @@
       regexJa: Regexes.startsUsing({ id: '1C12', source: 'ディアボロス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '1C12', source: '迪亚波罗斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1C12', source: '디아볼로스', capture: false }),
-      infoText: {
-        en: 'Get in',
-        fr: 'Allez au CaC',
-      },
+      response: Responses.getIn(),
     },
     {
       id: 'Dun Scaith Nightmare',
@@ -523,10 +529,7 @@
       regexJa: Regexes.startsUsing({ id: ['1C0E', '1C20'], capture: false }),
       regexCn: Regexes.startsUsing({ id: ['1C0E', '1C20'], capture: false }),
       regexKo: Regexes.startsUsing({ id: ['1C0E', '1C20'], capture: false }),
-      alertText: {
-        en: 'Look away',
-        fr: 'Regardez ailleurs',
-      },
+      response: Responses.lookAway(),
     },
     {
       id: 'Dun Scaith Noctoshield',
@@ -536,13 +539,15 @@
       regexJa: Regexes.gainsEffect({ target: 'ディアボロス', effect: 'ノクトシールド', capture: false }),
       regexCn: Regexes.gainsEffect({ target: '迪亚波罗斯', effect: '夜障', capture: false }),
       regexKo: Regexes.gainsEffect({ target: '디아볼로스', effect: '밤의 방패', capture: false }),
-      suppressSeconds: 5,
       condition: function(data) {
         return data.role == 'tank' || data.role == 'healer';
       },
+      suppressSeconds: 5,
       alertText: {
         en: 'Boss hitting hard--Shield/Mitigate',
+        de: 'Harter Hit vom Boss - Schild/Milderung',
         fr: 'Le boss frappe fort - Bouclier/Mitigation',
+        cn: 'MT大伤害物理死刑—注意减伤/治疗盾',
       },
     },
     {
@@ -553,14 +558,11 @@
       regexJa: Regexes.startsUsing({ id: '1C1[01]', source: 'ディアボロス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '1C1[01]', source: '迪亚波罗斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1C1[01]', source: '디아볼로스', capture: false }),
-      suppressSeconds: 5,
       condition: function(data) {
         return data.role == 'healer';
       },
-      alertText: {
-        en: 'Raid damage incoming',
-        fr: 'Dommages de raid en approche',
-      },
+      suppressSeconds: 5,
+      response: Responses.aoe(),
     },
     {
       id: 'Dun Scaith Deathgates',
@@ -573,7 +575,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Kill the deathgates',
+        de: 'Besiege die Tore des Todes',
         fr: 'Détruisez les portes de mort',
+        cn: '击杀召唤之门',
       },
     },
     {
@@ -584,22 +588,7 @@
       regexJa: Regexes.startsUsing({ id: '1C19', source: 'ディアボロス・ホロー' }),
       regexCn: Regexes.startsUsing({ id: '1C19', source: '虚空迪亚波罗斯' }),
       regexKo: Regexes.startsUsing({ id: '1C19', source: '공허의 디아볼로스' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank buster on YOU',
-            fr: 'Tank buster sur VOUS',
-          };
-        }
-      },
-      infoText: function(data, matches) {
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Dun Scaith Hollow Night',
@@ -608,12 +597,16 @@
         if (matches.target == data.me) {
           return {
             en: 'Gaze stack on YOU',
+            de: 'Blick-Sammeln auf DIR',
             fr: 'Package sur VOUS',
+            cn: '点名分摊',
           };
         }
         return {
           en: 'Stack on ' + data.ShortName(matches.target) + ' and look away',
+          de: 'Sammeln bei ' + data.ShortName(matches.target) + ' und wewg schauen',
           fr: 'Package sur ' + data.ShortName(matches.target) + ' et regardez ailleurs',
+          cn: '靠近并背对' + data.ShortName(matches.target) + '分摊',
         };
       },
     },
@@ -625,31 +618,17 @@
       regexJa: Regexes.startsUsing({ id: '1C2[23]', source: 'ディアボロス・ホロー', capture: false }),
       regexCn: Regexes.startsUsing({ id: '1C2[23]', source: '虚空迪亚波罗斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '1C2[23]', source: '공허의 디아볼로스', capture: false }),
-      suppressSeconds: 5,
       condition: function(data) {
         return data.role == 'healer';
       },
-      alertText: {
-        en: 'Extreme raid damage!',
-        fr: 'Dommages de raid extrêmes !',
-      },
+      suppressSeconds: 5,
+      response: Responses.bigAoe(),
     },
     {
       // This is the tank version of the stack marker. It has minimal circular bordering
       id: 'Dun Scaith Blindside',
       regex: Regexes.headMarker({ id: '005D' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-            fr: 'Package sur VOUS',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          fr: 'Package sur ' + data.ShortName(matches.target),
-        };
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'Dun Scaith Earth Shaker',
@@ -657,10 +636,7 @@
       condition: function(data, matches) {
         return matches.target == data.me;
       },
-      alertText: {
-        en: 'Earth Shaker on YOU',
-        fr: 'Marque de terre sur VOUS',
-      },
+      response: Responses.earthshaker(),
     },
   ],
 },

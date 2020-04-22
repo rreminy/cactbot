@@ -36,6 +36,7 @@
             fr: 'Tankbuster sur VOUS',
             cn: '死刑',
             ko: '탱크버스터 -> YOU',
+            ja: '自分にタンクバスター',
           };
         }
         if (data.role == 'healer') {
@@ -45,6 +46,7 @@
             fr: 'Tankbuster sur ' + data.ShortName(matches.target),
             cn: '死刑 ->' + data.ShortName(matches.target),
             ko: '탱버 ->' + data.ShortName(matches.target),
+            ja: data.ShortName(matches.target) + 'にTB',
           };
         }
       },
@@ -68,13 +70,7 @@
       regexJa: Regexes.startsUsing({ id: '4149', source: 'ハーデス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4149', source: '哈迪斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4149', source: '하데스', capture: false }),
-      infoText: {
-        en: 'Left',
-        de: 'Links',
-        fr: 'Gauche',
-        cn: '左',
-        ko: '왼쪽',
-      },
+      response: Responses.goLeft('info'),
     },
     {
       id: 'Hades Bad Faith Right',
@@ -84,13 +80,7 @@
       regexJa: Regexes.startsUsing({ id: '414A', source: 'ハーデス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '414A', source: '哈迪斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '414A', source: '하데스', capture: false }),
-      infoText: {
-        en: 'Right',
-        de: 'Rechts',
-        fr: 'Droite',
-        cn: '右',
-        ko: '오른쪽',
-      },
+      response: Responses.goRight('info'),
     },
     {
       id: 'Hades Broken Faith',
@@ -116,13 +106,7 @@
       regexJa: Regexes.startsUsing({ id: '4164', source: 'ハーデス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4164', source: '哈迪斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4164', source: '하데스', capture: false }),
-      infoText: {
-        en: 'Right',
-        de: 'Rechts',
-        fr: 'Gauche',
-        cn: '右',
-        ko: '오른쪽',
-      },
+      response: Responses.goRight('info'),
     },
     {
       id: 'Hades Echo Left',
@@ -132,13 +116,7 @@
       regexJa: Regexes.startsUsing({ id: '4163', source: 'ハーデス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4163', source: '哈迪斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4163', source: '하데스', capture: false }),
-      infoText: {
-        en: 'Left',
-        de: 'Links',
-        fr: 'Gauche',
-        cn: '左',
-        ko: '왼쪽',
-      },
+      response: Responses.goLeft('info'),
     },
     {
       id: 'Hades Titanomachy',
@@ -151,13 +129,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-        cn: 'AOE',
-        ko: '광역',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Hades Shadow Stream',
@@ -167,14 +139,7 @@
       regexJa: Regexes.startsUsing({ id: '415C', source: 'ハーデス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '415C', source: '哈迪斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '415C', source: '하데스', capture: false }),
-      alertText: {
-        en: 'Go Outside',
-        de: 'Raus gehen',
-        fr: 'Allez sur les côtés',
-        ja: '中壊れるよ',
-        cn: '两侧躲避',
-        ko: '밖으로',
-      },
+      response: Responses.goSides(),
     },
     {
       id: 'Hades Purgation',
@@ -184,14 +149,7 @@
       regexJa: Regexes.startsUsing({ id: '4170', source: 'ハーデス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4170', source: '哈迪斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4170', source: '하데스', capture: false }),
-      alertText: {
-        en: 'Get Middle',
-        de: 'In die Mitte gehen',
-        fr: 'Allez au centre',
-        ja: '外壊れるよ',
-        cn: '中间躲避',
-        ko: '중앙으로',
-      },
+      response: Responses.goMiddle(),
     },
     {
       id: 'Hades Doom',
@@ -306,6 +264,18 @@
       },
     },
     {
+      id: 'Hades Life In Captivity',
+      regex: Regexes.ability({ id: '4175', source: 'Hades', capture: false }),
+      regexDe: Regexes.ability({ id: '4175', source: 'Hades', capture: false }),
+      regexFr: Regexes.ability({ id: '4175', source: 'Hadès', capture: false }),
+      regexJa: Regexes.ability({ id: '4175', source: 'ハーデス', capture: false }),
+      regexCn: Regexes.ability({ id: '4175', source: '哈迪斯', capture: false }),
+      regexKo: Regexes.ability({ id: '4175', source: '하데스', capture: false }),
+      run: function(data) {
+        data.seenLifeInCaptivity = true;
+      },
+    },
+    {
       id: 'Hades Gaol',
       regex: Regexes.ability({ id: '417F', source: 'Hades', capture: false }),
       regexDe: Regexes.ability({ id: '417F', source: 'Hades', capture: false }),
@@ -313,6 +283,11 @@
       regexJa: Regexes.ability({ id: '417F', source: 'ハーデス', capture: false }),
       regexCn: Regexes.ability({ id: '417F', source: '哈迪斯', capture: false }),
       regexKo: Regexes.ability({ id: '417F', source: '하데스', capture: false }),
+      condition: function(data) {
+        // There can be multiple gaols (if the phase loops), but ability also
+        // gets used during the finall phase transition.  Ignore that one.
+        return !data.seenLifeInCaptivity;
+      },
       delaySeconds: 2,
       infoText: {
         en: 'Kill Jail',
@@ -328,13 +303,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Dispersez-vous',
-        cn: '分散',
-        ko: '산개',
-      },
+      response: Responses.spread('alert'),
     },
     {
       id: 'Hades Ancient Darkness',
@@ -356,13 +325,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Stack on YOU',
-        de: 'Sammeln auf DIR',
-        fr: 'Package sur VOUS',
-        cn: '点名集合',
-        ko: '쉐어징 -> YOU',
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'Hades Ancient Collect',
@@ -406,7 +369,6 @@
       'locale': 'de',
       'replaceSync': {
         'Hades': 'Hades',
-        'Engage!': 'Start!',
         'Shadow .f .he Ancients': 'Schatten der Alten',
       },
       'replaceText': {
@@ -419,14 +381,13 @@
         'Bad Faith': 'Maske des Grolls',
         'Black Cauldron': 'Schwarzer Kessel',
         'Broken Faith': 'Maske der Trauer',
-        'Captivity': 'Gefangenschaft',
+        '(?<! )Captivity': 'Gefangenschaft',
         'Chorus Of The Lost': 'Chor der Verlorenen',
         'Dark Eruption': 'Dunkle Eruption',
         'Doom': 'Verhängnis',
         'Double': 'Doppel',
         'Dual Strike': 'Doppelschlag',
         'Echo Of The Lost': 'Echo der Verlorenen',
-        'Enrage': 'Finalangriff',
         'Hellborn Yawp': 'Höllenschrei',
         'Life In Captivity': 'Leben in Gefangenschaft',
         'Nether Blast': 'Schattenböe',
@@ -435,10 +396,8 @@
         'Shadow Spread': 'Dunkle Schatten',
         'Shadow Stream': 'Schattenstrom',
         'Stream/Purgation?': 'Schattenstrom/Schlag des Polydegmon',
-        '--targetable--': '--anvisierbar--',
         'The Dark Devours': 'Fressende Finsternis',
         'Titanomachy': 'Titanomachie',
-        '--untargetable--': '--nicht anvisierbar--',
         '--fetters--': '--fesseln--',
         'Wail Of The Lost': 'Wehklagen der Verlorenen',
       },
@@ -447,7 +406,6 @@
       'locale': 'cn',
       'replaceSync': {
         'Hades': '哈迪斯',
-        'Engage!': '战斗开始！',
         'Shadow .f .he Ancients': '古代人之影',
       },
       'replaceText': {
@@ -460,14 +418,13 @@
         'Bad Faith': '失信',
         'Black Cauldron': '暗黑之釜',
         'Broken Faith': '背信',
-        'Captivity': '囚禁',
+        '(?<! )Captivity': '囚禁',
         'Chorus Of The Lost': '逝者的合唱',
         'Dark Eruption': '暗炎喷发',
         'Doom': '死亡宣告',
         'Double': '双重',
         'Dual Strike': '双重强袭',
         'Echo Of The Lost': '逝者的回声',
-        'Enrage': '狂暴',
         'Hellborn Yawp': '地狱之声',
         'Life In Captivity': '囚禁生命',
         'Nether Blast': '幽冥冲击',
@@ -476,10 +433,8 @@
         'Shadow Spread': '暗影扩散',
         'Shadow Stream': '暗影流',
         'Stream/Purgation?': '暗影流/冥王净化',
-        '--targetable--': '--可选中--',
         'The Dark Devours': '黑暗侵蚀',
         'Titanomachy': '诸神之战',
-        '--untargetable--': '--不可选中--',
         '--fetters--': '--锁链--',
         'Wail Of The Lost': '逝者的哀嚎',
       },
@@ -488,7 +443,6 @@
       'locale': 'ko',
       'replaceSync': {
         'Hades': '하데스',
-        'Engage!': '전투 시작!',
         'Shadow .f .he Ancients': '고대인의 그림자',
       },
       'replaceText': {
@@ -501,14 +455,13 @@
         'Bad Faith': '불신',
         'Black Cauldron': '검은 도가니',
         'Broken Faith': '배신',
-        'Captivity': '감금',
+        '(?<! )Captivity': '감금',
         'Chorus Of The Lost': '상실의 합창',
         'Dark Eruption': '황천의 불기둥',
         'Doom': '죽음의 선고',
         'Double': '이중 공격',
         'Dual Strike': '이중 타격',
         'Echo Of The Lost': '상실의 메아리',
-        'Enrage': '전멸기',
         'Hellborn Yawp': '지옥의 아우성',
         'Life In Captivity': '감금된 삶',
         'Nether Blast': '지옥 강풍',
@@ -517,10 +470,8 @@
         'Shadow Spread': '그림자 전개',
         'Shadow Stream': '그림자 급류',
         'Stream/Purgation?': '그림자 급류/전개',
-        '--targetable--': '--공격가능--',
         'The Dark Devours': '어둠의 침식',
         'Titanomachy': '티타노마키아',
-        '--untargetable--': '--공격불가능--',
         '--fetters--': '--줄--',
         'Wail Of The Lost': '상실의 통곡',
       },

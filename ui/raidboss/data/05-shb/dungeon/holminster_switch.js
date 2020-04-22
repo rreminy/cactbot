@@ -1,7 +1,11 @@
 'use strict';
 
 [{
-  zoneRegex: /^Holminster Switch$/,
+  zoneRegex: {
+    en: /^Holminster Switch$/,
+    ko: /^홀민스터$/,
+    cn: /^遇袭集落水滩村$/,
+  },
   timelineFile: 'holminster_switch.txt',
   triggers: [
     {
@@ -15,11 +19,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Holminster Pillory',
@@ -29,22 +29,10 @@
       regexJa: Regexes.startsUsing({ id: '3DC4', source: 'フォーギヴン・ディソナンス' }),
       regexCn: Regexes.startsUsing({ id: '3DC4', source: '得到宽恕的失调' }),
       regexKo: Regexes.startsUsing({ id: '3DC4', source: '면죄된 불화' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Holminster Tickler',
@@ -54,22 +42,10 @@
       regexJa: Regexes.startsUsing({ id: '3DCF', source: 'フォーギヴン・テスリーン' }),
       regexCn: Regexes.startsUsing({ id: '3DCF', source: '得到宽恕的泰丝琳' }),
       regexKo: Regexes.startsUsing({ id: '3DCF', source: '면죄된 테슬린' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Holminster Bridle',
@@ -82,11 +58,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Holminster Flagellation',
@@ -96,29 +68,12 @@
       regexJa: Regexes.startsUsing({ id: '3DD5', source: 'フォーギヴン・テスリーン', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3DD5', source: '得到宽恕的泰丝琳', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3DD5', source: '면죄된 테슬린', capture: false }),
-      infoText: {
-        en: 'spread',
-        de: 'Verteilen',
-        fr: 'Dispersez-vous',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Holminster Exorcise Stack',
       regex: Regexes.headMarker({ id: '003E' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Auf DIR sammeln',
-            fr: 'Package sur VOUS',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          de: 'Auf ' + data.ShortName(matches.target) + ' sammeln',
-          fr: 'Package sur ' + data.ShortName(matches.target),
-        };
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'Holminster Scavenger',
@@ -131,11 +86,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Holminster Head Crusher',
@@ -145,22 +96,10 @@
       regexJa: Regexes.startsUsing({ id: '3DD7', source: 'フィリア' }),
       regexCn: Regexes.startsUsing({ id: '3DD7', source: '斐利亚' }),
       regexKo: Regexes.startsUsing({ id: '3DD7', source: '필리아' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Holminster Chain Down',
@@ -173,6 +112,8 @@
           en: 'Break chain on ' + data.ShortName(matches.target),
           de: 'Kette von ' + data.ShortName(matches.target) + ' brechen',
           fr: 'Cassez les chaînes de ' + data.ShortName(matches.target),
+          ko: data.ShortName(matches.target) + '의 사슬 부수기',
+          cn: '截断' + data.ShortName(matches.target) + '的线',
         };
       },
     },
@@ -182,11 +123,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Dispersez-vous',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Holminster Into The Light',
@@ -200,6 +137,8 @@
         en: 'Line Stack',
         de: 'Sammeln in einer Linie',
         fr: 'Packez-vous en ligne',
+        ko: '직선 쉐어',
+        cn: '直线分摊',
       },
     },
     {
@@ -210,11 +149,7 @@
       regexJa: Regexes.startsUsing({ id: '3DE7', source: 'フィリア', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3DE7', source: '斐利亚', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3DE7', source: '필리아', capture: false }),
-      alertText: {
-        en: 'Right',
-        de: 'Rechts',
-        fr: 'Droite ',
-      },
+      response: Responses.goRight(),
     },
     {
       id: 'Holminster Right Knout',
@@ -224,11 +159,7 @@
       regexJa: Regexes.startsUsing({ id: '3DE6', source: 'フィリア', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3DE6', source: '斐利亚', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3DE6', source: '필리아', capture: false }),
-      alertText: {
-        en: 'Left',
-        de: 'Links',
-        fr: 'Gauche',
-      },
+      response: Responses.goLeft(),
     },
   ],
   timelineReplace: [
@@ -236,10 +167,10 @@
       'locale': 'de',
       'replaceSync': {
         'The Wound': 'Lavendellichtung',
-        'Forgiven Dissonance': 'Geläuterter Widerspruch',
         'The Auction': 'Viehmarkt',
+        'The manor house courtyard': 'Garten des Herrenhauses',
+        'Forgiven Dissonance': 'Geläuterter Widerspruch',
         'Tesleen, the Forgiven': 'Tesleen die Bekehrte',
-        'The manor': 'Garten des Herrenhauses',
         'Philia': 'Philia',
       },
       'replaceText': {
@@ -270,20 +201,14 @@
     },
     {
       'locale': 'fr',
+      'missingTranslations': true,
       'replaceSync': {
-        'The Wound will be sealed off': 'Fermeture de La Talure',
-        'The Auction will be sealed off': 'Fermeture de la place du Cheptel',
-        'The manor house will be sealed off': 'Fermeture de l\'esplanade du Manoir',
-        'is no longer sealed': 'Ouverture de',
+        'The Wound': 'La Talure',
+        'The Auction': 'la place du Cheptel',
+        'The manor house courtyard': 'l\'esplanade du Manoir',
         'Tesleen, the Forgiven': 'Tesleen pardonnée',
       },
       'replaceText': {
-        'Engage!': 'À l\'attaque',
-        '--Reset--': '--Réinitialisation--',
-        '--sync--': '--Synchronisation--',
-        '--targetable--': '--Ciblable--',
-        '--untargetable--': '--Impossible à cibler--',
-        'Enrage': 'Enrage',
         'The Path Of Light': 'Voie de lumière',
         'Brazen Bull': 'Taureau d\'airain',
         'Gibbet Cage': 'Gibet de fer',
@@ -309,6 +234,82 @@
         'Fierce Beating': 'Raclée brutale',
         'Taphephobia': 'Taphophobie',
       },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'The Wound': '검보라 틈',
+        'The Auction': '가축 시장',
+        'The manor house courtyard': '저택 앞뜰',
+        'Forgiven Dissonance': '면죄된 불화',
+        'Tesleen, the Forgiven': '면죄된 테슬린',
+        'Philia': '필리아',
+      },
+      'replaceText': {
+        'The Path Of Light': '빛의 파동',
+        'Brazen Bull': '빛올가미',
+        'Gibbet Cage': '교형틀',
+        'Thumbscrew': '손가락 으깨기',
+        'Heretic\'s Fork': '이단자의 창',
+        'Light Shot': '빛 발사',
+        'Wooden Horse': '삼각목마',
+        'Pillory': '항쇄',
+        'The Tickler': '심장 찌르기',
+        'Scold\'s Bridle': '입막음 굴레',
+        'Fevered Flagellation': '불타는 채찍질',
+        'Exorcise': '구마 의식',
+        'Holy Water': '성수',
+        'Into The Light': '빛 속으로',
+        'Pendulum Tank': '진자 (탱커)',
+        'Pendulum Center': '진자 (중앙)',
+        'Left/Right Knout': '왼쪽/오른쪽 잡아채기',
+        'Right/Left Knout': '오른쪽/왼쪽 잡아채기',
+        'Chain Down': '사슬 구속',
+        'Aethersup': '에테르 섭취',
+        'Scavenger\'s Daughter': '쇠고랑',
+        'Head Crusher': '머리 부수기',
+        'Fierce Beating': '공포의 매질',
+        'Taphephobia': '공포의 생매장',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'The Wound': '紫黑裂痕',
+        'The Auction': '家畜卖场',
+        'The manor house courtyard': '领主府前院',
+        'Forgiven Dissonance': '得到宽恕的失调',
+        'Tesleen, the Forgiven': '得到宽恕的泰丝琳',
+        'Philia': '斐利亚',
+      },
+      'replaceText': {
+        'Aethersup': '吸取以太',
+        'Brazen Bull': '铜牛',
+        'Chain Down': '束缚',
+        'Exorcise': '驱魔',
+        'Fevered Flagellation': '鞭笞',
+        'Fierce Beating': '激烈捶打',
+        'Gibbet Cage': '绞刑笼',
+        'Head Crusher': '裂脑',
+        'Heretic\'s Fork': '异端十字叉',
+        'Holy Water': '圣水',
+        'Into The Light': '埋没之光',
+        'Left/Right Knout': '左/右鞭打',
+        'Light Shot': '光线射击',
+        'Pendulum': '钟摆',
+        'Pillory': '颈手枷',
+        'Right/Left Knout': '右/左鞭打',
+        'Scavenger\'s Daughter': '拾荒者之女',
+        'Scold\'s Bridle': '毒舌钩',
+        'Taphephobia': '土埋',
+        'The Path Of Light': '光之波动',
+        'The Tickler': '抓挠',
+        'Thumbscrew': '螺旋突刺',
+        'Wooden Horse': '木马',
+        'Tank': '坦克',
+        'Center': '中心',
+      },
+      '~effectNames': {},
     },
   ],
 }];

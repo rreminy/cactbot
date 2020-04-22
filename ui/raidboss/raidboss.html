@@ -22,17 +22,22 @@
   <script src="../../resources/lang/cn.js"></script>
 
   <link rel="stylesheet" type="text/css" href="raidboss.css">
+  <script src="common_replacement.js"></script>
   <script src="raidboss_config.js"></script>
   <script src="timeline.js"></script>
+  <script src="browser_tts_engine.js"></script>
+  <script src="autoplay_helper.js"></script>
   <script src="popup-text.js"></script>
   <script src="raidboss.js"></script>
 </head>
 <body>
 <div id="container">
   <div id="timeline-container">
-    <div id="timeline-resize-helper" class="resize-helper"></div>
+    <div class="resize-helper">
+      <div id="timeline-resize-helper" class="timeline-grid"></div>
+    </div>
     <div id="timeline-debug" class="just-a-number"></div>
-    <widget-list id="timeline"></widget-list>
+    <div id="timeline" class="timeline-grid"></div>
   </div>
 
   <div id="popup-text-container">

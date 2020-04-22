@@ -1,7 +1,11 @@
 'use strict';
 
 [{
-  zoneRegex: /^[tT]he Qitana Ravel$/,
+  zoneRegex: {
+    en: /^[tT]he Qitana Ravel$/,
+    ko: /^키타나 신굴$/,
+    cn: /^文明古迹奇坦那神影洞$/,
+  },
   timelineFile: 'qitana_ravel.txt',
   triggers: [
     {
@@ -12,22 +16,10 @@
       regexJa: Regexes.startsUsing({ id: '3C89', source: 'ロツァトル' }),
       regexCn: Regexes.startsUsing({ id: '3C89', source: '洛查特尔' }),
       regexKo: Regexes.startsUsing({ id: '3C89', source: '로차틀' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Qitana Scorn',
@@ -40,11 +32,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Qitana Eerie Pillar',
@@ -59,6 +47,8 @@
         en: 'Look for pillar',
         de: 'Auf die Pfeiler schauen',
         fr: 'Cherchez les piliers',
+        ko: '빛나는 기둥 위치확인',
+        cn: '找柱子躲',
       },
     },
     {
@@ -75,10 +65,12 @@
         en: 'Stay on left flank',
         de: 'Auf seiner linken Seite stehen',
         fr: 'Restez sur le flanc gauche',
+        ko: '보스 왼쪽 측면으로',
+        cn: '左侧翼躲避',
       },
     },
     {
-      id: 'Qitana Heat Up Right',
+      id: 'Qitana Heat Up Left',
       regex: Regexes.startsUsing({ id: '3C8E', source: 'Lozatl', capture: false }),
       regexDe: Regexes.startsUsing({ id: '3C8E', source: 'Lozatl', capture: false }),
       regexFr: Regexes.startsUsing({ id: '3C8E', source: 'Lozatl', capture: false }),
@@ -91,6 +83,8 @@
         en: 'Stay on right flank',
         de: 'Auf seiner rechten Seite stehen',
         fr: 'Restez sur le flanc droit',
+        ko: '보스 오른쪽 측면으로',
+        cn: '右侧翼躲避',
       },
     },
     {
@@ -101,22 +95,10 @@
       regexJa: Regexes.startsUsing({ id: '3C91', source: 'バッツカッチ' }),
       regexCn: Regexes.startsUsing({ id: '3C91', source: '大脚野蝠' }),
       regexKo: Regexes.startsUsing({ id: '3C91', source: '배츠콰치' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Qitana Soundwave',
@@ -129,11 +111,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Qitana Subsonics',
@@ -146,11 +124,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoes',
-        de: 'AoEs',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Qitana Rend',
@@ -160,22 +134,10 @@
       regexJa: Regexes.startsUsing({ id: '3C99', source: 'エロース' }),
       regexCn: Regexes.startsUsing({ id: '3C99', source: '艾洛斯' }),
       regexKo: Regexes.startsUsing({ id: '3C99', source: '에로스' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Qitana Glossolalia',
@@ -188,11 +150,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Qitana Hound Tether',
@@ -209,6 +167,8 @@
         en: 'Run Away From Boss',
         de: 'Renn weg vom Boss',
         fr: 'Courez loin du boss',
+        ko: '보스와 거리 벌리기',
+        cn: '远离Boss',
       },
     },
     {
@@ -221,25 +181,14 @@
         en: 'Drop Poison Outside',
         de: 'Gift am Rand ablegen',
         fr: 'Posez le poison à l\'extérieur',
+        ko: '독 장판을 바깥 쪽에 버리기',
+        cn: '远处放毒',
       },
     },
     {
       id: 'Qitana Confession of Faith Stack',
       regex: Regexes.headMarker({ id: '003E' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack Middle on YOU',
-            de: 'In der Mitte auf DIR sammeln',
-            fr: 'Package au milieu sur VOUS',
-          };
-        }
-        return {
-          en: 'Stack Middle on ' + data.ShortName(matches.target),
-          de: 'In Der Mitte auf ' + data.ShortName(matches.target) + ' sammeln',
-          fr: 'Package au milieu sur ' + data.ShortName(matches.target),
-        };
-      },
+      response: Responses.stackOn('alert'),
     },
     {
       id: 'Qitana Confession of Faith Spread',
@@ -253,6 +202,8 @@
         en: 'Spread to Sides',
         de: 'Auf die Seiten verteilen',
         fr: 'Dispersez-vous sur les bords',
+        ko: '좌우 측면으로 산개',
+        cn: '两侧分散',
       },
     },
   ],
@@ -287,6 +238,69 @@
         'Towerfall': 'Turmsturz',
         'Viper Poison': 'Viperngift',
       },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Batsquatch': '배츠콰치',
+        'Eros': '에로스',
+        'Lozatl': '로차틀',
+        'The Divine Threshold': '신에게 가는 문',
+        'Shadowed Hollow': '신 그림자 공터',
+        'The Song of Ox\'Gatorl': '가톨 신의 제단',
+      },
+      'replaceText': {
+        'Confession Of Faith': '신앙 고백',
+        'Glossolalia': '방언',
+        'Heat Up': '적열화',
+        'Heaving Breath': '내쉬는 숨결',
+        'Hound Out Of Heaven': '천상의 돌진',
+        'Inhale': '흡인',
+        'Jump': '점프',
+        'Lozatl\'s Fury': '로차틀의 분노',
+        'Lozatl\'s Scorn': '로차틀의 고성',
+        'Rend': '잡아찢기',
+        'Ripper Fang': '톱송곳니',
+        'Ronkan Light': '롱카의 빛',
+        'Soundwave': '소리의 파동',
+        'Stonefist': '돌주먹',
+        'Subsonics': '아음속',
+        'Sun Toss': '투사',
+        'Towerfall': '무너지는 탑',
+        'Viper Poison': '독사 독',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Batsquatch': '大脚野蝠',
+        'Eros': '艾洛斯',
+        'Lozatl': '洛查特尔',
+        'The Divine Threshold': '神前石门',
+        'Shadowed Hollow': '映照神影之洞窟',
+        'The Song of Ox\'Gatorl': '奥奇斯加托尔之祭坛',
+      },
+      'replaceText': {
+        'Confession Of Faith': '信仰宣言',
+        'Glossolalia': '灵语',
+        'Heat Up': '赤热化',
+        'Heaving Breath': '吐息',
+        'Hound Out Of Heaven': '蓄力冲撞',
+        'Inhale': '吸气',
+        'Jump': '跳跃',
+        'Lozatl\'s Fury': '洛查特尔的愤怒',
+        'Lozatl\'s Scorn': '洛查特尔的骂声',
+        'Rend': '撕碎',
+        'Ripper Fang': '裂肉尖牙',
+        'Ronkan Light': '隆卡之光',
+        'Soundwave': '声波',
+        'Stonefist': '石拳',
+        'Subsonics': '亚音速',
+        'Sun Toss': '投射石块',
+        'Towerfall': '崩塌',
+        'Viper Poison': '尾蛇毒',
+      },
+      '~effectNames': {},
     },
   ],
 }];

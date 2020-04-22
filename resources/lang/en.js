@@ -49,6 +49,11 @@ class CactbotLanguageEn extends CactbotLanguage {
       PresenceOfMind: 'Presence Of Mind',
       Shifu: 'Shifu',
       CircleOfPower: 'Circle Of Power',
+      AstralAttenuation: 'Astral Attenuation',
+      UmbralAttenuation: 'Umbral Attenuation',
+      PhysicalAttenuation: 'Physical Attenuation',
+
+      SurgeProtection: 'Surge Protection',
 
       Paralysis: 'Paralysis',
       Petrification: 'Petrification',
@@ -62,6 +67,13 @@ class CactbotLanguageEn extends CactbotLanguage {
       FoolsTumble: 'Fool\'s Tumble', // 0x183
       Dropsy: 'Dropsy', // 0x121
       Throttle: 'Throttle', // 0x2bc
+      StaticCondensation: 'Static Condensation',
+      DamageDown: 'Damage Down',
+      AstralEffect: 'Astral Effect',
+      UmbralEffect: 'Umbral Effect',
+      Stun: 'Stun',
+      ThinIce: 'Thin Ice',
+      DeepFreeze: 'Deep Freeze',
 
       // UWU
       Windburn: 'Windburn',

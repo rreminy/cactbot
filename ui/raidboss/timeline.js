@@ -44,15 +44,23 @@ class Timeline {
 
     let orig = text;
     let locale = this.options.Language || 'en';
-    for (let i = 0; i < this.replacements.length; ++i) {
-      let r = this.replacements[i];
+    if (replaceKey === 'replaceText')
+      locale = this.options.TimelineLanguage || this.options.Language || 'en';
+    for (let r of this.replacements) {
       if (r.locale && r.locale != locale)
         continue;
       if (!r[replaceKey])
         continue;
       let keys = Object.keys(r[replaceKey]);
-      for (let j = 0; j < keys.length; ++j)
-        text = text.replace(Regexes.parse(keys[j]), r[replaceKey][keys[j]]);
+      for (let key of keys)
+        text = text.replace(Regexes.parse(key), r[replaceKey][key]);
+    }
+    // Common Replacements
+    for (let key in commonReplacement) {
+      let repl = commonReplacement[key][locale];
+      if (!repl)
+        continue;
+      text = text.replace(Regexes.parse(key), repl);
     }
     return text;
   }
@@ -65,6 +73,19 @@ class Timeline {
     return this.GetReplacedHelper(sync, 'replaceSync');
   }
 
+  GetMissingTranslationsToIgnore() {
+    return [
+      '--Reset--',
+      '--sync--',
+      'Start',
+      '^ ?21:',
+      '^(\\^\\.\\{14\\})? ?1B:',
+      '^(\\^\\.\\{14\\})? ?21:',
+      '^::\\y{AbilityCode}:$',
+      '^\\.\\*$',
+    ].map((x) => Regexes.parse(x));
+  }
+
   LoadFile(text, triggers, styles) {
     this.events = [];
     this.syncStarts = [];
@@ -75,6 +96,7 @@ class Timeline {
 
     let lines = text.split('\n');
     for (let i = 0; i < lines.length; ++i) {
+      let lineNumber = i + 1;
       let line = lines[i];
       line = line.trim();
       // Drop comments and empty lines.
@@ -122,7 +144,7 @@ class Timeline {
       match = line.match(/^(([0-9]+(?:\.[0-9]+)?)\s+"(.*?)")(\s+(.*))?/);
       if (match == null) {
         this.errors.push({
-          lineNumber: i,
+          lineNumber: lineNumber,
           line: originalLine,
           error: 'Invalid format',
         });
@@ -142,6 +164,7 @@ class Timeline {
         // The text to display.  Not used for any logic.
         text: this.GetReplacedText(match[3]),
         activeTime: 0,
+        lineNumber: lineNumber,
       };
       if (line) {
         let commandMatch = line.match(/(?:[^#]*?\s)?(duration\s+([0-9]+(?:\.[0-9]+)?))(\s.*)?$/);
@@ -158,6 +181,7 @@ class Timeline {
             start: seconds - 2.5,
             end: seconds + 2.5,
             time: seconds,
+            lineNumber: lineNumber,
           };
           if (commandMatch[3]) {
             let argMatch = commandMatch[3].match(/(?:[^#]*?\s)?(window\s+(?:([0-9]+(?:\.[0-9]+)?),)?([0-9]+(?:\.[0-9]+)?))(?:\s.*)?$/);
@@ -185,7 +209,7 @@ class Timeline {
       if (line && !line.match(/^\s*#/)) {
         console.log('Unknown content \'' + line + '\' in timeline: ' + originalLine);
         this.errors.push({
-          lineNumber: i,
+          lineNumber: lineNumber,
           line: originalLine,
           error: 'Extra text',
         });
@@ -562,20 +586,11 @@ class TimelineUI {
     if (Options.Skin)
       this.root.classList.add('skin-' + Options.Skin);
 
-    this.barWidth = window.getComputedStyle(this.root).width;
-    let windowHeight = parseFloat(window.getComputedStyle(this.root).height.match(/([0-9.]+)px/)[1]);
-    this.barHeight = windowHeight / this.options.MaxNumberOfTimerBars - 2;
-
     this.barColor = computeBackgroundColorFrom(this.root, 'timeline-bar-color');
     this.barExpiresSoonColor = computeBackgroundColorFrom(this.root, 'timeline-bar-color.soon');
 
     this.timerlist = document.getElementById('timeline');
-    this.timerlist.maxnumber = this.options.MaxNumberOfTimerBars;
-    this.timerlist.rowcolsize = this.options.MaxNumberOfTimerBars;
-    this.timerlist.elementwidth = this.barWidth;
-    this.timerlist.elementheight = this.barHeight + 2;
-    this.timerlist.toward = 'down right';
-
+    this.timerlist.style.gridTemplateRows = 'repeat(' + this.options.MaxNumberOfTimerBars + ', 1fr)';
     this.activeBars = {};
     this.expireTimers = {};
   }
@@ -604,9 +619,6 @@ class TimelineUI {
       else
         helperBar.innerText = 'Test bar ' + (i + 1);
       helper.appendChild(helperBar);
-      let borderWidth = parseFloat(window.getComputedStyle(helperBar).borderWidth.match(/([0-9.]+)px/)[1]);
-      helperBar.style.width = this.barWidth - borderWidth * 2;
-      helperBar.style.height = this.barHeight - borderWidth * 2;
     }
 
     this.debugElement = document.getElementById('timeline-debug');
@@ -627,7 +639,8 @@ class TimelineUI {
       this.timeline.SetSpeakTTS(null);
       this.timeline.SetTrigger(null);
       this.timeline.SetSyncTime(null);
-      this.timerlist.clear();
+      while (this.timerlist.lastChild)
+        this.timerlist.removeChild(this.timerlist.lastChild);
       this.debugElement.innerHTML = '';
       this.debugFightTimer = null;
       this.activeBars = {};
@@ -649,9 +662,8 @@ class TimelineUI {
   OnAddTimer(fightNow, e, channeling) {
     let div = document.createElement('div');
     let bar = document.createElement('timer-bar');
+    div.classList.add('timer-bar');
     div.appendChild(bar);
-    bar.width = this.barWidth;
-    bar.height = this.barHeight;
     bar.duration = channeling ? e.time - fightNow : this.options.ShowTimerBarsAtSeconds;
     bar.value = e.time - fightNow;
     bar.righttext = 'remain';
@@ -671,7 +683,15 @@ class TimelineUI {
       bar.fg = this.barExpiresSoonColor;
     }
 
-    this.timerlist.addElement(e.id, div, e.sortKey);
+    // Adding a timer with the same id immediately removes the previous.
+    if (this.activeBars[e.id]) {
+      let div = this.activeBars[e.id].parentNode;
+      div.parentNode.removeChild(div);
+    }
+
+    div.style.order = e.sortKey;
+    div.id = e.id;
+    this.timerlist.appendChild(div);
     this.activeBars[e.id] = bar;
     if (e.id in this.expireTimers) {
       window.clearTimeout(this.expireTimers[e.id]);
@@ -694,7 +714,10 @@ class TimelineUI {
       window.clearTimeout(this.expireTimers[e.id]);
       delete this.expireTimers[e.id];
     }
-    this.timerlist.removeElement(e.id);
+
+    let bar = this.activeBars[e.id];
+    let div = bar.parentNode;
+    div.parentNode.removeChild(div);
     delete this.activeBars[e.id];
   }
 
@@ -825,7 +848,7 @@ class TimelineLoader {
         timelines,
         replacements,
         triggers,
-        styles
+        styles,
     );
   }
 

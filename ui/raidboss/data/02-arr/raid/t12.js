@@ -1,7 +1,10 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Final Coil Of Bahamut - Turn \(3\)$/,
+  zoneRegex: {
+    en: /^The Final Coil Of Bahamut - Turn \(3\)$/,
+    cn: /^巴哈姆特大迷宫 \(真源之章3\)$/,
+  },
   timelineFile: 't12.txt',
   triggers: [
     {
@@ -32,8 +35,9 @@
           return;
         return {
           en: 'Bennu Soon',
-          de: 'Bennu Add',
+          de: 'Bennu Add bald',
           fr: 'Bénou bientôt',
+          cn: '小鸟即将出现',
         };
       },
     },
@@ -51,6 +55,7 @@
             en: 'Revelation on YOU',
             de: 'Offenbarung auf DIR',
             fr: 'Révélation sur VOUS',
+            cn: '天启点名',
           };
         }
       },
@@ -59,7 +64,8 @@
           return {
             en: 'Away from ' + data.ShortName(matches.target),
             de: 'Weg von ' + data.ShortName(matches.target),
-            fr: 'Ecartez-vous de ' + data.ShortName(matches.target),
+            fr: 'Éloignez-vous de ' + data.ShortName(matches.target),
+            cn: '远离' + data.ShortName(matches.target),
           };
         }
       },
@@ -75,7 +81,8 @@
       infoText: {
         en: 'Blackfire Spread',
         de: 'Schwarzfeuer verteilen',
-        fr: 'Flamme noire, dispersion',
+        fr: 'Flamme noire, écartez-vous',
+        cn: '黑火分散',
       },
     },
     {
@@ -88,6 +95,7 @@
         en: 'Whitefire on YOU',
         de: 'Weißfeuer auf DIR',
         fr: 'Flamme blanche sur VOUS',
+        cn: '白火点名',
       },
     },
     {
@@ -99,7 +107,8 @@
       alertText: {
         en: 'Bluefire Away',
         de: 'Blaufeuer wegbringen',
-        fr: 'Flame bleue, écartez-vous',
+        fr: 'Flamme bleue, éloignez-vous',
+        cn: '蓝火远离',
       },
     },
     {
@@ -116,15 +125,17 @@
             en: 'Chain on YOU',
             de: 'Kette auf DIR',
             fr: 'Chaine sur VOUS',
+            cn: '毒点名',
           };
         }
       },
       infoText: function(data, matches) {
         if (matches.target != data.me) {
           return {
-            en: 'Chain on ' + data.ShortName(matches[1]),
-            de: 'Kette auf ' + data.ShortName(matches[1]),
-            fr: 'Chaine sur ' + data.ShortName(matches[1]),
+            en: 'Chain on ' + data.ShortName(matches.target),
+            de: 'Kette auf ' + data.ShortName(matches.target),
+            fr: 'Chaine sur ' + data.ShortName(matches.target),
+            cn: '毒点名' + data.ShortName(matches.target),
           };
         }
       },
@@ -133,10 +144,10 @@
   timelineReplace: [
     {
       'locale': 'de',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': 'Start!',
         'Phoenix-Egi': 'Phönix-Egi',
-        'Phoenix': 'Phönix',
+        'Phoenix(?!-)': 'Phönix',
       },
       'replaceText': {
         'Bennu Add': 'Bennu Add',
@@ -146,10 +157,9 @@
         'Flames Of Rebirth': 'Flammen der Wiedergeburt',
         'Flames Of Unforgiveness': 'Zeichen der Läuterung',
         'Fountain Of Fire': 'Quell des Feuers',
-        'Fountain': 'Quell des Feuers',
-        'Rebirth': 'Wiedergeburt',
+        '(?<! )Rebirth': 'Wiedergeburt',
         'Redfire Plume': 'Rotfeuer-Feder',
-        'Redfire': 'Rotfeuer',
+        'Redfire(?! )': 'Rotfeuer',
         'Revelation': 'Offenbarung',
         'Scorched Pinion': 'Versengte Schwinge',
         'Summon': 'Beschwörung',
@@ -158,23 +168,23 @@
     },
     {
       'locale': 'fr',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': 'À l\'attaque',
         'Phoenix-Egi': 'Phénix-Egi',
-        'Phoenix': 'Phénix',
+        'Phoenix(?!-)': 'Phénix',
       },
       'replaceText': {
-        'Bennu Add': 'Bénou Add',
+        'Bennu Add': 'Add Bénou',
         'Blackfire': 'Flamme noire',
         'Bluefire': 'Flamme bleue',
         'Brand Of Purgatory': 'Tison du purgatoire',
         'Flames Of Rebirth': 'Feu résurrecteur',
         'Flames Of Unforgiveness': 'Flammes du purgatoire',
         'Fountain Of Fire': 'Flamme de la vie',
-        'Fountain': 'Flamme de la vie',
-        'Rebirth': 'Résurrection',
+        'Fountain Tick': 'Fontaine tick',
+        '(?<! )Rebirth': 'Résurrection',
         'Redfire Plume': 'Panache rouge',
-        'Redfire': 'Flambée rouge',
+        'Redfire(?! )': 'Flambée rouge',
         'Revelation': 'Révélation',
         'Scorched Pinion': 'Aile embrasante',
         'Summon': 'Invocation',
@@ -183,10 +193,10 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '戦闘開始！',
         'Phoenix-Egi': 'フェニックス・エギ',
-        'Phoenix': 'フェニックス',
+        'Phoenix(?!-)': 'フェニックス',
       },
       'replaceText': {
         'Bennu Add': 'ベンヌ Add',
@@ -196,10 +206,9 @@
         'Flames Of Rebirth': '転生の炎',
         'Flames Of Unforgiveness': '煉獄の爆炎',
         'Fountain Of Fire': '霊泉の炎',
-        'Fountain': '霊泉の炎',
-        'Rebirth': '新生',
+        '(?<! )Rebirth': '新生',
         'Redfire Plume': '赤熱の炎柱',
-        'Redfire': '紅蓮の炎',
+        'Redfire(?! )': '紅蓮の炎',
         'Revelation': 'リヴァレーション',
         'Scorched Pinion': '炎の翼',
         'Summon': '召喚',
@@ -208,9 +217,9 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '战斗开始！',
-        'Phoenix': '不死鸟',
+        'Phoenix(?!-)': '不死鸟',
         'Phoenix-Egi': '不死鸟之灵',
       },
       'replaceText': {
@@ -221,10 +230,9 @@
         'Flames Of Rebirth': '转生之炎',
         'Flames Of Unforgiveness': '炼狱之燎火',
         'Fountain Of Fire': '灵泉之炎',
-        'Fountain': '灵泉之炎',
-        'Rebirth': '重生',
+        '(?<! )Rebirth': '重生',
         'Redfire Plume': '赤红之炎柱',
-        'Redfire': '红莲之炎',
+        'Redfire(?! )': '红莲之炎',
         'Revelation': '天启',
         'Scorched Pinion': '炎之翼',
         'Summon': '召唤',
@@ -233,9 +241,9 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '전투 시작!',
-        'Phoenix': '피닉스',
+        'Phoenix(?!-)': '피닉스',
         'Phoenix-Egi': '피닉스 에기',
       },
       'replaceText': {
@@ -246,10 +254,9 @@
         'Flames Of Rebirth': '윤회의 불꽃',
         'Flames Of Unforgiveness': '연옥의 폭염',
         'Fountain Of Fire': '영검의 불꽃',
-        'Fountain': '영검의 불꽃',
-        'Rebirth': '소생',
+        '(?<! )Rebirth': '소생',
         'Redfire Plume': '작열 불기둥',
-        'Redfire': '홍련의 불꽃',
+        'Redfire(?! )': '홍련의 불꽃',
         'Revelation': '계시',
         'Scorched Pinion': '타오르는 날개',
         'Summon': '소환',

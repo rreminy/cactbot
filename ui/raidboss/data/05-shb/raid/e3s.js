@@ -15,7 +15,7 @@
       infoText: {
         en: 'Line Stack',
         de: 'In einer Linie sammeln',
-        fr: 'Packé en ligne',
+        fr: 'Packez en ligne',
         ja: '直線スタック',
         cn: '直线分摊',
         ko: '쉐어징 모이기',
@@ -50,14 +50,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-        ja: 'AoE',
-        cn: 'AOE',
-        ko: '전체 공격',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'E3S Tidal Rage',
@@ -70,14 +63,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-        ja: 'AoE',
-        cn: 'AOE',
-        ko: '전체 공격',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'E3S Tidal Wave Look',
@@ -108,14 +94,7 @@
       // 3 seconds of cast, 10 seconds of delay.
       // This gives a warning within 5 seconds, so you can hit arm's length.
       delaySeconds: 8,
-      alertText: {
-        en: 'Knockback',
-        de: 'Knockback',
-        fr: 'Poussée',
-        ja: 'ノックバック',
-        cn: '击退',
-        ko: '넉백',
-      },
+      response: Responses.knockback(),
     },
     {
       id: 'E3S Rip Current',
@@ -173,21 +152,14 @@
       },
     },
     {
-      id: 'E3S Undersea Quake Outside',
+      id: 'E3S Undersea Quake Inside',
       regex: Regexes.startsUsing({ id: '3FEE', source: 'Leviathan', capture: false }),
       regexDe: Regexes.startsUsing({ id: '3FEE', source: 'Leviathan', capture: false }),
       regexFr: Regexes.startsUsing({ id: '3FEE', source: 'Léviathan', capture: false }),
       regexJa: Regexes.startsUsing({ id: '3FEE', source: 'リヴァイアサン', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3FEE', source: '利维亚桑', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3FEE', source: '리바이어선', capture: false }),
-      alarmText: {
-        en: 'Go Outside',
-        de: 'Geh nach Ausen',
-        fr: 'Allez sur les côtés',
-        ja: '中壊れるよ',
-        cn: '两侧',
-        ko: '양옆으로',
-      },
+      response: Responses.goSides('alarm'),
     },
     {
       id: 'E3S Flare',
@@ -215,7 +187,7 @@
       infoText: {
         en: 'Stack, Bait Puddles',
         de: 'Sammeln, Flächen ködern',
-        fr: 'Packé, évitez zone au sol',
+        fr: 'Packez, évitez les zones au sol',
         ja: '集合',
         cn: '集合',
         ko: '모이기',
@@ -233,7 +205,7 @@
       infoText: {
         en: 'Drop Puddles Outside',
         de: 'Flächen drausen ablegen',
-        fr: 'Placez les flaques à l\'extérieur',
+        fr: 'Placez les zones à l\'extérieur',
         ja: '散開',
         cn: '散开',
         ko: '산개',
@@ -250,7 +222,7 @@
       infoText: {
         en: 'Stack, Bait Puddles',
         de: 'Sammeln, Flächen ködern',
-        fr: 'Packé, évitez zone au sol',
+        fr: 'Packez, évitez les zones au sol',
         ja: '集合',
         cn: '集合',
         ko: '모이기',
@@ -279,7 +251,7 @@
         return {
           en: 'Stack Outside, Avoid Flares',
           de: 'Auserhalb sammeln, Flares vermeiden',
-          fr: 'Packé à l\'extérieur, évitez les brasiers',
+          fr: 'Packez à l\'extérieur, évitez les brasiers',
           ja: '前で集合',
           cn: '外侧集合躲避核爆',
           ko: '양옆 앞으로 모이고, 플레어 피하기',
@@ -297,7 +269,7 @@
       infoText: {
         en: 'Panto Puddles x5',
         de: 'Panto Flächen x5',
-        fr: 'Panto x5',
+        fr: 'Panto Zones au sol x5',
         ja: 'パント5回',
         cn: '处理水圈 x5',
         ko: '발밑장판 5회',
@@ -320,7 +292,7 @@
         fr: 'Lien sur VOUS',
         ja: '線ついた',
         cn: '水圈连线',
-        ko: '선 대상자',
+        ko: '나에게 선연결',
       },
     },
     {
@@ -337,7 +309,7 @@
       },
     },
     {
-      id: 'E3S Hydrothermal Vent Collect',
+      id: 'E3S Hydrothermal Vent',
       regex: Regexes.tether({ id: '005A', target: 'Leviathan', capture: false }),
       regexDe: Regexes.tether({ id: '005A', target: 'Leviathan', capture: false }),
       regexFr: Regexes.tether({ id: '005A', target: 'Léviathan', capture: false }),
@@ -428,7 +400,7 @@
     },
     {
       // 29 seconds
-      id: 'E3S Scouring Waters',
+      id: 'E3S Scouring Waters Defamation',
       regex: Regexes.gainsEffect({ effect: 'Scouring Waters' }),
       regexDe: Regexes.gainsEffect({ effect: 'Omen Der Böen' }),
       regexFr: Regexes.gainsEffect({ effect: 'Eaux Dévastatrices' }),
@@ -448,7 +420,7 @@
       },
     },
     {
-      id: 'E3S Scouring Waters',
+      id: 'E3S Scouring Waters Avoid Knockback',
       regex: Regexes.gainsEffect({ effect: 'Scouring Waters' }),
       regexDe: Regexes.gainsEffect({ effect: 'Omen Der Böen' }),
       regexFr: Regexes.gainsEffect({ effect: 'Eaux Dévastatrices' }),
@@ -486,14 +458,7 @@
         return parseFloat(matches.duration) - 3;
       },
       suppressSeconds: 1,
-      alertText: {
-        en: 'Stack',
-        de: 'Sammeln',
-        fr: 'Packé',
-        ja: 'スタック',
-        cn: '集合',
-        ko: '모이기',
-      },
+      response: Responses.stack(),
     },
     {
       id: 'E3S Scouring Waters',
@@ -517,7 +482,7 @@
       },
     },
     {
-      id: 'E3S Sweeping Waters',
+      id: 'E3S Sweeping Waters Gain',
       regex: Regexes.gainsEffect({ effect: 'Sweeping Waters' }),
       regexDe: Regexes.gainsEffect({ effect: 'Omen Der Auflösung' }),
       regexFr: Regexes.gainsEffect({ effect: 'Eaux Pulvérisantes' }),
@@ -581,10 +546,10 @@
       infoText: {
         en: 'Front left / Back right',
         de: 'Vorne Links / Hinten Rechts',
-        fr: 'Avant gauche / Arrière droite',
+        fr: 'Avant-gauche / Arrière-droite',
         ja: '左前 / 右後ろ',
         cn: '前左 / 后右',
-        ko: '앞 왼쪽 / 뒤 오른쪽',
+        ko: '↖ 앞 왼쪽 / 뒤 오른쪽 ↘',
       },
     },
     {
@@ -598,10 +563,10 @@
       infoText: {
         en: 'Front right / Back left',
         de: 'Vorne Rechts / Hinten Links',
-        fr: 'Avant droit / Arrière gauche',
+        fr: 'Avant-droite / Arrière-gauche',
         ja: '右前 / 左後ろ',
         cn: '前右 / 后左',
-        ko: '앞 오른쪽 / 뒤 왼쪽',
+        ko: '↗ 앞 오른쪽 / 뒤 왼쪽 ↙',
       },
     },
     {
@@ -623,10 +588,10 @@
       alertText: {
         en: 'Front left / Back right',
         de: 'Vorne Links / Hinten Rechts',
-        fr: 'Avant gauche / Arrière droite',
+        fr: 'Avant-gauche / Arrière-droite',
         ja: '左前 / 右後ろ',
         cn: '前左 / 后右',
-        ko: '앞 왼쪽 / 뒤 오른쪽',
+        ko: '↖ 앞 왼쪽 / 뒤 오른쪽 ↘',
       },
     },
     {
@@ -644,10 +609,10 @@
       alertText: {
         en: 'Front right / Back left',
         de: 'Vorne Rechts / Hinten Links',
-        fr: 'Avant droit / Arrière gauche',
+        fr: 'Avant-droite / Arrière-gauche',
         ja: '右前 / 左後ろ',
         cn: '前右 / 后左',
-        ko: '앞 오른쪽 / 뒤 왼쪽',
+        ko: '↗ 앞 오른쪽 / 뒤 왼쪽 ↙',
       },
     },
   ],
@@ -656,12 +621,11 @@
       'locale': 'de',
       'replaceSync': {
         'Leviathan': 'Leviathan',
-        'Engage!': 'Start!',
       },
       'replaceText': {
         'Unknown Ability': 'Unknown Ability',
         'Undersea Quake': 'Unterwasserbeben',
-        'Tsunami': 'Sturzflut',
+        '(?<! )Tsunami': 'Sturzflut',
         'Tidal Wave': 'Flutwelle',
         'Tidal Roar': 'Schrei der Gezeiten',
         'Tidal Rage': 'Wütende Flut',
@@ -687,13 +651,10 @@
         'Hydrothermal Vent': 'Hydrothermale Quelle',
         'Hot Water': 'Heißes Wasser',
         'Freak Wave': 'Gigantische Welle',
-        'Enrage': 'Finalangriff',
         'Drenching Pulse': 'Tosende Wogen',
-        'Breaking Wave': 'Schmetternde Welle',
+        '(?<!\\w)Breaking Wave': 'Schmetternde Welle',
         'Black Smokers': 'Schwarzer Raucher',
         'Backbreaking Wave': 'Verwüstende Welle',
-        '--untargetable--': '--nich anvisierbar--',
-        '--targetable--': '--anvisierbar--',
       },
       '~effectNames': {
         'Swirling Waters': 'Omen des Wasserwirbels',
@@ -711,12 +672,11 @@
       'locale': 'fr',
       'replaceSync': {
         'Leviathan': 'Léviathan',
-        'Engage!': 'À l\'attaque',
       },
       'replaceText': {
         'Unknown Ability': 'Unknown Ability',
         'Undersea Quake': 'Séisme sous-marin',
-        'Tsunami': 'Tsunami',
+        '(?<! )Tsunami': 'Tsunami',
         'Tidal Wave': 'Raz-de-marée',
         'Tidal Roar': 'Vague rugissante',
         'Tidal Rage': 'Furie des marées',
@@ -742,15 +702,10 @@
         'Hydrothermal Vent': 'Cheminées hydrothermales',
         'Hot Water': 'Eau bouillante',
         'Freak Wave': 'Vague gigantesque',
-        'Enrage': 'Enrage',
         'Drenching Pulse': 'Pulsation sauvage',
-        'Breaking Wave': 'Vague brisante',
+        '(?<!\\w)Breaking Wave': 'Vague brisante',
         'Black Smokers': 'Fumeurs noirs',
         'Backbreaking Wave': 'Vague dévastatrice',
-        '--untargetable--': '--Impossible à cibler--',
-        '--targetable--': '--Ciblable--',
-        '--sync--': '--Synchronisation--',
-        '--Reset--': '--Réinitialisation--',
       },
       '~effectNames': {
         'Swirling Waters': 'Eaux tournoyantes',
@@ -766,14 +721,14 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
         'Leviathan': 'リヴァイアサン',
-        'Engage!': '戦闘開始！',
       },
       'replaceText': {
         'Unknown Ability': 'Unknown Ability',
         'Undersea Quake': 'アンダーシークエイク',
-        'Tsunami': '大海嘯',
+        '(?<! )Tsunami': '大海嘯',
         'Tidal Wave': 'タイダルウェイブ',
         'Tidal Roar': 'タイダルロア',
         'Tidal Rage': 'タイダルレイジ',
@@ -800,7 +755,7 @@
         'Hot Water': '熱水',
         'Freak Wave': 'フリークウェイブ',
         'Drenching Pulse': '猛烈なる波動',
-        'Breaking Wave': 'ブレーキングウェイブ',
+        '(?<!\\w)Breaking Wave': 'ブレーキングウェイブ',
         'Black Smokers': 'ブラックスモーカー',
         'Backbreaking Wave': 'バックブレーキングウェイブ',
       },
@@ -820,7 +775,6 @@
       'locale': 'cn',
       'replaceSync': {
         'Leviathan': '利维亚桑',
-        'Engage!': '战斗开始！',
       },
       'replaceText': {
         'Undersea Quake': '海底地震',
@@ -839,7 +793,7 @@
         'Spilling Wave': '崩碎波',
         'Smothering Tsunami': '溺没大海啸',
         'Scouring Tsunami': '暴风大海啸',
-        'Tsunami': '大海啸',
+        '(?<! )Tsunami': '大海啸',
         'Roiling Pulse': '剧烈波动',
         'Rip Current': '裂流',
         'Refreshing Shower': '水之觉醒',
@@ -851,11 +805,9 @@
         'Hot Water': '热水',
         'Freak Wave': '畸形波',
         'Drenching Pulse': '猛烈波动',
-        'Breaking Wave': '破碎波',
+        '(?<!\\w)Breaking Wave': '破碎波',
         'Black Smokers': '黑色烟柱',
         'Backbreaking Wave': '返破碎波',
-        '--targetable--': '--可选中--',
-        '--untargetable--': '--无法选中--',
       },
       '~effectNames': {
         'Swirling Waters': '涡动之兆',
@@ -873,7 +825,6 @@
       'locale': 'ko',
       'replaceSync': {
         'Leviathan': '리바이어선',
-        'Engage!': '전투 시작!',
       },
       'replaceText': {
         'Undersea Quake': '해저 지진',
@@ -892,7 +843,7 @@
         'Spilling Wave': '붕괴파',
         'Smothering Tsunami': '익몰의 대해일',
         'Scouring Tsunami': '폭풍의 대해일',
-        'Tsunami': '대해일',
+        '(?<! )Tsunami': '대해일',
         'Roiling Pulse': '가열찬 파동',
         'Rip Current': '이안류',
         'Refreshing Shower': '물의 각성',
@@ -903,13 +854,10 @@
         'Hydrothermal Vent': '열수 분출구',
         'Hot Water': '열수',
         'Freak Wave': '기괴한 물결',
-        'Enrage': '전멸기',
         'Drenching Pulse': '맹렬한 파동',
         'Backbreaking Wave': '험난한 물결',
-        'Breaking Wave': '파괴의 물결',
+        '(?<!\\w)Breaking Wave': '파괴의 물결',
         'Black Smokers': '해저 간헐천',
-        '--untargetable--': '--타겟불가능--',
-        '--targetable--': '--타겟가능--',
       },
       '~effectNames': {
         'Swirling Waters': '소용돌이의 징조',

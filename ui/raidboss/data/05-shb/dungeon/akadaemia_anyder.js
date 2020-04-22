@@ -1,31 +1,28 @@
 'use strict';
 
 [{
-  zoneRegex: /^Akadaemia Anyder$/,
+  zoneRegex: {
+    en: /^Akadaemia Anyder$/,
+    cn: /^创造机构阿尼德罗学院$/,
+    ko: /^애나이더 아카데미아$/,
+  },
   timelineFile: 'akadaemia_anyder.txt',
   timelineTriggers: [
     {
       id: 'Anyder Lash',
       regex: /Lash/,
       beforeSeconds: 5,
-      suppressSeconds: 10,
       condition: function(data) {
         return data.role == 'tank' || data.role == 'healer';
       },
-      infoText: {
-        en: 'Mini Buster',
-        de: 'Kleiner Tankbuster',
-      },
+      suppressSeconds: 10,
+      response: Responses.miniBuster(),
     },
     {
       id: 'Anyder Putrid Breath',
       regex: /Putrid Breath/,
       beforeSeconds: 5,
-      infoText: {
-        en: 'Out of Front',
-        de: 'Weg von Vorne',
-        fr: 'Ne restez pas devant',
-      },
+      response: Responses.awayFromFront('info'),
     },
   ],
   triggers: [
@@ -39,6 +36,8 @@
         en: 'puddle on you',
         de: 'Fläche auf DIR',
         fr: 'Flaque sur VOUS',
+        cn: '水球点名',
+        ko: '징 대상자',
       },
     },
     {
@@ -49,22 +48,10 @@
       regexJa: Regexes.startsUsing({ id: '3E04', source: ['クラドセラケ', 'ドリオドゥス'] }),
       regexCn: Regexes.startsUsing({ id: '3E04', source: ['裂口鲨', '原祖鲨'] }),
       regexKo: Regexes.startsUsing({ id: '3E04', source: ['클라도셀라케', '돌리오두스'] }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Anyder Tidal Guillotine',
@@ -78,6 +65,8 @@
         en: 'Away From Swimming Shark',
         de: 'Weg vom schwimmenden Hai',
         fr: 'Ecartez-vous requin dans l\'eau',
+        cn: '远离水中BOSS',
+        ko: '물 속 상어 멀리 떨어지기',
       },
     },
     {
@@ -92,6 +81,8 @@
         en: 'Sides of Swimming Shark',
         de: 'Zu den Seiten vom schwimmenden Hai',
         fr: 'Allez sur les côtés',
+        cn: '去水中BOSS的两侧',
+        ko: '물 속 상어 측면으로 피하기',
       },
     },
     {
@@ -105,11 +96,7 @@
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Anyder Sap Shower',
@@ -117,11 +104,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread',
-        de: 'Verteilen',
-        fr: 'Dispersez vous',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'Anyder Arbor Storm',
@@ -134,28 +117,20 @@
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Anyder Noahionto',
-      regex: Regexes.startsUsing({ id: '430C', source: 'Evil Armor', capture: false }),
-      regexDe: Regexes.startsUsing({ id: '430C', source: 'Bös(?:e|er|es|en) Kampfmaschine', capture: false }),
-      regexFr: Regexes.startsUsing({ id: '430C', source: 'Armure Maléfique', capture: false }),
-      regexJa: Regexes.startsUsing({ id: '430C', source: 'イビルアーマー', capture: false }),
-      regexCn: Regexes.startsUsing({ id: '430C', source: '恶魔装甲', capture: false }),
-      regexKo: Regexes.startsUsing({ id: '430C', source: '사악한 갑옷', capture: false }),
+      regex: Regexes.startsUsing({ id: '430C', source: 'Evil Armor' }),
+      regexDe: Regexes.startsUsing({ id: '430C', source: 'Bös(?:e|er|es|en) Kampfmaschine' }),
+      regexFr: Regexes.startsUsing({ id: '430C', source: 'Armure Maléfique' }),
+      regexJa: Regexes.startsUsing({ id: '430C', source: 'イビルアーマー' }),
+      regexCn: Regexes.startsUsing({ id: '430C', source: '恶魔装甲' }),
+      regexKo: Regexes.startsUsing({ id: '430C', source: '사악한 갑옷' }),
       condition: function(data) {
         return data.CanStun() || data.CanSilence();
       },
-      alertText: {
-        en: 'Interrupt Evil Armor',
-        de: 'Unterbreche Böse Kampfmaschine',
-        fr: 'Interrompez l\'armure maléfique',
-      },
+      response: Responses.interrupt(),
     },
     {
       id: 'Anyder Shockbolt',
@@ -165,22 +140,10 @@
       regexJa: Regexes.startsUsing({ id: '3E23', source: 'ケツァクウァトル' }),
       regexCn: Regexes.startsUsing({ id: '3E23', source: '克察尔科亚特尔' }),
       regexKo: Regexes.startsUsing({ id: '3E23', source: '케찰코아틀' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Anyder Thunderbolt',
@@ -193,11 +156,7 @@
       condition: function(data) {
         return data.role == 'healer' || data.role == 'tank' || data.CanAddle();
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Anyder Thunderstorm',
@@ -212,6 +171,8 @@
         en: 'grab orbs',
         de: 'Orbs nehmen',
         fr: 'Prenez les orbes',
+        cn: '吃球',
+        ko: '구슬 줍기',
       },
     },
   ],
@@ -244,7 +205,6 @@
         'Titan': 'Titan',
         'Quetzalcoatl': 'Quetzalcoatl',
         'Leviathan': 'Leviathan',
-        'Engage!': 'Start!',
         'Eden Prime': 'Eden Prime',
         'Doliodus': 'Doliodus',
         'Cladoselache': 'Cladoselache',
@@ -253,7 +213,6 @@
         'Phantomology': 'Phantomologie',
       },
       'replaceText': {
-        'attack': 'Attacke',
         'Worse Breath': 'Schlimmer Atem ',
         'Winding Current': 'Spulenstrom',
         'Waterspout': 'Wasserrinne',
@@ -276,7 +235,6 @@
         'Lash': 'Peitschenschlag',
         'Frumious Jaws': 'Mampfes Maul',
         'Extensible Tendrils': 'Streckende Ranken',
-        'Enrage': 'Finalangriff',
         'Dominion Slash': 'Fleischerhaken des Dominion',
         'Detonator': 'Detonation',
         'Dark Arrivisme': 'Dunkles Emporkommen',
@@ -285,8 +243,7 @@
         'Aquatic Lance': 'Aquaspeer',
         'Aqua Spear': 'Wasserspeer',
         'Acrid Stream': 'Ätzende Strömung',
-        '--untargetable--': '--nich anvisierbar--',
-        'targetable--': 'anvisierbar--',
+        '(?<!un)targetable--': 'anvisierbar--',
         'Carcharian Verve': 'Haifischschwung',
       },
       '~effectNames': {
@@ -319,16 +276,13 @@
         'engendered bandersnatch': 'Bandersnatch artificiel',
         'engendered anemone': 'Anémone artificielle',
         'Quetzalcoatl': 'Quetzalcóatl',
-        'Engage!': 'À l\'attaque',
         'Doliodus': 'Doliodus',
         'Cladoselache': 'Cladoselache',
-        'Ichthyology will be sealed off': 'Fermeture du département d\'ichtyogénie!',
-        'Phytobiology will be sealed off': 'Fermeture du département de phytogénie!',
-        'Phantomology will be sealed off': 'Fermeture du département de phantasmagénie!',
-        'is no longer sealed': 'Ouverture',
+        'Ichthyology': 'département d\'ichtyogénie!',
+        'Phytobiology': 'département de phytogénie!',
+        'Phantomology': 'département de phantasmagénie!',
       },
       'replaceText': {
-        'attack': 'Attaque',
         'Worse Breath': 'Haleine pestilentielle',
         'Winding Current': 'Volte-courant',
         'Waterspout': 'Jet d\'eau',
@@ -351,7 +305,6 @@
         'Lash': 'Coup de fouet',
         'Frumious Jaws': 'Mâchoires furieuses',
         'Extensible Tendrils': 'Cep extensible',
-        'Enrage': 'Enrage',
         'Dominion Slash': 'Entaille de domination',
         'Detonator': 'Détonation violente',
         'Dark Arrivisme': 'Sombre ambition',
@@ -360,10 +313,7 @@
         'Aquatic Lance': 'Lance aquatique',
         'Aqua Spear': 'Épieu aquatique',
         'Acrid Stream': 'Projection âcre',
-        '--untargetable--': '--Impossible à cibler--',
-        'targetable--': 'Ciblable--',
-        '--sync--': '--Synchronisation--',
-        '--Reset--': '--Réinitialisation--',
+        '(?<!un)targetable--': 'ciblable--',
         'Carcharian Verve': 'Verve carcharienne',
       },
       '~effectNames': {
@@ -373,6 +323,7 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
         'marquis morbol': 'マーカス・モルボル',
         'laboratory tomato': 'ラボラトリー・トマト',
@@ -399,7 +350,6 @@
         'Titan': 'タイタン',
         'Quetzalcoatl': 'ケツァクウァトル',
         'Leviathan': 'リヴァイアサン',
-        'Engage!': '戦闘開始！',
         'Eden Prime': 'Eden Prime',
         'Doliodus': 'ドリオドゥス',
         'Cladoselache': 'クラドセラケ',
@@ -408,7 +358,6 @@
         'Phantomology': '幻想生物創造場',
       },
       'replaceText': {
-        'attack': '攻撃',
         'Worse Breath': '悪臭い息',
         'Winding Current': 'ループカレント',
         'Waterspout': 'ウォータースパウト',
@@ -449,18 +398,147 @@
     {
       'locale': 'cn',
       'replaceSync': {
-        'Voidwalker': 'Voidwalker',
+        'Marquis Morbol': '侯爵魔界花',
+        'laboratory tomato': '研究所番茄',
+        'laboratory queen': '研究所王后',
+        'laboratory onion': '研究所洋葱',
+        'laboratory garlic': '研究所蒜头',
+        'laboratory eggplant': '研究所茄子',
+        'evil armor': '恶魔装甲',
+        'engendered soma': '创造出的苏摩',
+        'engendered snapweed': '创造出的捕捉草',
+        'engendered shark': '创造出的鲨鱼',
+        'engendered pteraketos': '创造出的刻托斯',
+        'engendered pegasus': '创造出的天马',
+        'engendered monk': '创造出的鬼鱼',
+        'engendered lycopersicum': '创造出的狼桃',
+        'engendered danbania': '创造出的刺枪鱼',
+        'engendered clionid': '创造出的冰海天使',
+        'engendered cactuar giant': '创造出的巨人掌',
+        'engendered bombfish': '创造出的爆弹鱼',
+        'engendered bomb': '创造出的爆弹怪',
+        'engendered bandersnatch': '创造出的斑攫兽',
+        'engendered anemone': '创造出的风花',
+        'Voidwalker': '虚无行者',
         'Titan': '泰坦',
+        'Quetzalcoatl': '克察尔科亚特尔',
         'Leviathan': '利维亚桑',
-        'Engage!': '战斗开始！',
-        'Eden Prime': 'Eden Prime',
+        'Eden Prime': '至尊伊甸',
+        'Doliodus': '原祖鲨',
+        'Cladoselache': '裂口鲨',
+        'Ichthyology': '水生生物创造场',
+        'Phytobiology': '草木生物创造场',
+        'Phantomology': '幻想生物创造场',
+        'marquis morbol': '侯爵魔界花',
       },
       'replaceText': {
-        'attack': '攻击',
+        'Worse Breath': '恶臭吐息',
+        'Winding Current': '绕组电流',
+        'Waterspout': '喷射水波',
+        'Tidal Guillotine': '怒潮断头台',
+        'Thunderstorm': '雷暴',
+        'Thunderbolt': '霹雳',
+        'Syrup Spout': '喷射汁液',
+        'Shocking Plumage': '羽翼震击',
+        'Shockbolt': '雷电震击',
+        'Sap Shower': '喷洒汁液',
+        'Reverse Current': '反转电流',
+        'Raging Waters': '怒水',
+        'Quasar': '类星体',
+        'Putrid Breath': '腐烂之息',
+        'Protolithic Puncture': '原始穿孔',
+        'Pelagic Cleaver': '深海切割者',
+        'Noahionto': '新烈光',
+        'Needle Storm': '刺针风暴',
+        'Marine Mayhem': '海之骚动',
+        'Lash': '鞭打',
+        'Frumious Jaws': '胡乱咬',
+        'Extensible Tendrils': '藤条抽打',
+        'Dominion Slash': '支配斩',
+        'Detonator': '爆炸',
+        'Dark Arrivisme': '黑暗野心',
+        'Blossom': '花丛',
+        'Arbor Storm': '树木风暴',
+        'Aquatic Lance': '水之枪',
+        'Aqua Spear': '水之矛',
+        'Acrid Stream': '苦涩水流',
+        'Carcharian Verve': '鲨之气魄',
+        '--2x targetable--': '--2x 可选中--',
+        '--1x targetable--': '--1x 可选中--',
       },
       '~effectNames': {
         'Stun': '眩晕',
         'Damage Up': '伤害提高',
+      },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Marquis Morbol': '몰볼 후작',
+        'laboratory tomato': '연구실 토마토',
+        'laboratory queen': '연구실 왕비',
+        'laboratory onion': '연구실 양파',
+        'laboratory garlic': '연구실 마늘',
+        'laboratory eggplant': '연구실 가지',
+        'evil armor': '사악한 갑옷',
+        'engendered soma': '창조된 소마',
+        'engendered snapweed': '창조된 물봉선화',
+        'engendered shark': '창조된 상어',
+        'engendered pteraketos': '창조된 케투스',
+        'engendered pegasus': '창조된 페가수스',
+        'engendered monk': '물귀신 탄약수',
+        'engendered lycopersicum': '창조된 리코페르시쿰',
+        'engendered danbania': '창조된 단바니아',
+        'engendered clionid': '창조된 클리오니드',
+        'engendered cactuar giant': '창조된 기가텐더',
+        'engendered bombfish': '창조된 가시봄',
+        'engendered bomb': '창조된 봄',
+        'engendered bandersnatch': '창조된 밴더스내치',
+        'engendered anemone': '창조된 아네모네',
+        'Quetzalcoatl': '케찰코아틀',
+        'Doliodus': '돌리오두스',
+        'Cladoselache': '클라도셀라케',
+        'Ichthyology': '수생 생물 창조장',
+        'Phytobiology': '초목 생물 창조장',
+        'Phantomology': '환상 생물 창조장',
+      },
+      'replaceText': {
+        'Worse Breath': '악취 숨결',
+        'Winding Current': '원형전류',
+        'Waterspout': '물 분출',
+        'Tidal Guillotine': '해일 단두대',
+        'Thunderstorm': '번개 폭풍',
+        'Thunderbolt': '낙뢰',
+        'Syrup Spout': '단물 튀기기',
+        'Shocking Plumage': '충격 깃털',
+        'Shockbolt': '충격 전류',
+        'Sap Shower': '수액 세례',
+        'Reverse Current': '역전류',
+        'Raging Waters': '성난 물',
+        'Quasar': '퀘이사',
+        'Putrid Breath': '불길한 탄식',
+        'Protolithic Puncture': '원시 찌르기',
+        'Pelagic Cleaver': '대양의 도끼날',
+        'Noahionto': '노아히온토',
+        'Needle Storm': '바늘 폭풍',
+        'Marine Mayhem': '바다의 파괴력',
+        'Lash': '채찍',
+        'Frumious Jaws': '격노한 턱',
+        'Extensible Tendrils': '덩굴 채찍',
+        'Dominion Slash': '지배의 참격',
+        'Detonator': '대폭발',
+        'Dark Arrivisme': '음습한 야심',
+        'Blossom': '개화',
+        'Arbor Storm': '나무 폭풍',
+        'Aquatic Lance': '수창',
+        'Aqua Spear': '물의 창',
+        'Acrid Stream': '매캐한 냇물',
+        'x targetable--': '마리 타겟 가능--',
+        'Carcharian Verve': '상어의 기백',
+      },
+      '~effectNames': {
+        'Stun': '기절',
+        'Damage Up': '주는 피해량 증가',
       },
     },
   ],

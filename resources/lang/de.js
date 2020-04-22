@@ -49,6 +49,11 @@ class CactbotLanguageDe extends CactbotLanguage {
       PresenceOfMind: 'Geistesgegenwart',
       Shifu: 'Shifu',
       CircleOfPower: 'Ley-Linien',
+      AstralAttenuation: 'Lichtschwäche',
+      UmbralAttenuation: 'Schattenschwäche',
+      PhysicalAttenuation: 'Leibesschwäche',
+
+      SurgeProtection: 'Überspannungsschutz',
 
       Paralysis: 'Paralyse',
       Petrification: 'Stein',
@@ -62,6 +67,15 @@ class CactbotLanguageDe extends CactbotLanguage {
       FoolsTumble: 'Trügerischer Sturz', // 0x183
       Dropsy: 'Wassersucht',
       Throttle: 'Erstickung',
+      StaticCondensation: 'Statische Ladung',
+      DamageDown: 'Schaden -',
+      AstralEffect: 'Denaturation Licht',
+      UmbralEffect: 'Denaturation Dunkelheit',
+      Stun: 'Betäubung',
+      ThinIce: 'Glatteis',
+      DeepFreeze: 'Tiefkühlung',
+
+      Windburn: 'Beißender Wind',
     });
 
     this.kUIStrings = Object.freeze({
@@ -79,10 +93,10 @@ class CactbotLanguageDe extends CactbotLanguage {
       return /:(\y{Name}) hat den Countdown abgebrochen/;
     };
     this.areaSealRegex = function() {
-      return /:Noch (\y{float}) Sekunden bis sich der Zugang zu (.*) schließt/;
+      return /:Noch (\y{float}) Sekunden, bis sich (.*) schließt/;
     };
     this.areaUnsealRegex = function() {
-      return /:Der Zugang zu (.*) öffnet sich erneut/;
+      return /:(.*) öffnet sich erneut/;
     };
   }
 }

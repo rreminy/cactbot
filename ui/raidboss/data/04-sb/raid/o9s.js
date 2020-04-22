@@ -5,6 +5,7 @@
   zoneRegex: {
     en: /^Alphascape V1\.0 \(Savage\)$/,
     cn: /^欧米茄零式时空狭缝 \(阿尔法幻境1\)$/,
+    ko: /^차원의 틈 오메가: 알파편\(영웅\) \(1\)$/,
   },
   timelineFile: 'o9s.txt',
   triggers: [
@@ -17,52 +18,7 @@
       regexJa: Regexes.startsUsing({ id: '3170', source: 'カオス' }),
       regexCn: Regexes.startsUsing({ id: '3170', source: '卡奥斯' }),
       regexKo: Regexes.startsUsing({ id: '3170', source: '카오스' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            cn: '死刑减伤',
-          };
-        }
-        if (data.role == 'tank') {
-          return {
-            en: 'Tank Swap',
-            de: 'Tank-Wechsel',
-            fr: 'Tank Swap',
-            ja: 'スイッチ',
-            cn: '换T',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            cn: '死刑-> ' + data.ShortName(matches.target),
-          };
-        }
-      },
-      tts: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'buster',
-            de: 'basta',
-            fr: 'tankbuster',
-            ja: 'バスター',
-            cn: '死刑',
-          };
-        } else if (data.role == 'tank') {
-          return {
-            en: 'tank swap',
-            de: 'tenk wechsel',
-            fr: 'tank swap',
-            ja: 'スイッチ',
-            cn: '换T',
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'O9S Longitudinal Implosion',
@@ -80,6 +36,7 @@
             fr: 'Devant/Derrière puis Côtés',
             ja: '縦 -> 横で死ぬ',
             cn: '死：前后 -> 左右',
+            ko: '앞뒤 -> 양옆 (디버프)',
           };
         }
       },
@@ -91,6 +48,7 @@
             fr: 'Côtés puis Devant/Derrière',
             ja: '横 -> 縦',
             cn: '左右 -> 前后',
+            ko: '양옆 -> 앞뒤',
           };
         }
       },
@@ -102,6 +60,7 @@
             fr: 'aller derrière',
             ja: '縦から',
             cn: '前后找死',
+            ko: '뒤에서 맞기 (디버프)',
           };
         }
         return {
@@ -110,6 +69,7 @@
           fr: 'aller sur les cotés',
           ja: '横から',
           cn: '左右闪避',
+          ko: '양옆으로',
         };
       },
     },
@@ -129,6 +89,7 @@
             fr: 'Devant/Derrière puis Côtés',
             ja: '横 -> 縦で死ぬ',
             cn: '死：左右 -> 前后',
+            ko: '양옆 -> 앞뒤 (디버프)',
           };
         }
       },
@@ -140,6 +101,7 @@
             fr: 'Devant/Derrière puis Côtés',
             ja: '縦 -> 横',
             cn: '前后 -> 左右',
+            ko: '앞뒤 -> 양옆',
           };
         }
       },
@@ -151,6 +113,7 @@
             fr: 'aller sur les cotés',
             ja: '横から',
             cn: '左右找死',
+            ko: '양옆 (디버프)',
           };
         }
         return {
@@ -159,6 +122,7 @@
           fr: 'aller derrière',
           ja: '縦から',
           cn: '前后闪避',
+          ko: '뒤로 이동',
         };
       },
     },
@@ -170,12 +134,7 @@
       regexJa: Regexes.startsUsing({ id: '3171', source: 'カオス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3171', source: '卡奥斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3171', source: '카오스', capture: false }),
-      infoText: {
-        en: 'Get Behind',
-        de: 'Hinten dran',
-        fr: 'Derrière le boss',
-        ja: '背面へ',
-      },
+      response: Responses.getBehind(),
     },
     {
       id: 'O9S Orbs Fiend',
@@ -193,6 +152,7 @@
             fr: 'Récupérez l\'orbe',
             ja: '線出たよ',
             cn: '接线',
+            ko: '구슬 연결',
           };
         }
       },
@@ -204,6 +164,7 @@
             fr: 'Récupérez l\'orbe',
             ja: '線出たよ',
             cn: '坦克接线注意治疗',
+            ko: '구슬 연결',
           };
         }
       },
@@ -251,6 +212,7 @@
             fr: 'Ecartez-vous',
             ja: '散開',
             cn: '分散',
+            ko: '산개',
           };
         } else if (data.role == 'tank' || data.role == 'healer') {
           return {
@@ -259,6 +221,7 @@
             fr: 'Ecartez-vous et restez',
             ja: '散開して待機',
             cn: '分散并停留',
+            ko: '산개하고 가만히',
           };
         }
         // DPS entropy #2
@@ -268,6 +231,7 @@
           fr: 'Packez-vous et restez',
           ja: '中央に集合',
           cn: '中间集合',
+          ko: '산개하고 바깥에 있기',
         };
       },
       run: function(data) {
@@ -302,6 +266,7 @@
         fr: 'Allez au centre',
         ja: '中央へ',
         cn: '中间躲避',
+        ko: '중앙으로 모이기',
       },
     },
     {
@@ -312,17 +277,18 @@
       regexJa: Regexes.startsUsing({ id: '3180', source: 'カオス', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3180', source: '卡奥斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3180', source: '카오스', capture: false }),
-      // Each big bang has its own cast, so suppress.
-      suppressSeconds: 1,
       condition: function(data) {
         return data.phaseType == 'fire';
       },
+      // Each big bang has its own cast, so suppress.
+      suppressSeconds: 1,
       alertText: {
         en: 'Hide Middle',
         de: 'Zur Mitte',
         fr: 'Allez au centre',
         ja: '中央へ',
         cn: '中间躲避',
+        ko: '중앙으로 모이기',
       },
     },
     // Water Path
@@ -350,15 +316,16 @@
       condition: function(data) {
         return data.phaseType == 'water';
       },
+      delaySeconds: 5,
       suppressSeconds: 1,
       // T/H get 10s & DPS get 17s
-      delaySeconds: 5,
       infoText: {
         en: 'Stack Donut',
         de: 'Sammeln Donut',
         fr: 'Packez-vous',
         ja: 'スタック',
         cn: '集合放月环',
+        ko: '도넛 쉐어',
       },
     },
     {
@@ -372,15 +339,16 @@
       condition: function(data) {
         return data.phaseType == 'water';
       },
-      suppressSeconds: 1,
       // T/H get 10s & DPS get 17s
       delaySeconds: 12,
+      suppressSeconds: 1,
       infoText: {
         en: 'Stack Donut',
         de: 'Sammeln Donut',
         fr: 'Packez-vous',
         ja: 'スタック',
         cn: '集合放月环',
+        ko: '도넛 쉐어',
       },
     },
     {
@@ -394,15 +362,16 @@
       condition: function(data) {
         return data.phaseType == 'enrage';
       },
-      suppressSeconds: 1,
       // enrage -> 6s
       delaySeconds: 1,
+      suppressSeconds: 1,
       infoText: {
         en: 'Stack Donut',
         de: 'Sammeln Donut',
         fr: 'Packez-vous',
         ja: 'スタック',
         cn: '集合放月环',
+        ko: '도넛 쉐어',
       },
     },
     {
@@ -419,6 +388,7 @@
             fr: 'Allez au Nord/Sud',
             ja: 'メテオ捨てて',
             cn: '远离放点名',
+            ko: '바깥으로 빼기',
           };
         } else if (data.phaseType == 'wind') {
           return {
@@ -427,6 +397,7 @@
             fr: 'Déposez dans les coins',
             ja: 'メテオ捨てて + ノックバック',
             cn: '远离放点名 + 冲回人群',
+            ko: '바깥으로 빼기 + 넉백',
           };
         }
       },
@@ -490,6 +461,7 @@
             de: 'Rücken zum Tornado',
             fr: 'Regardez vers l\'extérieur',
             cn: '背对龙卷风',
+            ko: '토네이도 뒤돌기',
           };
         }
         if (data.wind == 'tail') {
@@ -498,6 +470,7 @@
             de: 'Zum Tornado hin',
             fr: 'Regardez la tornade',
             cn: '面对龙卷风',
+            ko: '토네이도 바라보기',
           };
         }
       },
@@ -539,6 +512,7 @@
             fr: 'Soignez tout le monde full vie',
             ja: 'HP戻して',
             cn: '奶满全队',
+            ko: '전원 체력 풀피로',
           };
         }
         return {
@@ -547,6 +521,7 @@
           fr: 'Soignez Heals/Tanks full vie',
           ja: 'HP戻して',
           cn: '奶满T奶',
+          ko: '탱/힐 체력 풀피로',
         };
       },
     },
@@ -567,13 +542,14 @@
         fr: 'Mourrez sur la prochaine mécanique',
         ja: '次のギミックで死んでね',
         cn: '想办法找死',
+        ko: '다음 기믹에 맞기 (디버프)',
       },
       run: function(data) {
         data.primordialCrust = true;
       },
     },
     {
-      // Primordial Crust Cleanup
+      id: 'O9S Primordial Crust Cleanup',
       regex: Regexes.gainsEffect({ effect: 'Primordial Crust' }),
       regexDe: Regexes.gainsEffect({ effect: 'Chaoserde' }),
       regexFr: Regexes.gainsEffect({ effect: 'Terre Du Chaos' }),
@@ -597,6 +573,7 @@
         de: 'Stacks verteilen',
         fr: 'Packez-vous en binôme',
         cn: '与伙伴重合',
+        ko: '파트너랑 모이기',
       },
     },
 
@@ -624,10 +601,10 @@
       condition: function(data, matches) {
         return matches.target != data.me && data.phaseType == 'orb';
       },
-      suppressSeconds: 10,
       delaySeconds: function(data, matches) {
         return parseFloat(matches.duration) - 3;
       },
+      suppressSeconds: 10,
       alertText: function(data) {
         if (data.head == 'wind') {
           return {
@@ -636,6 +613,7 @@
             fr: 'Dos au DPS',
             ja: 'DPSの後ろへ',
             cn: '背对DPS',
+            ko: '딜러한테서 뒤돌기',
           };
         }
       },
@@ -663,6 +641,7 @@
         fr: 'Tuez les DPS',
         ja: '水当てて',
         cn: '水环害死DPS',
+        ko: '딜러 물 맞기',
       },
     },
 
@@ -689,12 +668,9 @@
       'replaceSync': {
         'Chaos': 'Chaos',
         'Chaosphere': 'Chaossphäre',
-        'Engage!': 'Start!',
-        'dark crystal': 'dunkler Kristall',
+        'dark crystal': 'dunkl(?:e|er|es|en) Kristall',
       },
       'replaceText': {
-        '--targetable--': '--anvisierbar--',
-        '--untargetable--': '--nich anvisierbar--',
         'Big Bang': 'Quantengravitation',
         'Blaze': 'Flamme',
         'Bowels of Agony': 'Quälende Eingeweide',
@@ -703,11 +679,11 @@
         'Cyclone': 'Tornado',
         'Damning Edict': 'Verdammendes Edikt',
         'Earthquake': 'Erdbeben',
-        'Enrage': 'Finalangriff',
         'Fiendish Orbs': 'Höllenkugeln',
-        'Knock': 'Einschlag',
         'Knock Down': 'Niederschmettern',
+        'Knock(?! )': 'Einschlag',
         'Latitudinal Implosion': 'Horizontale Implosion',
+        'Long/Lat Implosion': 'Horizontale/Vertikale Implosion',
         'Longitudinal Implosion': 'Vertikale Implosion',
         'Orbshadow': 'Kugelschatten',
         'Shockwave': 'Schockwelle',
@@ -718,7 +694,6 @@
         'Stray Spray': 'Chaosspritzer',
         'Tsunami': 'Tsunami',
         'Umbra Smash': 'Schattenschlag',
-        'Long/Lat Implosion': 'Horizontale/Vertikale Implosion',
         '\\(ALL\\)': '(ALLE)',
       },
       '~effectNames': {
@@ -727,7 +702,7 @@
         'Entropy': 'Chaosflammen',
         'Headwind': 'Chaosböen',
         'Magic Vulnerability Up': 'Erhöhte Magie-Verwundbarkeit',
-        'Physical Vulnerability Up': 'Erhöhte Physische Verwundbarkeit',
+        'Physical Vulnerability Up': 'Erhöhte physische Verwundbarkeit',
         'Primordial Crust': 'Chaoserde',
         'Tailwind': 'Chaossturm',
       },
@@ -736,28 +711,23 @@
       'locale': 'fr',
       'replaceSync': {
         'Chaos': 'Chaos',
-        'Chaosphere': 'Sphère De Chaos',
-        'Engage!': 'À l\'attaque',
-        'Dark crystal': 'Cristal noir',
+        'Chaosphere': 'Sphère de chaos',
+        'dark crystal': 'cristal noir',
       },
       'replaceText': {
-        '--Reset--': '--Réinitialisation--',
-        '--sync--': '--Synchronisation--',
-        '--targetable--': '--Ciblable--',
-        '--untargetable--': '--Impossible à cibler--',
         'Big Bang': 'Saillie',
-        'Blaze': 'Flammes',
+        'Blaze': 'Fournaise',
         'Bowels of Agony': 'Entrailles de l\'agonie',
         'Chaosphere': 'Sphère de chaos',
         'Chaotic Dispersion': 'Dispersion chaotique',
         'Cyclone': 'Tornade',
         'Damning Edict': 'Décret accablant',
-        'Earthquake': 'Séisme',
-        'Enrage': 'Enrage',
+        'Earthquake': 'Grand séisme',
         'Fiendish Orbs': 'Ordre de poursuite',
-        'Knock': 'Impact',
         'Knock Down': 'Ordre d\'impact',
+        'Knock(?! )': 'Impact',
         'Latitudinal Implosion': 'Implosion horizontale',
+        'Long/Lat Implosion': 'Implosion Hz/Vert',
         'Longitudinal Implosion': 'Implosion verticale',
         'Orbshadow': 'Poursuite',
         'Shockwave': 'Onde de choc',
@@ -768,7 +738,6 @@
         'Stray Spray': 'Eaux du chaos',
         'Tsunami': 'Raz-de-marée',
         'Umbra Smash': 'Fracas ombral',
-        'Long/Lat Implosion': 'Implosion Hz/Vert',
         '\\(ALL\\)': '(Tous)',
       },
       '~effectNames': {
@@ -776,8 +745,8 @@
         'Dynamic Fluid': 'Eaux du chaos',
         'Entropy': 'Flammes du chaos',
         'Headwind': 'Vent du chaos',
-        'Magic Vulnerability Up': 'Vulnérabilité Magique Augmentée',
-        'Physical Vulnerability Up': 'Vulnérabilité Physique Augmentée',
+        'Magic Vulnerability Up': 'Vulnérabilité magique augmentée',
+        'Physical Vulnerability Up': 'Vulnérabilité physique augmentée',
         'Primordial Crust': 'Terre du chaos',
         'Tailwind': 'Vent contraire du chaos',
       },
@@ -787,7 +756,6 @@
       'replaceSync': {
         'Chaos': 'カオス',
         'Chaosphere': 'カオススフィア',
-        'Engage!': '戦闘開始！',
         'dark crystal': '黒水晶',
       },
       'replaceText': {
@@ -800,9 +768,10 @@
         'Damning Edict': 'ダミングイーディクト',
         'Earthquake': 'じしん',
         'Fiendish Orbs': '追尾せよ',
-        'Knock': '着弾',
         'Knock Down': '着弾せよ',
+        'Knock(?! )': '着弾',
         'Latitudinal Implosion': 'ホリゾンタルインプロージョン',
+        'Long/Lat Implosion': 'Long/Lat Implosion', // FIXME
         'Longitudinal Implosion': 'ヴァーティカルインプロージョン',
         'Orbshadow': '追尾',
         'Shockwave': '衝撃波',
@@ -813,10 +782,7 @@
         'Stray Spray': '混沌の水',
         'Tsunami': 'つなみ',
         'Umbra Smash': 'アンブラスマッシュ',
-
-        // FIXME
-        'Long/Lat Implosion': 'Long/Lat Implosion',
-        '\\(ALL\\)': '(ALL)',
+        '\\(ALL\\)': '\\(ALL\\)', // FIXME
       },
       '~effectNames': {
         'Accretion': '混沌の泥土',
@@ -834,13 +800,10 @@
       'replaceSync': {
         'Chaos': '卡奥斯',
         'Chaosphere': '混沌晶球',
-        'Dark Crystal': '黑水晶',
-        'Dark crystal': '黑水晶',
-        'Engage!': '战斗开始！',
         'dark crystal': '黑水晶',
       },
       'replaceText': {
-        'Big Bang': '顶起',
+        'Big Bang': '돌출',
         'Blaze': '烈焰',
         'Bowels of Agony': '深层痛楚',
         'Chaosphere': '混沌晶球',
@@ -849,20 +812,21 @@
         'Damning Edict': '诅咒敕令',
         'Earthquake': '地震',
         'Fiendish Orbs': '追踪',
-        'Knock': '中弹',
         'Knock Down': '中弹',
+        'Knock(?! )': '中弹',
         'Latitudinal Implosion': '纬度聚爆',
+        'Long/Lat Implosion': '经/纬聚爆',
         'Longitudinal Implosion': '经度聚爆',
         'Orbshadow': '追踪',
         'Shockwave': '冲击波',
         'Soul of Chaos': '混沌之魂',
+        'Stray Earth': '混沌之土',
         'Stray Flames': '混沌之炎',
+        'Stray Gusts': '混沌之风',
         'Stray Spray': '混沌之水',
         'Tsunami': '海啸',
         'Umbra Smash': '本影爆碎',
-        'attack': '攻击',
-        'Long/Lat Implosion': '经/纬聚爆',
-        '\\(ALL\\)': '(所有)',
+        '\\(ALL\\)': '\\(全部\\)',
       },
       '~effectNames': {
         'Accretion': '混沌之泥土',
@@ -873,6 +837,50 @@
         'Physical Vulnerability Up': '物理受伤加重',
         'Primordial Crust': '混沌之土',
         'Tailwind': '混沌之逆风',
+      },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Chaos': '카오스',
+        'Chaosphere': '혼돈의 구체',
+        'dark crystal': '흑수정',
+      },
+      'replaceText': {
+        'Big Bang': '돌출하라',
+        'Blaze': '화염',
+        'Bowels of Agony': '고통의 심핵',
+        'Chaosphere': '혼돈의 구체',
+        'Chaotic Dispersion': '혼돈 유포',
+        'Cyclone': '회오리',
+        'Damning Edict': '파멸 포고',
+        'Earthquake': '지진',
+        'Fiendish Orbs': '추격하라',
+        'Knock Down': '착탄하라',
+        'Knock(?! )': '착탄',
+        'Latitudinal Implosion': '가로 내파',
+        'Long/Lat Implosion': '가로/세로 내파',
+        'Longitudinal Implosion': '세로 내파',
+        'Orbshadow': '추격',
+        'Shockwave': '충격파',
+        'Soul of Chaos': '혼돈의 영혼',
+        'Stray Earth': '혼돈의 흙',
+        'Stray Flames': '혼돈의 불',
+        'Stray Gusts': '혼돈의 바람',
+        'Stray Spray': '혼돈의 물',
+        'Tsunami': '해일',
+        'Umbra Smash': '그림자 타격',
+        '\\(ALL\\)': '(모두)',
+      },
+      '~effectNames': {
+        'Accretion': '혼돈의 진흙',
+        'Dynamic Fluid': '혼돈의 물',
+        'Entropy': '혼돈의 불',
+        'Headwind': '혼돈의 바람',
+        'Magic Vulnerability Up': '받는 마법 피해량 증가',
+        'Physical Vulnerability Up': '받는 물리 피해량 증가',
+        'Primordial Crust': '혼돈의 흙',
+        'Tailwind': '바람몰이',
       },
     },
   ],

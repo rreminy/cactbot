@@ -9,6 +9,7 @@
   zoneRegex: {
     en: /^Sigmascape V4\.0 \(Savage\)$/,
     ko: /^차원의 틈 오메가: 시그마편\(영웅\) \(4\)$/,
+    cn: /^欧米茄零式时空狭缝 \(西格玛幻境4\)$/,
   },
   timelineFile: 'o8s.txt',
   triggers: [
@@ -21,20 +22,7 @@
       regexCn: Regexes.startsUsing({ id: '28DB', source: '众神之像', capture: false }),
       regexKo: Regexes.startsUsing({ id: '28DB', source: '신들의 상', capture: false }),
       delaySeconds: 5,
-      alertText: {
-        en: 'Look for Knockback',
-        fr: 'Préparez-vous à la projection',
-        de: 'Auf Rückstoß achten',
-        ko: '넉백 대비',
-        ja: 'ノックバックくるよ',
-      },
-      tts: {
-        en: 'knockback',
-        fr: 'Projection',
-        de: 'Rückstoß',
-        ko: '넉백',
-        ja: 'ノックバック',
-      },
+      response: Responses.knockback(),
     },
     {
       id: 'O8S Indolent Will',
@@ -50,6 +38,7 @@
         de: 'Von Statue wegschauen',
         ko: '시선 피하기',
         ja: '塔を見ないで！',
+        cn: '背对神像',
       },
       tts: {
         en: 'look away',
@@ -57,6 +46,7 @@
         de: 'weckschauen',
         ko: '뒤돌기',
         ja: '見るな！',
+        cn: '背对神像',
       },
     },
     {
@@ -67,20 +57,7 @@
       regexJa: Regexes.startsUsing({ id: '28DF', source: '神々の像', capture: false }),
       regexCn: Regexes.startsUsing({ id: '28DF', source: '众神之像', capture: false }),
       regexKo: Regexes.startsUsing({ id: '28DF', source: '신들의 상', capture: false }),
-      alertText: {
-        en: '<= Get Left/West',
-        fr: '<= Allez à Gauche/Ouest',
-        de: '<= Nach Links/Westen',
-        ko: '<= 왼쪽이 안전',
-        ja: '<= 左/西へ',
-      },
-      tts: {
-        en: 'left',
-        fr: 'gauche',
-        de: 'links',
-        ko: '왼쪽',
-        ja: '左',
-      },
+      response: Responses.goWest(),
     },
     {
       id: 'O8S Gravitational Wave',
@@ -90,20 +67,7 @@
       regexJa: Regexes.startsUsing({ id: '28DE', source: '神々の像', capture: false }),
       regexCn: Regexes.startsUsing({ id: '28DE', source: '众神之像', capture: false }),
       regexKo: Regexes.startsUsing({ id: '28DE', source: '신들의 상', capture: false }),
-      alertText: {
-        en: 'Get Right/East =>',
-        fr: 'Allez à Droite/Est =>',
-        de: 'Nach Rechts/Westen =>',
-        ko: '오른쪽이 안전 =>',
-        ja: '右/東へ =>',
-      },
-      tts: {
-        en: 'right',
-        fr: 'Projection depuis le côté droit',
-        de: 'rechts',
-        ko: '오른쪽',
-        ja: '右',
-      },
+      response: Responses.goEast(),
     },
     {
       id: 'O8S Ave Maria',
@@ -119,6 +83,7 @@
         de: 'Statue anschauen',
         ko: '시선 바라보기',
         ja: '像を見て！',
+        cn: '面对神像',
       },
       tts: {
         en: 'look towards',
@@ -126,6 +91,7 @@
         de: 'anschauen',
         ko: '쳐다보기',
         ja: '像見て！',
+        cn: '面对神像',
       },
     },
     {
@@ -142,6 +108,7 @@
         de: 'Vergangenheit: Sammeln und Stehenbleiben',
         ko: '과거: 맞고 가만히있기',
         ja: '過去: スタックしてそのまま',
+        cn: '分摊不动',
       },
       tts: {
         en: 'stack and stay',
@@ -149,6 +116,7 @@
         de: 'Stek und Stehenbleiben',
         ko: '맞고 가만히',
         ja: 'スタックしてそのまま',
+        cn: '分摊不动',
       },
     },
     {
@@ -165,6 +133,7 @@
         de: 'Zukunft: Sammeln und Durchlaufen',
         ko: '미래: 맞고 통과해가기',
         ja: '未来: シェア後ボス通り抜ける',
+        cn: '分摊穿boss',
       },
       tts: {
         en: 'stack and through',
@@ -172,6 +141,7 @@
         de: 'Stek und durchlaufen',
         ko: '맞고 통과해가기',
         ja: 'シェア後通り抜け',
+        cn: '分摊穿boss',
       },
     },
     {
@@ -192,6 +162,7 @@
         de: 'Vergangenheit : Anlocken und Durchlaufen',
         ko: '과거: 맞고, 이동',
         ja: '過去: 飛んできたら反対向ける',
+        cn: '诱导然后穿boss',
       },
       tts: {
         en: 'run run run',
@@ -199,6 +170,7 @@
         de: 'Durchlaufen',
         ko: '맞고 이동',
         ja: '反対向ける',
+        cn: '诱导然后穿boss',
       },
     },
     {
@@ -219,6 +191,7 @@
         de: 'Zukunft: Anlocken und Stehenbleiben',
         ko: '미래: 맞고, 가만히',
         ja: '未来: 飛んできたらそのまま',
+        cn: '诱导然后不动',
       },
       tts: {
         en: 'stay stay stay',
@@ -226,6 +199,7 @@
         de: 'Stehenbleiben',
         ko: '맞고 가만히',
         ja: 'そのまま',
+        cn: '诱导然后不动',
       },
     },
     {
@@ -239,20 +213,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Knockback on YOU',
-        fr: 'Projection sur VOUS',
-        de: 'Rückstoß auf DIR',
-        ko: '넉백 → 나',
-        ja: 'ノックバック on YOU',
-      },
-      tts: {
-        en: 'knockback',
-        fr: 'Projection',
-        de: 'Rückstoß',
-        ko: '넉백',
-        ja: 'ノックバック',
-      },
+      response: Responses.knockbackOn(),
     },
     {
       id: 'O8S Wings of Destruction',
@@ -270,6 +231,7 @@
             de: 'Schwingen: Nah/Fern',
             ko: '양날개: 가까이/멀리',
             ja: '翼: めり込む/離れる',
+            cn: '双翅膀：近或远',
           };
         }
       },
@@ -281,6 +243,7 @@
             de: 'Max Nahkampf: Weg von den Tanks',
             ko: '칼끝딜: 탱커 피하기',
             ja: '近接最大レンジ タンクから離れて',
+            cn: '最远距离',
           };
         }
       },
@@ -292,6 +255,7 @@
             de: 'schwingen',
             ko: '양날개',
             ja: '翼',
+            cn: '双翅膀',
           };
         }
         return {
@@ -300,6 +264,7 @@
           de: 'max nahkampf',
           ko: '칼끝딜',
           ja: '最大レンジ',
+          cn: '最远距离',
         };
       },
     },
@@ -317,6 +282,7 @@
         de: 'Einzelner Flügel',
         ko: '한쪽 날개',
         ja: '片翼',
+        cn: '单翅膀',
       },
     },
     {
@@ -337,6 +303,7 @@
           de: 'Umarmung auf DIR',
           ko: '종말의 포옹 → 나',
           ja: '双腕 on YOU',
+          cn: '分摊死刑点名',
         };
       },
       infoText: function(data, matches) {
@@ -350,6 +317,7 @@
             de: 'Umarmung auf ' + data.ShortName(matches.target),
             ko: '종말의 포옹 → ' + data.ShortName(matches.target),
             ja: '双腕 on ' + data.ShortName(matches.target),
+            cn: '分摊死刑'+ data.ShortName(matches.target),
           };
         }
       },
@@ -361,6 +329,7 @@
             de: 'umarmung',
             ko: '종말의 포옹',
             ja: '双腕',
+            cn: '分摊死刑',
           };
         }
       },
@@ -384,6 +353,7 @@
           de: 'Hyperantrieb auf DIR',
           ko: '하이퍼드라이브 → 나',
           ja: 'ハイパードライブ on YOU',
+          cn: '死刑点名',
         };
       },
       infoText: function(data, matches) {
@@ -397,6 +367,7 @@
             de: 'Hyperantrieb auf ' + data.ShortName(matches.target),
             ko: '하이퍼드라이브 → ' + data.ShortName(matches.target),
             ja: 'ハイパードライブ on ' + data.ShortName(matches.target),
+            cn: '死刑点名'+ data.ShortName(matches.target),
           };
         }
       },
@@ -408,6 +379,7 @@
             de: 'hyperantrieb',
             ko: '하이퍼드라이브',
             ja: 'ハイパードライブ',
+            cn: '圆形死刑',
           };
         }
       },
@@ -429,6 +401,7 @@
         de: 'Konfusion: Nach außen',
         ko: '혼란: 바깥으로',
         ja: '混乱: 外へ',
+        cn: '去外面',
       },
       tts: {
         en: 'confusion',
@@ -436,6 +409,7 @@
         de: 'konfusion',
         ko: '혼란',
         ja: '混乱',
+        cn: '去外面',
       },
     },
     {
@@ -455,6 +429,7 @@
         de: 'Schlaf: Zur Mitte',
         ko: '수면: 안으로',
         ja: '睡眠: 中へ',
+        cn: '去中间',
       },
       tts: {
         en: 'sleep',
@@ -462,6 +437,7 @@
         de: 'Schlaf',
         ko: '수면',
         ja: '睡眠',
+        cn: '去中间',
       },
     },
     {
@@ -528,6 +504,7 @@
           de: 'verteilen',
           ko: '산개',
           ja: '散開',
+          cn: '散开',
         }[data.lang];
       },
     },
@@ -550,6 +527,7 @@
           de: 'Stacken',
           ko: '집합',
           ja: 'スタック',
+          cn: '集合',
         }[data.lang];
       },
     },
@@ -564,7 +542,6 @@
       regexJa: Regexes.startsUsing({ id: ['28CD', '2B31'], source: 'ケフカ', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['28CD', '2B31'], source: '凯夫卡', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['28CD', '2B31'], source: '케프카', capture: false }),
-      suppressSeconds: 40,
       preRun: function(data) {
         data.lastThunder = {
           en: 'True Thunder',
@@ -572,8 +549,10 @@
           de: 'Wahrer Blitz',
           ko: '진실 선더가',
           ja: '真サンダガ',
+          cn: '真雷',
         }[data.lang];
       },
+      suppressSeconds: 40,
       infoText: function(data) {
         return data.lastThunder;
       },
@@ -592,7 +571,6 @@
       regexJa: Regexes.startsUsing({ id: ['28CC', '2B30'], source: 'ケフカ', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['28CC', '2B30'], source: '凯夫卡', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['28CC', '2B30'], source: '케프카', capture: false }),
-      suppressSeconds: 40,
       preRun: function(data) {
         data.lastThunder = {
           en: 'Fake Thunder',
@@ -600,8 +578,10 @@
           de: 'Falscher Blitz',
           ko: '거짓 선더가',
           ja: 'にせサンダガ',
+          cn: '假雷',
         }[data.lang];
       },
+      suppressSeconds: 40,
       infoText: function(data) {
         return data.lastThunder;
       },
@@ -620,7 +600,6 @@
       regexJa: Regexes.startsUsing({ id: ['28C5', '2B2B'], source: 'ケフカ', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['28C5', '2B2B'], source: '凯夫卡', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['28C5', '2B2B'], source: '케프카', capture: false }),
-      suppressSeconds: 40,
       preRun: function(data) {
         data.lastIce = {
           en: 'Fake Ice',
@@ -628,6 +607,7 @@
           de: 'Falsches Eis',
           ko: '거짓 블리자가',
           ja: 'にせブリザガ',
+          cn: '假冰',
         }[data.lang];
         data.lastIceDir = {
           en: 'Get Out',
@@ -635,8 +615,10 @@
           de: 'raus da',
           ko: '밖으로',
           ja: '外へ',
+          cn: '远离',
         }[data.lang];
       },
+      suppressSeconds: 40,
       infoText: function(data) {
         return data.lastIce + ': ' + data.lastIceDir;
       },
@@ -655,7 +637,6 @@
       regexJa: Regexes.startsUsing({ id: ['28C9', '2B2E'], source: 'ケフカ', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['28C9', '2B2E'], source: '凯夫卡', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['28C9', '2B2E'], source: '케프카', capture: false }),
-      suppressSeconds: 40,
       preRun: function(data) {
         data.lastIce = {
           en: 'True Ice',
@@ -663,6 +644,7 @@
           de: 'Wahres Eis',
           ko: '진실 블리자가',
           ja: '真ブリザガ',
+          cn: '真冰',
         }[data.lang];
         data.lastIceDir = {
           en: 'Get In',
@@ -670,8 +652,10 @@
           de: 'reingehen',
           ko: '안으로',
           ja: '中へ',
+          cn: '靠近',
         }[data.lang];
       },
+      suppressSeconds: 40,
       infoText: function(data) {
         return data.lastIce + ': ' + data.lastIceDir;
       },
@@ -690,7 +674,6 @@
       regexJa: Regexes.startsUsing({ id: ['28C4', '2B2A'], source: 'ケフカ', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['28C4', '2B2A'], source: '凯夫卡', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['28C4', '2B2A'], source: '케프카', capture: false }),
-      suppressSeconds: 40,
       preRun: function(data) {
         data.lastIce = {
           en: 'Fake Ice',
@@ -698,6 +681,7 @@
           de: 'Falsches Eis',
           ko: '거짓 블리자가',
           ja: 'にせブリザガ',
+          cn: '假冰',
         }[data.lang];
         data.lastIceDir = {
           en: 'Get In',
@@ -705,8 +689,10 @@
           de: 'reingehen',
           ko: '안으로',
           ja: '中へ',
+          cn: '靠近',
         }[data.lang];
       },
+      suppressSeconds: 40,
       infoText: function(data) {
         return data.lastIce + ': ' + data.lastIceDir;
       },
@@ -725,7 +711,6 @@
       regexJa: Regexes.startsUsing({ id: ['28C8', '2B2D'], source: 'ケフカ', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['28C8', '2B2D'], source: '凯夫卡', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['28C8', '2B2D'], source: '케프카', capture: false }),
-      suppressSeconds: 40,
       preRun: function(data) {
         data.lastIce = {
           en: 'True Ice',
@@ -733,6 +718,7 @@
           de: 'Wahres Eis',
           ko: '진실 블리자가',
           ja: '真ブリザガ',
+          cn: '真冰',
         }[data.lang];
         data.lastIceDir = {
           en: 'Get Out',
@@ -740,8 +726,10 @@
           de: 'rausgehen',
           ko: '밖으로',
           ja: '外へ',
+          cn: '远离',
         }[data.lang];
       },
+      suppressSeconds: 40,
       infoText: function(data) {
         return data.lastIce + ': ' + data.lastIceDir;
       },
@@ -752,25 +740,33 @@
   ],
   timelineReplace: [
     {
-      locale: 'de',
-      replaceSync: {
-        'Graven Image': 'Heilige Statue',
+      'locale': 'de',
+      'replaceSync': {
+        'Graven Image': 'heilig(?:e|er|es|en) Statue',
         'Kefka': 'Kefka',
-        'Light Of Consecration': 'Licht Der Weihe',
-        'The Mad Head': 'Verrückter Kopf',
+        'Light Of Consecration': 'Licht der Weihe',
+        'The Mad Head': 'verrückt(?:e|er|es|en) Kopf',
         'The limit gauge resets!': 'Der Limitrausch-Balken wurde geleert.',
       },
-      replaceText: {
-        '--targetable--': '--anvisierbar--',
-        '--untargetable--': '--nich anvisierbar--',
-        'Engage!': 'Start!',
-        'Enrage': 'Finalangriff',
-
+      'replaceText': {
         'Aero Assault': 'Wallendes Windga',
+        'All Things Ending': 'Ende aller Dinge',
         'Blizzard Blitz': 'Erstarrendes Eisga',
+        'Blizzard III': 'Eisga',
+        'Blizzard\\+Thunder': 'Eis+Blitz',
+        'Celestriad': 'Dreigestirn',
+        'Explosion': 'Explosion',
+        'Fire III': 'Feuga',
         'Flagrant Fire': 'Flammendes Feuga',
+        'Forsaken': 'Verloren',
+        'Future\'s End': 'Ende der Zukunft',
+        'Futures Numbered': 'Vernichtung der Zukunft',
         'Graven Image': 'Göttliche Statue',
         'Gravitas': 'Gravitas',
+        'Gravitational Wave': 'Gravitationswelle',
+        'Half Arena': 'Halbe Arena',
+        'Heartless Angel': 'Herzloser Engel',
+        'Heartless Archangel': 'Herzloser Erzengel',
         'Holy Ascent': 'Heiliger Aufstieg',
         'Hyperdrive': 'Hyperantrieb',
         'Idyllic Will': 'Idyllischer Wille',
@@ -779,142 +775,128 @@
         'Indulgent Will': 'Nachsichtiger Wille',
         'Inexorable Will': 'Unerbittlicher Wille',
         'Intemperate Will': 'Unmäßiger Wille',
-        'Light Of Judgment': 'Licht Des Urteils',
+        'Knockback Tethers': 'Rückstoß Verbindungen',
+        'Light Of Judgment': 'Licht des Urteils',
         'Mana Charge': 'Mana-Aufladung',
         'Mana Release': 'Mana-Entladung',
+        'Meteor': 'Meteor',
+        'Past/Future(?! )': 'Vergangenheit/Zukunft',
+        'Past/Future End': 'Vergangenheit/Zukunft Ende',
+        'Pasts Forgotten': 'Vernichtung der Vergangenheit',
         'Pulse Wave': 'Pulswelle',
         'Revolting Ruin': 'Revoltierendes Ruinga',
         'Shockwave': 'Schockwelle',
+        'Sleep/Confuse Tethers': 'Schlaf/Konfusion Verbindungen',
+        'Soak': 'Aufsaugen',
+        'Starstrafe': 'Sternentanz',
+        'Statue Gaze': 'Statuenblick',
+        'Statue Half Cleave': 'Statue Halber Cleave',
+        'The Path Of Light': 'Pfad des Lichts',
         'Thrumming Thunder': 'Brachiales Blitzga',
+        'Thunder III': 'Blitzga',
         'Timely Teleport': 'Turbulenter Teleport',
+        'Trine': 'Trine',
         'Ultima Upsurge': 'Ultima-Wallung',
+        'Ultimate Embrace': 'Ultima-Umarmung',
+        'Ultima(?![ |\\w])': 'Ultima',
         'Vitrophyre': 'Vitrophyr',
         'Wave Cannon': 'Wellenkanone',
-
-        'All Things Ending': 'Ende Aller Dinge',
-        'Blizzard III': 'Eisga',
-        'Celestriad': 'Dreigestirn',
-        'Explosion': 'Explosion',
-        'Fire III': 'Feuga',
-        'Forsaken': 'Verloren',
-        'Future\'s End': 'Ende Der Zukunft',
-        'Futures Numbered': 'Vernichtung Der Zukunft',
-        'Gravitational Wave': 'Gravitationswelle',
-        'Heartless Angel': 'Herzloser Engel',
-        'Heartless Archangel': 'Herzloser Erzengel',
-        'Meteor': 'Meteo',
-        'Pasts Forgotten': 'Vernichtung Der Vergangenheit',
-        'Starstrafe': 'Sternentanz',
-        'The Path Of Light': 'Pfad Des Lichts',
-        'Thunder III': 'Blitzga',
-        'Trine': 'Trine',
-        'Ultima': 'Ultima',
-        'Ultimate Embrace': 'Ultima-Umarmung',
         'Wings Of Destruction': 'Vernichtungsschwinge',
-        'Blizzard+Thunder': 'Eis+Blitz',
-        'Half Arena': 'Halbe Arena',
-        'Statue Gaze': 'Statuenblick',
-        'Soak': 'Aufsaugen',
-        'Past/Future': 'Vergangenheit/Zukunft',
-        'Past/Future End': 'Vergangenheit/Zukunft Ende',
-        'Knockback Tethers': 'Rückstoß Verbindungen',
-        'Sleep/Confuse Tethers': 'Schlaf/Konfusion Verbindungen',
-        'Statue Half Cleave': 'Statue Halber Cleave',
       },
     },
     {
-      locale: 'fr',
-      replaceSync: {
-        'Graven Image': 'Statue Divine',
+      'locale': 'fr',
+      'replaceSync': {
+        'Graven Image': 'Statue divine',
         'Kefka': 'Kefka',
-        'Light Of Consecration': 'Lumière De La Consécration',
-        'The Mad Head': 'Visage De La Folie',
+        'Light Of Consecration': 'lumière de la consécration',
+        'The Mad Head': 'visage de la folie',
         'The limit gauge resets!': 'La jauge de Transcendance a été réinitialisée.',
       },
-      replaceText: {
-        'Engage!': 'À l\'attaque',
-        '--Reset--': '--Réinitialisation--',
-        '--sync--': '--Synchronisation--',
-        '--targetable--': '--Ciblable--',
-        '--untargetable--': '--Impossible à cibler--',
-        'Enrage': 'Enrage',
-
-        'Aero Assault': 'Méga Vent Véhément',
-        'Blizzard Blitz': 'Méga Glace Glissante',
-        'Flagrant Fire': 'Méga Feu Faufilant',
-        'Graven Image': 'Statue Divine',
-        'Gravitas': 'Tir Gravitationnel',
-        'Holy Ascent': 'Ascension Sacrée',
-        'Hyperdrive': 'Colonne De Feu',
-        'Idyllic Will': 'Volonté Idyllique',
-        'Indolent Will': 'Volonté Indolente',
-        'Indomitable Will': 'Volonté Indomptable',
-        'Indulgent Will': 'Volonté Indulgente',
-        'Inexorable Will': 'Volonté Inexorable',
-        'Intemperate Will': 'Volonté Intempérante',
-        'Light Of Judgment': 'Triade Guerrière',
-        'Mana Charge': 'Concentration De Mana',
-        'Mana Release': 'Décharge De Mana',
-        'Pulse Wave': 'Pulsation Spirituelle',
-        'Revolting Ruin': 'Méga Ruine Ravageuse',
-        'Shockwave': 'Onde De Choc',
-        'Thrumming Thunder': 'Méga Foudre Fourmillante',
-        'Timely Teleport': 'Téléportation Turbulente',
-        'Ultima Upsurge': 'Ultima Ulcérante',
-        'Vitrophyre': 'Vitrophyre',
-        'Wave Cannon': 'Canon Plasma',
-
-        'Blizzard+Thunder': 'Méga Glace + Méga Foudre',
-        'Half Arena': 'Moitié d\'arène',
-        'Statue Gaze': 'Regard statue',
-
-        'All Things Ending': 'Fin De Toutes Choses',
+      'replaceText': {
+        'Aero Assault': 'Méga Vent véhément',
+        'All Things Ending': 'Fin de toutes choses',
+        'Blizzard Blitz': 'Méga Glace glissante',
         'Blizzard III': 'Méga Glace',
+        'Blizzard\\+Thunder': 'Méga Glace + Méga Foudre',
         'Celestriad': 'Tristella',
         'Explosion': 'Explosion',
         'Fire III': 'Méga Feu',
+        'Flagrant Fire': 'Méga Feu faufilant',
         'Forsaken': 'Cataclysme',
-        'Future\'s End': 'Fin Du Futur',
-        'Futures Numbered': 'Ruine Du Futur',
-        'Gravitational Wave': 'Onde Gravitationnelle',
-        'Heartless Angel': 'Ange Sans Cœur',
-        'Heartless Archangel': 'Archange Sans Cœur',
-        'Meteor': 'Météore',
-        'Pasts Forgotten': 'Ruine Du Passé',
-        'Starstrafe': 'Fou Dansant',
-        'The Path Of Light': 'Voie De Lumière',
-        'Thunder III': 'Méga Foudre',
-        'Trine': 'Trine',
-        'Trine (big)': 'Trine (grand)',
-        'Trine (small)': 'Trine (petit)',
-        'Ultima': 'Ultima',
-        'Ultimate Embrace': 'Étreinte Fatidique',
-        'Wings Of Destruction': 'Aile De La Destruction',
-
-        'Soak': 'Absorber',
-        'Past/Future': 'Passé/Futur',
-        'Past/Future End': 'Passé/Fin du futur',
+        'Future\'s End': 'Fin du futur',
+        'Futures Numbered': 'Ruine du futur',
+        'Graven Image': 'Statue divine',
+        'Gravitas': 'Tir gravitationnel',
+        'Gravitational Wave': 'Onde gravitationnelle',
+        'Half Arena': 'Moitié d\'arène',
+        'Heartless Angel': 'Ange sans cœur',
+        'Heartless Archangel': 'Archange sans cœur',
+        'Holy Ascent': 'Ascension sacrée',
+        'Hyperdrive': 'Colonne de feu',
+        'Idyllic Will': 'Volonté idyllique',
+        'Indolent Will': 'Volonté indolente',
+        'Indomitable Will': 'Volonté indomptable',
+        'Indulgent Will': 'Volonté indulgente',
+        'Inexorable Will': 'Volonté inexorable',
+        'Intemperate Will': 'Volonté intempérante',
         'Knockback Tethers': 'Liens de projection',
+        'Light Of Judgment': 'Triade guerrière',
+        'Mana Charge': 'Concentration de mana',
+        'Mana Release': 'Décharge de mana',
+        'Meteor': 'Météore',
+        'Past/Future(?! )': 'Passé/Futur',
+        'Past/Future End': 'Passé/Fin du futur',
+        'Pasts Forgotten': 'Ruine du passé',
+        'Pulse Wave': 'Pulsation spirituelle',
+        'Revolting Ruin': 'Méga Ruine ravageuse',
+        'Shockwave': 'Onde de choc',
         'Sleep/Confuse Tethers': 'Liens de Sommeil/Confusion',
+        'Soak': 'Absorber',
+        'Starstrafe': 'Fou dansant',
+        'Statue Gaze': 'Regard statue',
         'Statue Half Cleave': 'Demi clivage de la statue',
+        'The Path Of Light': 'Voie de lumière',
+        'Thrumming Thunder': 'Méga Foudre fourmillante',
+        'Thunder III': 'Méga Foudre',
+        'Timely Teleport': 'Téléportation turbulente',
+        'Trine': 'Trine',
+        'Ultima Upsurge': 'Ultima ulcérante',
+        'Ultimate Embrace': 'Étreinte fatidique',
+        'Ultima(?![ |\\w])': 'Ultima',
+        'Vitrophyre': 'Vitrophyre',
+        'Wave Cannon': 'Canon plasma',
+        'Wings Of Destruction': 'Aile de la destruction',
       },
     },
     {
-      locale: 'ja',
-      replaceSync: {
+      'locale': 'ja',
+      'replaceSync': {
         'Graven Image': '神々の像',
         'Kefka': 'ケフカ',
         'Light Of Consecration': '聖別の光',
         'The Mad Head': 'マッドヘッド',
+        'The limit gauge resets!': 'リミットゲージがリセットされた……',
       },
-      replaceText: {
-        'Engage!': '戦闘開始！',
-
+      'replaceText': {
         'Aero Assault': 'ずんずんエアロガ',
+        'All Things Ending': '消滅の脚',
         'Blizzard Blitz': 'ぐるぐるブリザガ',
+        'Blizzard III': 'ブリザガ',
+        'Blizzard\\+Thunder': 'Blizzard+Thunder', // FIXME
+        'Celestriad': 'スリースターズ',
+        'Explosion': '爆発',
+        'Fire III': 'ファイガ',
         'Flagrant Fire': 'めらめらファイガ',
+        'Forsaken': 'ミッシング',
+        'Future\'s End': '未来の終焉',
+        'Futures Numbered': '未来の破滅',
         'Graven Image': '神々の像',
         'Gravitas': '重力弾',
+        'Gravitational Wave': '重力波',
+        'Half Arena': 'Half Arena', // FIXME
+        'Heartless Angel': '心ない天使',
+        'Heartless Archangel': '心ない大天使',
         'Holy Ascent': '昇天',
         'Hyperdrive': 'ハイパードライブ',
         'Idyllic Will': '睡魔の神気',
@@ -923,59 +905,128 @@
         'Indulgent Will': '聖母の神気',
         'Inexorable Will': '無情の神気',
         'Intemperate Will': '撲殺の神気',
+        'Knockback Tethers': 'Knockback Tethers', // FIXME
         'Light Of Judgment': '裁きの光',
         'Mana Charge': 'マジックチャージ',
         'Mana Release': 'マジックアウト',
+        'Meteor': 'メテオ',
+        'Past/Future(?! )': 'Past/Future', // FIXME
+        'Past/Future End': 'Past/Future End', // FIXME
+        'Pasts Forgotten': '過去の破滅',
         'Pulse Wave': '波動弾',
         'Revolting Ruin': 'ばりばりルインガ',
         'Shockwave': '衝撃波',
+        'Sleep/Confuse Tethers': 'Sleep/Confuse Tethers', // FIXME
+        'Soak': 'Soak', // FIXME
+        'Starstrafe': '妖星乱舞',
+        'Statue Gaze': 'Statue Gaze', // FIXME
+        'Statue Half Cleave': 'Statue Half Cleave', // FIXME
+        'The Path Of Light': '光の波動',
         'Thrumming Thunder': 'もりもりサンダガ',
+        'Thunder III': 'サンダガ',
         'Timely Teleport': 'ぶっとびテレポ',
+        'Trine': 'トライン',
         'Ultima Upsurge': 'どきどきアルテマ',
+        'Ultimate Embrace': '終末の双腕',
+        'Ultima(?![ |\\w])': 'アルテマ',
         'Vitrophyre': '岩石弾',
         'Wave Cannon': '波動砲',
-
-        'All Things Ending': '消滅の脚',
-        'Blizzard III': 'ブリザガ',
-        'Celestriad': 'スリースターズ',
-        'Explosion': '爆発',
-        'Fire III': 'ファイガ',
-        'Forsaken': 'ミッシング',
-        'Future\'s End': '未来の終焉',
-        'Futures Numbered': '未来の破滅',
-        'Gravitational Wave': '重力波',
-        'Heartless Angel': '心ない天使',
-        'Heartless Archangel': '心ない大天使',
-        'Meteor': 'メテオ',
-        'Pasts Forgotten': '過去の破滅',
-        'Starstrafe': '妖星乱舞',
-        'The Path Of Light': '光の波動',
-        'Thunder III': 'サンダガ',
-        'Trine': 'トライン',
-        'Ultima': 'アルテマ',
-        'Ultimate Embrace': '終末の双腕',
         'Wings Of Destruction': '破壊の翼',
       },
     },
     {
-      locale: 'ko',
-      replaceSync: {
+      'locale': 'cn',
+      'replaceSync': {
+        'Graven Image': '众神之像',
+        'Kefka': '凯夫卡',
+        'Light Of Consecration': '祝圣之光',
+        'The Mad Head': '妖首',
+        'The limit gauge resets!': '极限槽被清零了……',
+      },
+      'replaceText': {
+        'Aero Assault': '疼飕飕暴风',
+        'All Things Ending': '消灭之脚',
+        'Blizzard Blitz': '滴溜溜冰封',
+        'Blizzard III': '冰封',
+        'Blizzard\\+Thunder': '冰封+暴雷',
+        'Celestriad': '三星',
+        'Explosion': '爆炸',
+        'Fire III': '爆炎',
+        'Flagrant Fire': '呼啦啦爆炎',
+        'Forsaken': '遗弃末世',
+        'Future\'s End': '未来终结',
+        'Futures Numbered': '未来破灭',
+        'Graven Image': '众神之像',
+        'Gravitas': '重力弹',
+        'Gravitational Wave': '重力波',
+        'Half Arena': '半场',
+        'Heartless Angel': '无心天使',
+        'Heartless Archangel': '无心大天使',
+        'Holy Ascent': '升天',
+        'Hyperdrive': '超驱动',
+        'Idyllic Will': '睡魔的神气',
+        'Indolent Will': '懒惰的神气',
+        'Indomitable Will': '强腕的神气',
+        'Indulgent Will': '圣母的神气',
+        'Inexorable Will': '无情的神气',
+        'Intemperate Will': '扑杀的神气',
+        'Knockback Tethers': '击退连线',
+        'Light Of Judgment': '制裁之光',
+        'Mana Charge': '魔法储存',
+        'Mana Release': '魔法放出',
+        'Meteor': '陨石',
+        'Past/Future(?! )': '过去/未来',
+        'Past/Future End': '过去/未来 结束',
+        'Pasts Forgotten': '过去破灭',
+        'Pulse Wave': '波动弹',
+        'Revolting Ruin': '恶狠狠毁荡',
+        'Shockwave': '冲击波',
+        'Sleep/Confuse Tethers': '睡眠/混乱 连线',
+        'Soak': '踩',
+        'Starstrafe': '妖星乱舞',
+        'Statue Gaze': '神像视线',
+        'Statue Half Cleave': '神像半场AOE',
+        'The Path Of Light': '光之波动',
+        'Thrumming Thunder': '劈啪啪暴雷',
+        'Thunder III': '暴雷',
+        'Timely Teleport': '跳蹦蹦传送',
+        'Trine': '异三角',
+        'Ultima Upsurge': '扑腾腾究极',
+        'Ultimate Embrace': '终末双腕',
+        'Ultima(?![ |\\w])': '究极',
+        'Vitrophyre': '岩石弹',
+        'Wave Cannon': '波动炮',
+        'Wings Of Destruction': '破坏之翼',
+      },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
         'Graven Image': '신들의 상',
         'Kefka': '케프카',
         'Light Of Consecration': '성결의 빛',
         'The Mad Head': '광인의 머리',
+        'The limit gauge resets!': '리미트 게이지가 초기화되었습니다…….',
       },
-      replaceText: {
-        '--targetable--': '--대상 지정 가능--',
-        '--untargetable--': '--대상 지정 불가--',
-        'Enrage': '전멸기',
-        'Engage!': '전투 시작!',
-
+      'replaceText': {
         'Aero Assault': '갈기갈기 에어로가',
+        'All Things Ending': '소멸의 발차기',
         'Blizzard Blitz': '빙글빙글 블리자가',
+        'Blizzard III': '블리자가',
+        'Blizzard\\+Thunder': 'Blizzard+Thunder', // FIXME
+        'Celestriad': '세 개의 별',
+        'Explosion': '폭발',
+        'Fire III': '파이가',
         'Flagrant Fire': '이글이글 파이가',
+        'Forsaken': '행방불명',
+        'Future\'s End': '미래의 종언',
+        'Futures Numbered': '미래의 파멸',
         'Graven Image': '신들의 상',
         'Gravitas': '중력탄',
+        'Gravitational Wave': '중력파',
+        'Half Arena': 'Half Arena', // FIXME
+        'Heartless Angel': '비정한 천사',
+        'Heartless Archangel': '비정한 대천사',
         'Holy Ascent': '승천',
         'Hyperdrive': '하이퍼드라이브',
         'Idyllic Will': '수마의 신기',
@@ -984,38 +1035,32 @@
         'Indulgent Will': '성모의 신기',
         'Inexorable Will': '무정의 신기',
         'Intemperate Will': '박살의 신기',
+        'Knockback Tethers': 'Knockback Tethers', // FIXME
         'Light Of Judgment': '심판의 빛',
         'Mana Charge': '마력 충전',
         'Mana Release': '마력 방출',
+        'Meteor': '메테오',
+        'Past/Future(?! )': 'Past/Future', // FIXME
+        'Past/Future End': 'Past/Future End', // FIXME
+        'Pasts Forgotten': '과거의 파멸',
         'Pulse Wave': '파동탄',
         'Revolting Ruin': '파삭파삭 루인가',
         'Shockwave': '충격파',
+        'Sleep/Confuse Tethers': 'Sleep/Confuse Tethers', // FIXME
+        'Soak': 'Soak', // FIXME
+        'Starstrafe': '요성난무',
+        'Statue Gaze': 'Statue Gaze', // FIXME
+        'Statue Half Cleave': 'Statue Half Cleave', // FIXME
+        'The Path Of Light': '빛의 파동',
         'Thrumming Thunder': '찌릿찌릿 선더가',
+        'Thunder III': '선더가',
         'Timely Teleport': '껑충껑충 텔레포',
+        'Trine': '트라인',
         'Ultima Upsurge': '두근두근 알테마',
+        'Ultimate Embrace': '종말의 포옹',
+        'Ultima(?![ |\\w])': '알테마',
         'Vitrophyre': '암석탄',
         'Wave Cannon': '파동포',
-        'soak': '흡수',
-
-        'All Things Ending': '소멸의 발차기',
-        'Blizzard III': '블리자가',
-        'Celestriad': '세 개의 별',
-        'Explosion': '폭발',
-        'Fire III': '파이가',
-        'Forsaken': '행방불명',
-        'Future\'s End': '미래의 종언',
-        'Futures Numbered': '미래의 파멸',
-        'Gravitational Wave': '중력파',
-        'Heartless Angel': '비정한 천사',
-        'Heartless Archangel': '비정한 대천사',
-        'Meteor': '메테오',
-        'Pasts Forgotten': '과거의 파멸',
-        'Starstrafe': '요성난무',
-        'The Path Of Light': '빛의 파동',
-        'Thunder III': '선더가',
-        'Trine': '트라인',
-        'Ultimate Embrace': '종말의 포옹',
-        'Ultima': '알테마',
         'Wings Of Destruction': '파괴의 날개',
       },
     },

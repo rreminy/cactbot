@@ -2,7 +2,10 @@
 
 // Fractal Continuum (Hard)
 [{
-  zoneRegex: /^The Fractal Continuum \(Hard\)$/,
+  zoneRegex: {
+    en: /^The Fractal Continuum \(Hard\)$/,
+    cn: /^疯狂战舰无限回廊$/,
+  },
   triggers: [
     {
       id: 'Fractal Swipe Servo',
@@ -16,6 +19,7 @@
         en: 'swipe',
         de: 'Hieb',
         fr: 'Fauche',
+        cn: '去目标背后',
       },
     },
     {
@@ -30,6 +34,7 @@
         en: 'swipe',
         de: 'Hieb',
         fr: 'Fauche',
+        cn: '去目标背后',
       },
     },
     {
@@ -44,6 +49,7 @@
         en: 'Swing',
         de: 'Schwung',
         fr: 'Swing',
+        cn: '远离目标',
       },
     },
     {
@@ -58,6 +64,7 @@
         en: 'Swing',
         de: 'Schwung',
         fr: 'Swing',
+        cn: '远离目标',
       },
     },
     {
@@ -72,11 +79,13 @@
         en: 'Dragon\'s Voice',
         de: 'Stimme Des Drachen',
         fr: 'Voix Du Dragon',
+        cn: '靠近奇美拉',
       },
       tts: {
         en: 'dragon',
         de: 'drache',
         fr: 'dragon',
+        cn: '靠近奇美拉',
       },
     },
     {
@@ -91,11 +100,13 @@
         en: 'Ram\'s Voice',
         de: 'Stimme Des Widders',
         fr: 'Voix Du Bélier',
+        cn: '远离奇美拉',
       },
       tts: {
         en: 'ram',
         de: 'widder',
         fr: 'bélier',
+        cn: '远离奇美拉',
       },
     },
     {
@@ -106,11 +117,7 @@
       regexJa: Regexes.startsUsing({ id: '27AE', source: 'アルテマビースト', capture: false }),
       regexCn: Regexes.startsUsing({ id: '27AE', source: '究极神兽', capture: false }),
       regexKo: Regexes.startsUsing({ id: '27AE', source: '알테마 비스트', capture: false }),
-      infoText: {
-        en: 'Knockback',
-        de: 'Rückstoß',
-        fr: 'Projection',
-      },
+      response: Responses.knockback(),
     },
     {
       id: 'Fractal Aether Bend',
@@ -120,16 +127,7 @@
       regexJa: Regexes.startsUsing({ id: ['27AF', '27B0'], source: 'アルテマビースト', capture: false }),
       regexCn: Regexes.startsUsing({ id: ['27AF', '27B0'], source: '究极神兽', capture: false }),
       regexKo: Regexes.startsUsing({ id: ['27AF', '27B0'], source: '알테마 비스트', capture: false }),
-      alertText: {
-        en: 'Get In',
-        de: 'Reingehen',
-        fr: 'Sur le boss',
-      },
-      tts: {
-        en: 'in in in',
-        de: 'rein rein rein',
-        fr: 'sur le boss',
-      },
+      response: Responses.getIn(),
     },
   ],
 }];

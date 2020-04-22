@@ -1,11 +1,14 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Second Coil Of Bahamut - Turn \(1\)$/,
+  zoneRegex: {
+    en: /^The Second Coil Of Bahamut - Turn \(1\)$/,
+    cn: /^巴哈姆特大迷宫 \(入侵之章1\)$/,
+  },
   timelineFile: 't6.txt',
   triggers: [
     {
-      id: 'T6 Thorn Whip',
+      id: 'T6 Thorn Whip Collect',
       regex: Regexes.tether({ id: '0012' }),
       regexDe: Regexes.tether({ id: '0012' }),
       regexFr: Regexes.tether({ id: '0012' }),
@@ -36,24 +39,32 @@
         if (!partners) {
           return {
             en: 'Thorns on YOU',
+            de: 'Dornenpeitsche auf DIR',
             fr: 'Ronces sur VOUS',
+            cn: '荆棘点名',
           };
         }
         if (partners.length == 1) {
           return {
             en: 'Thorns w/ (' + data.ShortName(partners[0]) + ')',
+            de: 'Dornenpeitsche mit (' + data.ShortName(partners[0]) + ')',
             fr: 'Ronces avec (' + data.ShortName(partners[0]) + ')',
+            cn: '荆棘与(' + data.ShortName(partners[0]) + ')',
           };
         }
         if (partners.length == 2) {
           return {
             en: 'Thorns w/ (' + data.ShortName(partners[0]) + ', ' + data.ShortName(partners[1]) + ')',
+            de: 'Dornenpeitsche mit (' + data.ShortName(partners[0]) + ', ' + data.ShortName(partners[1]) + ')',
             fr: 'Ronces avec (' + data.ShortName(partners[0]) + ', ' + data.ShortName(partners[1]) + ')',
+            cn: '荆棘与(' + data.ShortName(partners[0]) + ', ' + data.ShortName(partners[1]) + ')',
           };
         }
         return {
           en: 'Thorns (' + partners.length + ' people)',
+          de: 'Dornenpeitsche mit (' + partners.length + ' Personen)',
           fr: 'Ronces (' + partners.length + ' personne)',
+          cn: '荆棘(' + partners.length + ' people)',
         };
       },
       run: function(data) {
@@ -97,7 +108,9 @@
         if (data.honey) {
           return {
             en: 'Devour: Get Eaten',
-            fr: 'Dévoration : Faites vous manger',
+            de: 'Verschlingen: Gefressen werden',
+            fr: 'Dévoration : Faites-vous manger',
+            cn: '捕食点名',
           };
         }
       },
@@ -108,7 +121,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Devour: Jump In New Thorns',
+            de: 'Verschlingen: Spring in die neuen Dornen',
             fr: 'Dévoration : Sautez dans les ronces',
+            cn: '去新荆棘',
           };
         }
       },
@@ -118,7 +133,9 @@
 
         return {
           en: 'Avoid Devour',
-          fr: 'Evitez dévoration',
+          de: 'Weiche Verschlingen aus',
+          fr: 'Évitez dévoration',
+          cn: '躲开吞食',
         };
       },
     },
@@ -140,10 +157,7 @@
       regexJa: Regexes.startsUsing({ id: '79D', source: 'ラフレシア', capture: false }),
       regexCn: Regexes.startsUsing({ id: '79D', source: '大王花', capture: false }),
       regexKo: Regexes.startsUsing({ id: '79D', source: '라플레시아', capture: false }),
-      alarmText: {
-        en: 'STOP',
-        fr: 'STOP',
-      },
+      response: Responses.stopEverything(),
     },
     {
       id: 'T6 Phase 3',
@@ -162,7 +176,7 @@
       },
     },
     {
-      id: 'T6 Swarm',
+      id: 'T6 Swarm Stack',
       regex: Regexes.startsUsing({ id: '86C', source: 'Rafflesia', capture: false }),
       regexDe: Regexes.startsUsing({ id: '86C', source: 'Rafflesia', capture: false }),
       regexFr: Regexes.startsUsing({ id: '86C', source: 'Rafflesia', capture: false }),
@@ -171,7 +185,9 @@
       regexKo: Regexes.startsUsing({ id: '86C', source: '라플레시아', capture: false }),
       infoText: {
         en: 'Stack for Acid',
-        fr: 'Packez vous pour Acide',
+        de: 'Sammeln für Säure-Blubberblase',
+        fr: 'Packez-vous pour Pluie acide',
+        cn: '集合引导酸雨',
       },
     },
     {
@@ -189,7 +205,9 @@
         if (matches.target == data.me) {
           return {
             en: 'Swarm on YOU',
+            de: 'Fähenfurz auf DIR',
             fr: 'Nuée sur VOUS',
+            cn: '蜂群点名',
           };
         }
       },
@@ -197,7 +215,9 @@
         if (matches.target != data.me) {
           return {
             en: 'Swarm on ' + data.ShortName(matches.target),
+            de: 'Fähenfurz auf ' + data.ShortName(matches.target),
             fr: 'Nuée sur ' + data.ShortName(matches.target),
+            cn: '蜂群点' + data.ShortName(matches.target),
           };
         }
       },
@@ -209,12 +229,16 @@
         if (data.me == matches.target) {
           return {
             en: 'Share Laser (on YOU)',
-            fr: 'Partage de laser (sur VOUS)',
+            de: 'Geteilter Laser (auf DIR)',
+            fr: 'Partagez le laser (sur VOUS)',
+            cn: '分摊激光点名',
           };
         }
         return {
           en: 'Share Laser (on ' + data.ShortName(matches.target) + ')',
+          de: 'Geteilter Laser (auf ' + data.ShortName(matches.target) + ')',
           fr: 'Partage de laser (sur ' + data.ShortName(matches.target) + ')',
+          cn: '分摊激光点(on ' + data.ShortName(matches.target) + ')',
         };
       },
     },
@@ -223,10 +247,8 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Engage!': 'Start!',
+        'Scar\'s Edge': 'Narbenrand',
         'Rafflesia': 'Rafflesia',
-        'Scar\'s Edge is no longer sealed': 'Der Zugang zum Narbenrand öffnet sich wieder',
-        'Scar\'s Edge will be sealed off': 'bis sich der Zugang zum Narbenrand schließt',
       },
       'replaceText': {
         'Acid Rain': 'Säureregen',
@@ -246,10 +268,8 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        'Engage!': 'À l\'attaque',
+        'Scar\'s Edge': 'l\'Huis de la Marque',
         'Rafflesia': 'Rafflesia',
-        'Scar\'s Edge is no longer sealed': 'Ouverture du Huis de la Marque',
-        'Scar\'s Edge will be sealed off': 'Fermeture du Huis de la Marque',
       },
       'replaceText': {
         'Acid Rain': 'Pluie acide',
@@ -260,7 +280,7 @@
         'Floral Trap': 'Piège floral',
         'Leafstorm': 'Tempête de feuilles',
         'Rotten Stench': 'Pestilence nauséabonde',
-        'Spit': 'Crachat morbide',
+        'Spit': 'Crachat',
         'Swarm': 'Nuée',
         'Thorn Whip': 'Fouet de ronces',
         'Viscid Emission': 'Émission visqueuse',
@@ -268,11 +288,9 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '戦闘開始！',
         'Rafflesia': 'ラフレシア',
-        'Scar\'s Edge is no longer sealed': 'Scar\'s Edge is no longer sealed', // FIXME
-        'Scar\'s Edge will be sealed off': 'Scar\'s Edge will be sealed off', // FIXME
       },
       'replaceText': {
         'Acid Rain': '酸性雨',
@@ -291,11 +309,9 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '战斗开始！',
         'Rafflesia': '大王花',
-        'Scar\'s Edge is no longer sealed': 'Scar\'s Edge is no longer sealed', // FIXME
-        'Scar\'s Edge will be sealed off': 'Scar\'s Edge will be sealed off', // FIXME
       },
       'replaceText': {
         'Acid Rain': '酸雨',
@@ -314,11 +330,9 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '전투 시작!',
         'Rafflesia': '라플레시아',
-        'Scar\'s Edge is no longer sealed': 'Scar\'s Edge is no longer sealed', // FIXME
-        'Scar\'s Edge will be sealed off': 'Scar\'s Edge will be sealed off', // FIXME
       },
       'replaceText': {
         'Acid Rain': '산성비',

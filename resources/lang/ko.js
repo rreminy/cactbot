@@ -30,9 +30,9 @@ class CactbotLanguageKo extends CactbotLanguage {
       LadyOfCrowns: '여왕의 날개', // 0x755
       LordOfCrowns: '왕의 검', // 0x754
       Hypercharge: '과충전', // 0x2b0
-      LeftEye: '용의 왼쪽 눈', // 0x4a0
-      RightEye: '용의 오른쪽 눈', // 0x49f
-      Brotherhood: '도원결의', // 0x49e
+      LeftEye: '용의 왼눈', // 0x4a0
+      RightEye: '용의 오른눈', // 0x49f
+      Brotherhood: '도원결의: 투기', // 0x49e
       Devotion: '에기의 가호', // 0x4bd
       FoeRequiem: '마인의 진혼곡', // up 0x8b, down 0x8c
       LeadenFist: '연격 효과 향상',
@@ -49,6 +49,11 @@ class CactbotLanguageKo extends CactbotLanguage {
       PresenceOfMind: '쾌속의 마법',
       Shifu: '사풍',
       CircleOfPower: '흑마법 문양: 효과',
+      AstralAttenuation: 'Astral Attenuation', // FIXME
+      UmbralAttenuation: 'Umbral Attenuation', // FIXME
+      PhysicalAttenuation: 'Physical Attenuation', // FIXME
+
+      SurgeProtection: '피뢰침',
 
       Paralysis: '마비',
       Petrification: '석화',
@@ -62,6 +67,13 @@ class CactbotLanguageKo extends CactbotLanguage {
       FoolsTumble: '추락 환각', // 0x183
       Dropsy: '물독',
       Throttle: '질식',
+      StaticCondensation: '축전',
+      DamageDown: '주는 피해량 감소',
+      AstralEffect: 'Astral Effect',
+      UmbralEffect: 'Umbral Effect',
+      Stun: '기절',
+      ThinIce: '얼음 바닥',
+      DeepFreeze: '빙결',
 
       // UWU
       Windburn: '열상',

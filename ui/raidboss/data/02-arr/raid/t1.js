@@ -1,20 +1,23 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Binding Coil Of Bahamut - Turn \(1\)$/,
+  zoneRegex: {
+    en: /^The Binding Coil Of Bahamut - Turn \(1\)$/,
+    cn: /^巴哈姆特大迷宫 \(邂逅之章1\)$/,
+  },
   triggers: [
     {
       id: 'T1 High Voltage',
-      regex: Regexes.startsUsing({ source: 'Ads', id: '5A7', capture: false }),
-      regexDe: Regexes.startsUsing({ source: 'Abwehrsystem', id: '5A7', capture: false }),
-      regexFr: Regexes.startsUsing({ source: 'Sphère De Contrôle', id: '5A7', capture: false }),
-      regexJa: Regexes.startsUsing({ source: '制御システム', id: '5A7', capture: false }),
-      regexCn: Regexes.startsUsing({ source: '自卫系统', id: '5A7', capture: false }),
-      regexKo: Regexes.startsUsing({ source: '제어 시스템', id: '5A7', capture: false }),
+      regex: Regexes.startsUsing({ source: 'Ads', id: '5A7' }),
+      regexDe: Regexes.startsUsing({ source: 'Abwehrsystem', id: '5A7' }),
+      regexFr: Regexes.startsUsing({ source: 'Sphère De Contrôle', id: '5A7' }),
+      regexJa: Regexes.startsUsing({ source: '制御システム', id: '5A7' }),
+      regexCn: Regexes.startsUsing({ source: '自卫系统', id: '5A7' }),
+      regexKo: Regexes.startsUsing({ source: '제어 시스템', id: '5A7' }),
       condition: function(data) {
         return data.CanSilence();
       },
-      response: Responses.silence(),
+      response: Responses.interrupt(),
     },
     {
       // Indiscriminate Hood Swing
@@ -42,7 +45,9 @@
       },
       alertText: {
         en: 'Spit on YOU',
+        de: 'Spucke auf DIR',
         fr: 'Crachat sur VOUS',
+        cn: '吐痰点名',
       },
     },
     {
@@ -53,13 +58,15 @@
       regexJa: Regexes.addedCombatant({ name: 'カドゥケウス', capture: false }),
       regexCn: Regexes.addedCombatant({ name: '神杖巨蛇', capture: false }),
       regexKo: Regexes.addedCombatant({ name: '카두케우스', capture: false }),
-      suppressSeconds: 5,
       condition: function(data) {
         return data.started;
       },
+      suppressSeconds: 5,
       alertText: {
         en: 'Split',
-        fr: 'Séparation',
+        de: 'Teilen',
+        fr: 'Division',
+        cn: '分裂',
       },
     },
     {
@@ -77,6 +84,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Hood Swing in 10',
+        de: 'Kapuzenschwung in 10',
+        fr: 'Coup de capot dans 10s',
+        cn: '10秒内死刑',
       },
     },
     {
@@ -86,7 +96,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Slime Soon',
+        de: 'Schleim bald',
         fr: 'Slime bientôt',
+        cn: '软泥即将出现',
       },
     },
     {
@@ -101,7 +113,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Slime Soon',
+        de: 'Schleim bald',
         fr: 'Slime bientôt',
+        cn: '软泥即将出现',
       },
     },
   ],

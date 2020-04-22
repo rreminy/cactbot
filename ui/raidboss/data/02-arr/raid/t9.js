@@ -1,20 +1,20 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Second Coil Of Bahamut - Turn \(4\)$/,
+  zoneRegex: {
+    en: /^The Second Coil Of Bahamut - Turn \(4\)$/,
+    cn: /^巴哈姆特大迷宫 \(入侵之章4\)$/,
+  },
   timelineFile: 't9.txt',
   timelineTriggers: [
     {
       id: 'T9 Claw',
       regex: /Bahamut's Claw x5/,
+      beforeSeconds: 5,
       condition: function(data) {
         return data.role == 'tank' || data.role == 'healer' || data.job == 'BLU';
       },
-      beforeSeconds: 5,
-      infoText: {
-        en: 'Tankbuster',
-        fr: 'TankBuster',
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'T9 Dalamud Dive',
@@ -22,7 +22,9 @@
       beforeSeconds: 5,
       infoText: {
         en: 'Dive on Main Tank',
-        fr: 'Plongeon sur le main tank',
+        de: 'Sturz auf den Main Tank',
+        fr: 'Plongeon sur le Main Tank',
+        cn: '凶鸟跳点MT',
       },
     },
     {
@@ -31,7 +33,9 @@
       beforeSeconds: 4,
       infoText: {
         en: 'Bait Super Novas Outside',
-        fr: 'Attirer super novas à l\'extérieur',
+        de: 'Köder Supernova draußen',
+        fr: 'Attirez les Supernovas à l\'extérieur',
+        cn: '人群外放黑洞',
       },
     },
   ],
@@ -53,11 +57,13 @@
       durationSeconds: 5,
       alarmText: {
         en: 'Blight on YOU',
-        fr: 'Bile sur VOUS',
+        de: 'Pestschwinge auf DIR',
+        fr: 'Bile de rapace sur VOUS',
+        cn: '毒气点名',
       },
     },
     {
-      id: 'T9 Raven Blight You',
+      id: 'T9 Raven Blight Not You',
       regex: Regexes.gainsEffect({ effect: 'Raven Blight' }),
       regexDe: Regexes.gainsEffect({ effect: 'Pestschwinge' }),
       regexFr: Regexes.gainsEffect({ effect: 'Bile De Rapace' }),
@@ -74,20 +80,19 @@
       infoText: function(data, matches) {
         return {
           en: 'Blight on ' + data.ShortName(matches.target),
-          fr: 'Bile sur ' + data.ShortName(matches.target),
+          de: 'Pestschwinge auf ' + data.ShortName(matches.target),
+          fr: 'Bile de rapace sur ' + data.ShortName(matches.target),
+          cn: '毒气点' + data.ShortName(matches.target),
         };
       },
     },
     {
-      id: 'T9 Meteor Stream',
+      id: 'T9 Meteor',
       regex: Regexes.headMarker({ id: '000[7A9]' }),
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Meteor on YOU',
-        fr: 'Météore sur VOUS',
-      },
+      response: Responses.meteorOnYou(),
     },
     {
       id: 'T9 Meteor Stream',
@@ -95,10 +100,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      infoText: {
-        en: 'Spread (Meteor Stream)',
-        fr: 'Ecartez-vous (météore)',
-      },
+      response: Responses.spread(),
     },
     {
       id: 'T9 Stack',
@@ -107,12 +109,16 @@
         if (data.me == matches.target) {
           return {
             en: 'Thermo on YOU',
+            de: 'Thermo auf DIR',
             fr: 'Thermo sur VOUS',
+            cn: '分摊点名',
           };
         }
         return {
           en: 'Stack on ' + data.ShortName(matches.target),
-          fr: 'Package sur ' + data.ShortName(matches.target),
+          de: 'Sammeln auf ' + data.ShortName(matches.target),
+          fr: 'Packez-vous sur ' + data.ShortName(matches.target),
+          cn: '靠近' + data.ShortName(matches.target) + '分摊',
         };
       },
     },
@@ -139,7 +145,9 @@
       },
       alertText: {
         en: 'Silence Blue Golem',
-        fr: 'Silence le Golem bleu',
+        de: 'Blauen Golem verstummen',
+        fr: 'Interrompez le Golem bleu',
+        cn: '沉默蓝色小怪',
       },
     },
     {
@@ -152,7 +160,9 @@
       regexKo: Regexes.startsUsing({ id: '83B', source: '넬 데우스 다르누스', capture: false }),
       alertText: {
         en: 'Heavensfall',
-        fr: 'Chutes du ciel',
+        de: 'Himmelssturz',
+        fr: 'Destruction universelle',
+        cn: '击退AOE',
       },
     },
     {
@@ -168,7 +178,9 @@
       },
       infoText: {
         en: 'Garotte on YOU',
-        fr: 'Sangle sur VOUS',
+        de: 'Leicht fixierbar auf DIR',
+        fr: 'Sangle accélérée sur VOUS',
+        cn: '连坐点名',
       },
       run: function(data) {
         data.garotte = true;
@@ -187,7 +199,9 @@
       },
       alarmText: {
         en: 'Cleanse Garotte',
-        fr: 'Guerrisez Sangle',
+        de: 'reinige Leicht fixierbar',
+        fr: 'Dissipez Sangle accélérée',
+        cn: '踩白圈',
       },
     },
     {
@@ -225,12 +239,20 @@
       id: 'T9 Dragon Locations',
       regex: Regexes.addedCombatantFull({ name: ['Firehorn', 'Iceclaw', 'Thunderwing'] }),
       regexDe: Regexes.addedCombatantFull({ name: ['Feuerhorn', 'Eisklaue', 'Donnerschwinge'] }),
-      regexFr: Regexes.addedCombatantFull({ name: ['corne-de-feu', 'griffe-de-glace ', 'aile-de-foudre'] }),
+      regexFr: Regexes.addedCombatantFull({ name: ['Corne-De-Feu', 'Griffe-De-Glace', 'Aile-De-Foudre'] }),
       regexJa: Regexes.addedCombatantFull({ name: ['ファイアホーン', 'アイスクロウ', 'サンダーウィング'] }),
       regexCn: Regexes.addedCombatantFull({ name: ['火角', '冰爪', '雷翼'] }),
       regexKo: Regexes.addedCombatantFull({ name: ['화염뿔', '얼음발톱', '번개날개'] }),
       run: function(data, matches) {
-        let names = ['Firehorn', 'Iceclaw', 'Thunderwing'];
+        let all_names = {
+          en: ['Firehorn', 'Iceclaw', 'Thunderwing'],
+          de: ['Feuerhorn', 'Eisklaue', 'Donnerschwinge'],
+          fr: ['corne-de-feu', 'griffe-de-glace ', 'aile-de-foudre'],
+          ja: ['ファイアホーン', 'アイスクロウ', 'サンダーウィング'],
+          cn: ['火角', '冰爪', '雷翼'],
+          ko: ['화염뿔', '얼음발톱', '번개날개'],
+        };
+        let names = all_names[data.lang];
         let idx = names.indexOf(matches.name);
         if (idx == -1)
           return;
@@ -294,9 +316,10 @@
       infoText: function(data) {
         return {
           en: 'Marks: ' + data.naelMarks.join(', '),
-          fr: 'Marque : ' + data.naelMarks.join(', '),
           de: 'Markierungen : ' + data.naelMarks.join(', '),
+          fr: 'Marque : ' + data.naelMarks.join(', '),
           ja: 'マーカー: ' + data.naelMarks.join(', '),
+          cn: '标记： ' + data.naelMarks.join(', '),
         };
       },
     },
@@ -319,6 +342,7 @@
           return {
             en: data.tetherDir + ' (on YOU)',
             fr: data.tetherDir + ' (sur VOUS)',
+            cn: data.tetherDir + ' (点名)',
           };
         }
       },
@@ -327,6 +351,7 @@
           return {
             en: data.tetherDir + ' (on ' + data.ShortName(matches.target) + ')',
             fr: data.tetherDir + ' (sur ' + data.ShortName(matches.target) + ')',
+            cn: data.tetherDir + ' (点 ' + data.ShortName(matches.target) + ')',
           };
         }
       },
@@ -344,15 +369,10 @@
       },
       alarmText: {
         en: 'Thunder on YOU',
-        fr: 'Foudre sur VOUS',
         de: 'Blitz auf DIR',
+        fr: 'Foudre sur VOUS',
         ja: '自分にサンダー',
-      },
-      tts: {
-        en: 'thunder',
-        fr: 'Foudre',
-        de: 'blitz',
-        ja: 'サンダー',
+        cn: '雷点名',
       },
     },
     {
@@ -379,9 +399,10 @@
         let dir = data.naelMarks[data.naelDiveMarkerCount];
         return {
           en: 'Go To ' + marker + ' (in ' + dir + ')',
-          fr: 'Aller en ' + marker + ' (au ' + dir + ')',
           de: 'Gehe zu ' + marker + ' (im ' + dir + ')',
+          fr: 'Allez en ' + marker + ' (au ' + dir + ')',
           ja: marker + 'に行く' + ' (あと ' + dir + '秒)',
+          cn: '去' + marker + ' (在 ' + dir + '秒)',
         };
       },
       tts: function(data, matches) {
@@ -390,9 +411,10 @@
           return;
         return {
           en: 'Go To ' + ['A', 'B', 'C'][data.naelDiveMarkerCount],
-          fr: 'Aller en ' + ['A', 'B', 'C'][data.naelDiveMarkerCount],
           de: 'Gehe zu ' + ['A', 'B', 'C'][data.naelDiveMarkerCount],
+          fr: 'Allez en ' + ['A', 'B', 'C'][data.naelDiveMarkerCount],
           ja: ['A', 'B', 'C'][data.naelDiveMarkerCount] + '行くよ',
+          cn: '去' + ['A', 'B', 'C'][data.naelDiveMarkerCount],
         };
       },
     },
@@ -403,7 +425,6 @@
       'replaceSync': {
         'Astral Debris': 'Lichtgestein',
         'Dalamud Fragment': 'Dalamud-Bruchstück',
-        'Engage!': 'Start!',
         'Firehorn': 'Feuerhorn',
         'Iceclaw': 'Eisklaue',
         'Nael Geminus': 'Nael Geminus',
@@ -413,10 +434,8 @@
         'Umbral Debris': 'Schattengestein',
       },
       'replaceText': {
-        '(In)': '(Rein)',
-        '(Out)': '(Raus)',
-        '--targetable--': '--anvisierbar--',
-        '--untargetable--': '--nich anvisierbar--',
+        '\\(In\\)': '(Rein)',
+        '\\(Out\\)': '(Raus)',
         'Bahamut\'s Claw': 'Klauen Bahamuts',
         'Bahamut\'s Favor': 'Bahamuts Segen',
         'Binding Coil': 'Verschlungene Schatten',
@@ -424,7 +443,6 @@
         'Chain Lightning': 'Kettenblitz',
         'Dalamud Dive': 'Dalamud-Sturzflug',
         'Divebomb': 'Sturzbombe',
-        'Enrage': 'Finalangriff',
         'Fireball': 'Feuerball',
         'Ghost': 'Geist',
         'Golem Meteors': 'Golem Meteore',
@@ -432,7 +450,7 @@
         'Iron Chariot': 'Eiserner Streitwagen',
         'Lunar Dynamo': 'Lunarer Dynamo',
         'Megaflare': 'Megaflare',
-        'Meteor': 'Meteor',
+        '(?<! )Meteor(?! Stream)': 'Meteor',
         'Meteor Stream': 'Meteorflug',
         'Raven Dive': 'Bahamuts Schwinge',
         'Ravensbeak': 'Bradamante',
@@ -447,7 +465,6 @@
       'replaceSync': {
         'Astral Debris': 'Débris astral',
         'Dalamud Fragment': 'Débris de Dalamud',
-        'Engage!': 'À l\'attaque',
         'Firehorn': 'Corne-de-feu',
         'Iceclaw': 'Griffe-de-glace',
         'Nael Geminus': 'Nael Geminus',
@@ -457,10 +474,8 @@
         'Umbral Debris': 'Débris ombral',
       },
       'replaceText': {
-        '(In)': '(Dedans)',
-        '(Out)': '(Dehors)',
-        '--targetable--': '--Ciblable--',
-        '--untargetable--': '--Impossible à cibler--',
+        '\\(In\\)': '(Dedans)',
+        '\\(Out\\)': '(Dehors)',
         'Bahamut\'s Claw': 'Griffe de Bahamut',
         'Bahamut\'s Favor': 'Auspice du dragon',
         'Binding Coil': 'Écheveau entravant',
@@ -468,19 +483,21 @@
         'Chain Lightning': 'Chaîne d\'éclairs',
         'Dalamud Dive': 'Chute de Dalamud',
         'Divebomb': 'Bombe plongeante',
-        'Enrage': 'Enrage',
+        'East': 'Est',
         'Fireball': 'Boule de feu',
-        'Ghost': 'fantôme',
+        'Ghost Add': 'Add Fantôme',
         'Golem Meteors': 'Golem de Dalamud',
-        'Heavensfall': 'Chute céleste',
+        'Heavensfall': 'Destruction universelle',
         'Iron Chariot': 'Char de fer',
         'Lunar Dynamo': 'Dynamo lunaire',
         'Megaflare': 'MégaBrasier',
-        'Meteor': 'Météore',
+        '(?<! )Meteor(?! Stream)': 'Météore',
         'Meteor Stream': 'Rayon météore',
+        'North': 'Nord',
         'Raven Dive': 'Fonte du rapace',
         'Ravensbeak': 'Bec du rapace',
         'Ravensclaw': 'Serre du rapace',
+        'South': 'Sud',
         'Stardust': 'Poussière d\'étoile',
         'Super Nova': 'Supernova',
         'Thermionic Beam': 'Rayon thermoïonique',
@@ -491,7 +508,6 @@
       'replaceSync': {
         'Astral Debris': 'アストラルデブリ',
         'Dalamud Fragment': 'ダラガブデブリ',
-        'Engage!': '戦闘開始！',
         'Firehorn': 'ファイアホーン',
         'Iceclaw': 'アイスクロウ',
         'Nael Geminus': 'ネール・ジェミナス',
@@ -501,10 +517,8 @@
         'Umbral Debris': 'アンブラルデブリ',
       },
       'replaceText': {
-        '(In)': '(In)',
-        '(Out)': '(Out)',
-        '--targetable--': '--targetable--',
-        '--untargetable--': '--untargetable--',
+        '\\(In\\)': '(In)',
+        '\\(Out\\)': '(Out)',
         'Bahamut\'s Claw': 'バハムートクロウ',
         'Bahamut\'s Favor': '龍神の加護',
         'Binding Coil': 'バインディングコイル',
@@ -512,7 +526,6 @@
         'Chain Lightning': 'チェインライトニング',
         'Dalamud Dive': 'ダラガブダイブ',
         'Divebomb': 'ダイブボム',
-        'Enrage': 'Enrage',
         'Fireball': 'ファイアボール',
         'Ghost': 'ゴースト',
         'Golem Meteors': 'Golem Meteors', // FIXME
@@ -520,7 +533,7 @@
         'Iron Chariot': 'アイアンチャリオット',
         'Lunar Dynamo': 'ルナダイナモ',
         'Megaflare': 'メガフレア',
-        'Meteor': 'メテオ',
+        '(?<! )Meteor(?! Stream)': 'メテオ',
         'Meteor Stream': 'メテオストリーム',
         'Raven Dive': 'レイヴンダイブ',
         'Ravensbeak': 'レイヴェンズビーク',
@@ -535,7 +548,6 @@
       'replaceSync': {
         'Astral Debris': '星极岩屑',
         'Dalamud Fragment': '卫月岩屑',
-        'Engage!': '战斗开始！',
         'Firehorn': '火角',
         'Iceclaw': '冰爪',
         'Nael Geminus': '奈尔双生子',
@@ -545,10 +557,8 @@
         'Umbral Debris': '灵极岩屑',
       },
       'replaceText': {
-        '(In)': '(In)', // FIXME
-        '(Out)': '(Out)', // FIXME
-        '--targetable--': '--targetable--', // FIXME
-        '--untargetable--': '--untargetable--', // FIXME
+        '\\(In\\)': '(In)', // FIXME
+        '\\(Out\\)': '(Out)', // FIXME
         'Bahamut\'s Claw': '巴哈姆特之爪',
         'Bahamut\'s Favor': '龙神的加护',
         'Binding Coil': '拘束圈',
@@ -556,7 +566,6 @@
         'Chain Lightning': '雷光链',
         'Dalamud Dive': '月华冲',
         'Divebomb': '爆破俯冲',
-        'Enrage': 'Enrage', // FIXME
         'Fireball': '火球',
         'Ghost': '幽灵',
         'Golem Meteors': 'Golem Meteors', // FIXME
@@ -564,7 +573,7 @@
         'Iron Chariot': '钢铁战车',
         'Lunar Dynamo': '月流电圈',
         'Megaflare': '百万核爆',
-        'Meteor': '陨石',
+        '(?<! )Meteor(?! Stream)': '陨石',
         'Meteor Stream': '陨石流',
         'Raven Dive': '凶鸟冲',
         'Ravensbeak': '凶鸟尖喙',
@@ -579,7 +588,6 @@
       'replaceSync': {
         'Astral Debris': '천상의 잔해',
         'Dalamud Fragment': '달라가브의 잔해',
-        'Engage!': '전투 시작!',
         'Firehorn': '화염뿔',
         'Iceclaw': '얼음발톱',
         'Nael Geminus': '넬 게미누스',
@@ -589,10 +597,8 @@
         'Umbral Debris': '저승의 잔해',
       },
       'replaceText': {
-        '(In)': '(In)', // FIXME
-        '(Out)': '(Out)', // FIXME
-        '--targetable--': '--targetable--', // FIXME
-        '--untargetable--': '--untargetable--', // FIXME
+        '\\(In\\)': '(In)', // FIXME
+        '\\(Out\\)': '(Out)', // FIXME
         'Bahamut\'s Claw': '바하무트의 발톱',
         'Bahamut\'s Favor': '용신의 가호',
         'Binding Coil': '구속의 고리',
@@ -600,7 +606,6 @@
         'Chain Lightning': '번개 사슬',
         'Dalamud Dive': '달라가브 강하',
         'Divebomb': '급강하 폭격',
-        'Enrage': 'Enrage', // FIXME
         'Fireball': '화염구',
         'Ghost': '유령',
         'Golem Meteors': 'Golem Meteors', // FIXME
@@ -608,7 +613,7 @@
         'Iron Chariot': '강철 전차',
         'Lunar Dynamo': '달의 원동력',
         'Megaflare': '메가플레어',
-        'Meteor': '메테오',
+        '(?<! )Meteor(?! Stream)': '메테오',
         'Meteor Stream': '유성 폭풍',
         'Raven Dive': '흉조의 강하',
         'Ravensbeak': '흉조의 부리',

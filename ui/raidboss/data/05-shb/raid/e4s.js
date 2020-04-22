@@ -60,35 +60,12 @@
       regexJa: Regexes.startsUsing({ id: '4116', source: 'タイタン' }),
       regexCn: Regexes.startsUsing({ id: '4116', source: '泰坦' }),
       regexKo: Regexes.startsUsing({ id: '4116', source: '타이탄' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            ja: '自分にタンクバスター',
-            cn: '死刑点名',
-            ko: '탱버 대상자',
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'tank' || data.role == 'healer';
       },
       // As this seems to usually seems to be invulned,
       // don't make a big deal out of it.
-      infoText: function(data, matches) {
-        if (matches.target == data.me)
-          return;
-        if (data.role != 'tank' && data.role != 'healer')
-          return;
-
-        return {
-          en: 'Buster on ' + data.ShortName(matches.target),
-          de: 'Tankbuster auf ' + data.ShortName(matches.target),
-          fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          ja: data.ShortName(matches.target) + 'にタンクバスター',
-          cn: '死刑点 ' + data.ShortName(matches.target),
-          ko: '"' + data.ShortName(matches.target) + '" 탱버',
-        };
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'E4S Pulse of the Land',
@@ -96,14 +73,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Spread Marker',
-        de: 'Verteilen-Marker',
-        fr: 'Marque de dispersion',
-        ja: '黄色: 散開',
-        cn: '黄色：散开',
-        ko: '징: 산개',
-      },
+      response: Responses.spread('alert'),
     },
     {
       id: 'E4S Evil Earth',
@@ -129,14 +99,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Stack Marker',
-        de: 'Sammeln-Marker',
-        fr: 'Marque de package',
-        ja: '橙色: スタック',
-        cn: '橙色：集合',
-        ko: '징: 쉐어',
-      },
+      response: Responses.stack(),
     },
     {
       id: 'E4S Voice of the Land',
@@ -149,14 +112,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-        ja: 'AoE',
-        cn: 'AOE',
-        ko: '전체 공격',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'E4S Geocrush',
@@ -166,14 +122,7 @@
       regexJa: Regexes.startsUsing({ id: '4113', source: 'タイタン', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4113', source: '泰坦', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4113', source: '타이탄', capture: false }),
-      alertText: {
-        en: 'Knockback',
-        de: 'Rückstoß',
-        fr: 'Poussée',
-        ja: 'ノックバック',
-        cn: '击退',
-        ko: '넉백',
-      },
+      response: Responses.knockback(),
     },
     {
       id: 'E4S Massive Landslide - Front',
@@ -186,7 +135,7 @@
       alertText: {
         en: 'Landslide: In Front',
         de: 'Armberge: Vor ihm',
-        fr: 'Devant',
+        fr: 'Glissement: Devant',
         ja: 'ランスラ: 正面へ',
         cn: '面前躲避',
         ko: '완갑: 정면',
@@ -200,14 +149,7 @@
       regexJa: Regexes.ability({ id: '4117', source: 'タイタン', capture: false }),
       regexCn: Regexes.ability({ id: '4117', source: '泰坦', capture: false }),
       regexKo: Regexes.ability({ id: '4117', source: '타이탄', capture: false }),
-      infoText: {
-        en: 'Get to Sides',
-        de: 'Zur Seite',
-        fr: 'Sur les côtés',
-        ja: '横へ',
-        cn: '两侧躲避',
-        ko: '양옆으로',
-      },
+      response: Responses.goSides('info'),
     },
     {
       id: 'E4S Landslide',
@@ -353,14 +295,7 @@
       regexJa: Regexes.startsUsing({ id: '4121', source: 'タイタン', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4121', source: '泰坦', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4121', source: '타이탄', capture: false }),
-      alertText: {
-        en: 'Get Under',
-        de: 'Unter ihn',
-        fr: 'Sous le boss',
-        ja: '中へ',
-        cn: '脚下集合',
-        ko: '보스 아래로',
-      },
+      response: Responses.getUnder('alert'),
     },
     {
       id: 'E4S Earthen Fury',
@@ -373,14 +308,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'Big aoe',
-        de: 'Große AoE',
-        fr: 'Gros dégâts de zone',
-        ja: '強AoE',
-        cn: '大AOE',
-        ko: '강한 전체 공격',
-      },
+      response: Responses.bigAoe(),
     },
     {
       id: 'E4S Earthen Fist - Left/Right',
@@ -393,7 +321,7 @@
       infoText: {
         en: 'Left, Then Right',
         de: 'Links, dann Rechts',
-        fr: 'Gauche puis droite',
+        fr: 'Gauche, puis droite',
         ja: '左 => 右',
         cn: '左 => 右',
         ko: '왼쪽 => 오른쪽',
@@ -410,7 +338,7 @@
       infoText: {
         en: 'Right, Then Left',
         de: 'Rechts, dann Links',
-        fr: 'Droite puis gauche',
+        fr: 'Droite, puis gauche',
         ja: '右 => 左',
         cn: '右 => 左',
         ko: '오른쪽 => 왼쪽',
@@ -427,7 +355,7 @@
       infoText: {
         en: 'Left, Stay Left',
         de: 'Links, Links bleiben',
-        fr: 'Gauche puis restez',
+        fr: 'Gauche, puis restez',
         ja: 'ずっと左',
         cn: '一直在左',
         ko: '왼쪽 => 왼쪽',
@@ -444,7 +372,7 @@
       infoText: {
         en: 'Right, Stay Right',
         de: 'Rechts, Rechts bleiben',
-        fr: 'Droite puis restez',
+        fr: 'Droite, puis restez',
         ja: 'ずっと右',
         cn: '一直在右',
         ko: '오른쪽 => 오른쪽',
@@ -458,14 +386,7 @@
       regexJa: Regexes.startsUsing({ id: '4135', source: 'マキシタイタン', capture: false }),
       regexCn: Regexes.startsUsing({ id: '4135', source: '极大泰坦', capture: false }),
       regexKo: Regexes.startsUsing({ id: '4135', source: '거대 타이탄', capture: false }),
-      infoText: {
-        en: 'Knockback',
-        de: 'Rückstoß',
-        fr: 'Poussée',
-        ja: 'ノックバック',
-        cn: '击退',
-        ko: '넉백',
-      },
+      response: Responses.knockback('info'),
     },
     {
       id: 'E4S Weight of the World',
@@ -473,14 +394,7 @@
       condition: function(data, matches) {
         return data.me == matches.target;
       },
-      alertText: {
-        en: 'Weight, Get Out',
-        ja: '青: 離れて',
-        de: 'Schwere, Raus gehen',
-        fr: 'Poids, éloignez-vous',
-        cn: '蓝色：离开人群',
-        ko: '파랑징, 피하기',
-      },
+      response: Responses.getOut(),
     },
     {
       id: 'E4S Megalith',
@@ -616,28 +530,20 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        ja: '激震',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-        cn: 'AOE',
-        ko: '전체 공격 5회',
-      },
+      response: Responses.aoe(),
     },
   ],
   timelineReplace: [
     {
       'locale': 'de',
+      'missingTranslations': true,
       'replaceSync': {
         'Titan': 'Titan',
         'Granite Gaol': 'Granitgefängnis',
-        'Engage!': 'Start!',
         'Bomb Boulder': 'Bomber-Brocken',
       },
       'replaceText': {
         'Dual Earthen Fists': 'Gaias Hammerfaust',
-        'attack': 'Attacke',
         'Weight of the World': 'Schwere der Erde',
         'Weight of the Land': 'Gaias Gewicht',
         'Voice of the Land': 'Aufschrei der Erde',
@@ -654,26 +560,24 @@
         'Megalith': 'Megalithenbrecher',
         'Massive Landslide': 'Gigantischer Bergsturz',
         'Magnitude 5.0': 'Magnitude 5.0',
-        'Landslide': 'Bergsturz',
+        '(?<! )Landslide': 'Bergsturz',
         'Geocrush': 'Kraterschlag',
         'Force of the Land': 'Gaias Tosen',
         'Fault Line': 'Bruchlinie',
         'Explosion': 'Explosion',
         'Evil Earth': 'Grimm der Erde',
-        'Enrage': 'Finalangriff',
         'Earthen Wheels/Gauntlets': 'Gaia-Räder/Armberge',
-        'Earthen Wheels': 'Gaia-Räder',
+        'Earthen Wheels(?!/)': 'Gaia-Räder',
         'Earthen Gauntlets': 'Gaia-Armberge',
         'Earthen Fury': 'Gaias Zorn',
-        'Earthen Fist': 'Gaias Faust',
+        '(?<! )Earthen Fist': 'Gaias Faust',
         'Earthen Armor': 'Basaltpanzer',
         'Earthen Anguish': 'Gaias Pein',
         'Crumbling Down': 'Felsfall',
         'Bury': 'Begraben',
         'Bomb Boulders': 'Tumulus',
         'Aftershock': 'Nachbeben',
-        '--untargetable--': '--nich anvisierbar--',
-        '--targetable--': '--anvisierbar--',
+        'Right/Left Landslide': 'Rechter/Linker Bergsturz',
       },
       '~effectNames': {
         'Summon Order III': 'Egi-Attacke III',
@@ -689,14 +593,13 @@
     },
     {
       'locale': 'fr',
+      'missingTranslations': true,
       'replaceSync': {
-        'Titan': 'Titan',
+        'Titan(?! )': 'Titan',
         'Granite Gaol': 'Geôle De Granite',
-        'Engage!': 'À l\'attaque',
         'Bomb Boulder': 'Bombo Rocher',
       },
       'replaceText': {
-        'attack': 'Attaque',
         'Weight of the World': 'Poids du monde',
         'Weight of the Land': 'Poids de la terre',
         'Voice of the Land': 'Hurlement tellurique',
@@ -713,18 +616,17 @@
         'Megalith': 'Écrasement mégalithique',
         'Massive Landslide': 'Glissement apocalyptique',
         'Magnitude 5.0': 'Magnitude 5',
-        'Landslide': 'Glissement de terrain',
+        '(?<! )Landslide': 'Glissement de terrain',
         'Geocrush': 'Broie-terre',
         'Force of the Land': 'Grondement tellurique',
         'Fault Line': 'Faille tectonique',
         'Explosion': 'Explosion',
         'Evil Earth': 'Terre maléfique',
-        'Enrage': 'Enrage',
         'Earthen Wheels/Gauntlets': 'Pas/Poing tellurique',
-        'Earthen Wheels': 'Pas tellurique',
+        'Earthen Wheels(?!/)': 'Pas tellurique',
         'Earthen Gauntlets': 'Poing tellurique',
         'Earthen Fury': 'Fureur tellurique',
-        'Earthen Fist': 'Poing de la terre',
+        '(?<! )Earthen Fist': 'Poing de la terre',
         'Earthen Armor': 'Armure tellurique',
         'Earthen Anguish': 'Peine de la terre',
         'Dual Earthen Fists': 'Frappe de la terre',
@@ -732,10 +634,6 @@
         'Bury': 'Ensevelissement',
         'Bomb Boulders': 'Bombo rocher',
         'Aftershock': 'Répercussion',
-        '--untargetable--': '--Impossible à cibler--',
-        '--targetable--': '--Ciblable--',
-        '--sync--': '--Synchronisation--',
-        '--Reset--': '--Réinitialisation--',
       },
       '~effectNames': {
         'Summon Order III': 'Actions en attente: 3',
@@ -751,16 +649,15 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
         'ジャイアントボルダー': 'ジャイアントボルダー',
-        'Titan': 'タイタン',
+        'Titan(?! )': 'タイタン',
         'Granite Gaol': 'グラナイト・ジェイル',
-        'Engage!': '戦闘開始！',
         'Bomb Boulder': 'ボムボルダー',
         'Titan Maximum': 'マキシタイタン',
       },
       'replaceText': {
-        'attack': '攻撃',
         'Weight of the World': '大陸の重み',
         'Weight of the Land': '大地の重み',
         'Voice of the Land': '大地の叫び',
@@ -777,17 +674,17 @@
         'Megalith': 'メガリスクラッシュ',
         'Massive Landslide': 'メガ・ランドスライド',
         'Magnitude 5.0': 'マグニチュード5.0',
-        'Landslide': 'ランドスライド',
+        '(?<! )Landslide': 'ランドスライド',
         'Geocrush': 'ジオクラッシュ',
         'Force of the Land': '大地の轟き',
         'Fault Line': 'フォールトゾーン',
         'Explosion': '爆散',
         'Evil Earth': 'イビルアース',
         'Earthen Wheels/Gauntlets': '大地の車輪/手甲',
-        'Earthen Wheels': '大地の車輪',
+        'Earthen Wheels(?!/)': '大地の車輪',
         'Earthen Gauntlets': '大地の手甲',
         'Earthen Fury': '大地の怒り',
-        'Earthen Fist': '大地の拳',
+        '(?<! )Earthen Fist': '大地の拳',
         'Earthen Armor': '大地の鎧',
         'Earthen Anguish': '大地の痛み',
         'Dual Earthen Fists': '大地の両拳',
@@ -812,13 +709,11 @@
       'locale': 'cn',
       'replaceSync': {
         'Titan Maximum': '极大泰坦',
-        'Titan': '泰坦',
+        'Titan(?! )': '泰坦',
         'Granite Gaol': '花岗石牢',
-        'Engage!': '战斗开始！',
         'Bomb Boulder': '爆破岩石',
       },
       'replaceText': {
-        'attack': '攻击',
         'Weight of the World': '铁球',
         'Weight [Oo]f [Tt]he Land': '大地之重',
         'Weight of the Land': '大地之重',
@@ -837,27 +732,24 @@
         'Massive Landslide': '百万地裂',
         'Magnitude 5.0': '震级5.0',
         'Right/Left Landslide': '右/左地裂',
-        'Landslide': '地裂',
+        '(?<! )Landslide': '地裂',
         'Geocrush': '大地粉碎',
         'Force of the Land': '大地之轰',
         'Fault Line': '断裂带',
         'Explosion': '爆炸',
         'Evil Earth': '邪土',
         'Earthen Wheels/Gauntlets': '大地之车轮/手甲',
-        'Earthen Wheels': '大地之车轮',
+        'Earthen Wheels(?!/)': '大地之车轮',
         'Earthen Gauntlets': '大地之手甲',
-        'Earthen Fury Enrage': '大地之怒 狂暴',
         'Earthen Fury': '大地之怒',
         'Dual Earthen Fists': '大地之双拳',
-        'Earthen Fist': '大地之拳',
+        '(?<! )Earthen Fist': '大地之拳',
         'Earthen Armor': '大地之铠',
         'Earthen Anguish': '大地之痛',
         'Crumbling Down': '岩层崩落',
         'Bury': '塌方',
         'Bomb Boulders': '爆破岩石',
         'Aftershock': '余波',
-        '--targetable--': '--可选中--',
-        '--untargetable--': '--无法选中--',
       },
       '~effectNames': {
         'Summon Order III': '发动技能待命III',
@@ -874,15 +766,13 @@
     {
       'locale': 'ko',
       'replaceSync': {
-        'Titan': '타이탄',
+        'Titan(?! )': '타이탄',
         'Titan Maximum': '거대 타이탄',
         'Granite Gaol': '화강암 감옥',
-        'Engage!': '전투 시작!',
         'Bomb Boulder': '바위폭탄',
       },
       'replaceText': {
         'Dual Earthen Fists': '대지의 두 주먹',
-        'attack': '공격',
         'Weight of the World': '대륙의 무게',
         'Weight of the Land': '대지의 무게',
         'Voice of the Land': '대지의 외침',
@@ -899,26 +789,23 @@
         'Massive Landslide': '대규모 산사태',
         'Right/Left Landslide': '좌/우측 산사태',
         'Magnitude 5.0': '진도 5.0',
-        'Landslide': '산사태',
+        '(?<! )Landslide': '산사태',
         'Geocrush': '대지 붕괴',
         'Force of the Land': '대지의 고동',
         'Fault Line': '단층선',
         'Explosion': '폭산',
         'Evil Earth': '사악한 대지',
-        'Enrage': '전멸기',
         'Earthen Wheels/Gauntlets': '대지의 바퀴/완갑',
-        'Earthen Wheels': '대지의 바퀴',
+        'Earthen Wheels(?!/)': '대지의 바퀴',
         'Earthen Gauntlets': '대지의 완갑',
         'Earthen Fury': '대지의 분노',
-        'Earthen Fist': '대지의 주먹',
+        '(?<! )Earthen Fist': '대지의 주먹',
         'Earthen Armor': '대지의 갑옷',
         'Earthen Anguish': '대지의 고통',
         'Crumbling Down': '암반 낙하',
         'Bury': '충격',
         'Bomb Boulders': '바위폭탄',
         'Aftershock': '여파',
-        '--untargetable--': '--타겟불가능--',
-        '--targetable--': '--타겟가능--',
       },
       '~effectNames': {
         'Summon Order III': '기술 실행 대기 3',

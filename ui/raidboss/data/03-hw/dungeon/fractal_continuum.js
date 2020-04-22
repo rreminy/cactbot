@@ -2,7 +2,10 @@
 
 // Fractal Continuum
 [{
-  zoneRegex: /^The Fractal Continuum$/,
+  zoneRegex: {
+    en: /^The Fractal Continuum$/,
+    cn: /^博物战舰无限回廊$/,
+  },
   timelineFile: 'fractal_continuum.txt',
   timelineTriggers: [
     {
@@ -12,24 +15,13 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'AoE',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Fractal Sanctification',
       regex: /Sanctification/,
       beforeSeconds: 5,
-      infoText: function(data) {
-        if (data.role == 'tank') {
-          return {
-            en: 'Tank cleave on YOU',
-          };
-        }
-        return {
-          en: 'Avoid tank cleave',
-        };
-      },
+      response: Responses.tankCleave(),
     },
     {
       id: 'Fractal Unholy',
@@ -38,9 +30,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'AoE',
-      },
+      response: Responses.aoe(),
     },
   ],
   triggers: [
@@ -52,18 +42,7 @@
       regexJa: Regexes.startsUsing({ id: 'F7A', source: 'ファントムレイ' }),
       regexCn: Regexes.startsUsing({ id: 'F7A', source: '幻影光' }),
       regexKo: Regexes.startsUsing({ id: 'F7A', source: '환영 광선' }),
-      infoText: function(data, matches) {
-        if (data.me == matches.target) {
-          return {
-            en: 'Tank buster on YOU',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.shortName(matches.target),
-          };
-        }
-      },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Fractal Slash',
@@ -73,9 +52,7 @@
       regexJa: Regexes.startsUsing({ id: 'F83', source: 'ミノタウロス', capture: false }),
       regexCn: Regexes.startsUsing({ id: 'F83', source: '弥诺陶洛斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: 'F83', source: '미노타우로스', capture: false }),
-      infoText: {
-        en: 'Out of front',
-      },
+      response: Responses.awayFromFront(),
     },
     {
       id: 'Fractal Swipe',
@@ -85,9 +62,7 @@
       regexJa: Regexes.startsUsing({ id: 'F81', source: 'ミノタウロス', capture: false }),
       regexCn: Regexes.startsUsing({ id: 'F81', source: '弥诺陶洛斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: 'F81', source: '미노타우로스', capture: false }),
-      infoText: {
-        en: 'Out of front',
-      },
+      response: Responses.awayFromFront(),
     },
     {
       id: 'Fractal Small Swing',
@@ -97,9 +72,7 @@
       regexJa: Regexes.startsUsing({ id: 'F82', source: 'ミノタウロス', capture: false }),
       regexCn: Regexes.startsUsing({ id: 'F82', source: '弥诺陶洛斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: 'F82', source: '미노타우로스', capture: false }),
-      infoText: {
-        en: 'Get out',
-      },
+      response: Responses.getOut(),
     },
     {
       id: 'Fractal Big Swing',
@@ -111,6 +84,9 @@
       regexKo: Regexes.startsUsing({ id: 'F87', source: '미노타우로스', capture: false }),
       alertText: {
         en: 'Use a cage',
+        de: 'Benutze einen Käfig',
+        fr: 'Utilisez une cage',
+        cn: '打开笼子',
       },
     },
     {
@@ -126,6 +102,9 @@
       },
       infoText: {
         en: 'Cleanse bomb',
+        de: 'Reinige Bomben-Debuff',
+        fr: 'Guérissez la bombe',
+        cn: '康复魔炸弹',
       },
     },
     {
@@ -137,111 +116,157 @@
       regexCn: Regexes.addedCombatant({ name: '发条报警虫', capture: false }),
       regexKo: Regexes.addedCombatant({ name: '알라그 태엽경보장치', capture: false }),
       suppressSeconds: 5,
-      infoText: {
-        en: 'Kill adds',
-      },
+      response: Responses.killAdds(),
     },
   ],
   timelineReplace: [
     {
       'locale': 'de',
       'replaceSync': {
-        'Phantom Ray': 'Phantomschimmer',
+        'Exhibit level III': 'Ausstellungssektor III',
         'Minotaur': 'Minotaurus',
+        'Phantom Ray': 'Phantomschimmer',
+        'Repository Node': 'Verwahrungsknoten',
         'The Curator': 'Kurator',
-
-        'Exhibit level III will be sealed off': 'Ausstellungssektor III schließt',
-        'The high-level incubation bay will be sealed off': 'Inkubationskammer schließt',
-        'The reality augmentation bay will be sealed off': 'Dilatationskammer schließt',
+        'The high-level incubation bay': 'Inkubationskammer',
+        'The reality augmentation bay': 'Dilatationskammer',
       },
       'replaceText': {
-        'Rapid Sever': 'Radikale Abtrennung',
-        'Atmospheric Displacement': 'Schnitttest',
-        'Double Sever': 'Zweifachabtrennung',
-        'Damage Up': 'Schaden +',
-        'Atmospheric Compression': 'Schnittdruck',
-
+        '10-Tonze Slash': '11-Tonzen-Schlag',
         '11-Tonze Swipe': '11-Tonzen-Hieb',
-        '111-Tonze Swing': '111-Tonzen-Schwung',
-        'Disorienting Groan': 'Kampfgebrüll',
-        'Zoom': 'Heranholen',
-        '10-Tonze Slash': '11-Tonzen-Schlag', // FIXME: Check XIVAPI's correctness on this one
+        '(?<!1)111-Tonze Swing': '111-Tonzen-Schwung',
         '1111-Tonze Swing': '1111-Tonzen-Schwung',
-        'Feast': 'Festmahl',
-
-        'Sanctification': 'Sanktifikation',
-        'Unholy': 'Unheilig',
         'Aetherochemical Explosive': 'Ätherochemisches Explosivum',
-        'The Educator': 'Zuchtmeister',
         'Aetherochemical Mine': 'Ätherochemische Mine',
+        'Atmospheric Compression': 'Schnittdruck',
+        'Atmospheric Displacement': 'Schnitttest',
+        'Damage Up': 'ダメージ上昇',
+        'Disorienting Groan': 'Kampfgebrüll',
+        'Double Sever': 'Zweifachabtrennung',
+        'Feast': 'Festmahl',
+        'Rapid Sever': 'Radikale Abtrennung',
+        'Sanctification': 'Sanktifikation',
+        'The Educator': 'Zuchtmeister',
+        'Unholy': 'Unheilig',
+        'Zoom': 'Heranholen',
       },
     },
     {
       'locale': 'fr',
       'replaceSync': {
-        'Phantom Ray': 'Rayon Fantomatique',
-        'Minotaur': 'Minotaure',
+        'Exhibit level III': 'secteur d\'exposition III',
+        'Minotaur': 'minotaure',
+        'Phantom Ray': 'rayon fantomatique',
+        'Repository Node': 'sphère de dépôt',
         'The Curator': 'Conservateur',
-
-        // FIXME
-        'Exhibit level III will be sealed off': 'Exhibit level III will be sealed off',
-        'The high-level incubation bay will be sealed off': 'The high-level incubation bay will be sealed off',
-        'The reality augmentation bay will be sealed off': 'The reality augmentation bay will be sealed off',
+        'The high-level incubation bay': 'la chambre d\'incubation chimérique',
+        'The reality augmentation bay': 'la salle de distorsion de la réalité',
       },
       'replaceText': {
-        'Rapid Sever': 'Tranchage rapide',
-        'Atmospheric Displacement': 'Moulinet infernal',
-        'Double Sever': 'Double tranchage',
-        'Damage Up': 'Bonus de dégâts physiques',
-        'Atmospheric Compression': 'Écrasement',
-
-        '11-Tonze Swipe': 'Fauche de 11 tonz',
-        '111-Tonze Swing': 'Swing de 111 tonz',
-        'Disorienting Groan': 'Cri désorientant',
-        'Zoom': 'Charge',
         '10-Tonze Slash': 'Taillade de 10 tonz',
+        '11-Tonze Swipe': 'Fauche de 11 tonz',
+        '(?<!1)111-Tonze Swing': 'Swing de 111 tonz',
         '1111-Tonze Swing': 'Swing de 1111 tonz',
-        'Feast': 'Festin',
-
-        'Sanctification': 'Sanctification',
-        'Unholy': 'Sombre miracle',
         'Aetherochemical Explosive': 'Bombe magismologique',
-        'The Educator': 'Disciplinaire',
         'Aetherochemical Mine': 'Mine magismologique',
+        'Atmospheric Compression': 'Écrasement',
+        'Atmospheric Displacement': 'Moulinet infernal',
+        'Damage Up': 'ダメージ上昇',
+        'Disorienting Groan': 'Cri désorientant',
+        'Double Sever': 'Double tranchage',
+        'Feast': 'Festin',
+        'Rapid Sever': 'Tranchage rapide',
+        'Sanctification': 'Sanctification',
+        'The Educator': 'Disciplinaire',
+        'Unholy': 'Sombre miracle',
+        'Zoom': 'Charge',
       },
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Phantom Ray': 'ファントムレイ',
         'Minotaur': 'ミノタウロス',
+        'Phantom Ray': 'ファントムレイ',
+        'Repository Node': '収蔵システム',
         'The Curator': 'キュレーター',
-
-        // FIXME
-        'Exhibit level III will be sealed off': 'Exhibit level III will be sealed off',
-        'The high-level incubation bay will be sealed off': 'The high-level incubation bay will be sealed off',
-        'The reality augmentation bay will be sealed off': 'The reality augmentation bay will be sealed off',
       },
       'replaceText': {
-        'Rapid Sever': '滅多斬り',
-        'Atmospheric Displacement': '剣風',
-        'Double Sever': '多重斬り',
-        'Damage Up': 'ダメージ上昇',
-        'Atmospheric Compression': '剣圧',
-
-        '11-Tonze Swipe': '11トンズ・スワイプ',
-        '111-Tonze Swing': '111トンズ・スイング',
-        'Disorienting Groan': '雄叫び',
-        'Zoom': 'ズームイン',
         '10-Tonze Slash': '10トンズ・スラッシュ',
+        '11-Tonze Swipe': '11トンズ・スワイプ',
+        '(?<!1)111-Tonze Swing': '111トンズ・スイング',
         '1111-Tonze Swing': '1111トンズ・スイング',
-        'Feast': 'フィースト',
-
-        'Sanctification': '聖別の光',
-        'Unholy': 'アンホーリー',
         'Aetherochemical Explosive': '魔科学爆弾',
-        'The Educator': 'エデュケーター',
         'Aetherochemical Mine': '魔科学地雷',
+        'Atmospheric Compression': '剣圧',
+        'Atmospheric Displacement': '剣風',
+        'Damage Up': 'ダメージ上昇',
+        'Disorienting Groan': '雄叫び',
+        'Double Sever': '多重斬り',
+        'Feast': 'フィースト',
+        'Rapid Sever': '滅多斬り',
+        'Sanctification': '聖別の光',
+        'The Educator': 'エデュケーター',
+        'Unholy': 'アンホーリー',
+        'Zoom': 'ズームイン',
+      },
+    },
+    {
+      'locale': 'cn',
+      'missingTranslations': true,
+      'replaceSync': {
+        'Minotaur': '弥诺陶洛斯',
+        'Phantom Ray': '幻影光',
+        'Repository Node': '收藏系统',
+        'The Curator': '博物总管',
+      },
+      'replaceText': {
+        '10-Tonze Slash': '十吨挥打',
+        '11-Tonze Swipe': '十一吨横扫',
+        '(?<!1)111-Tonze Swing': '百十一吨回转',
+        '1111-Tonze Swing': '千百十一吨回转',
+        'Aetherochemical Explosive': '魔科学炸弹',
+        'Aetherochemical Mine': '魔科学地雷',
+        'Atmospheric Compression': '剑压',
+        'Atmospheric Displacement': '剑风',
+        'Damage Up': 'ダメージ上昇',
+        'Disorienting Groan': '吼叫',
+        'Double Sever': '多重斩击',
+        'Feast': '飨宴',
+        'Rapid Sever': '急促斩击',
+        'Sanctification': '祝圣之光',
+        'The Educator': '管教',
+        'Unholy': '邪圣',
+        'Zoom': '放大',
+      },
+    },
+    {
+      'locale': 'ko',
+      'missingTranslations': true,
+      'replaceSync': {
+        'Minotaur': '미노타우로스',
+        'Phantom Ray': '환영 광선',
+        'Repository Node': '소장 시스템',
+        'The Curator': '전시 책임자',
+      },
+      'replaceText': {
+        '10-Tonze Slash': '10톤즈 베기',
+        '11-Tonze Swipe': '11톤즈 후려치기',
+        '(?<!1)111-Tonze Swing': '111톤즈 휘두르기',
+        '1111-Tonze Swing': '1111톤즈 휘두르기',
+        'Aetherochemical Explosive': '마과학 폭탄',
+        'Aetherochemical Mine': '마과학 지뢰',
+        'Atmospheric Compression': '검압',
+        'Atmospheric Displacement': '칼바람',
+        'Damage Up': 'ダメージ上昇',
+        'Disorienting Groan': '우렁찬 외침',
+        'Double Sever': '다중 베기',
+        'Feast': '사육제',
+        'Rapid Sever': '마구 베기',
+        'Sanctification': '축성의 빛',
+        'The Educator': '교육자',
+        'Unholy': '부정함',
+        'Zoom': '확대',
       },
     },
   ],

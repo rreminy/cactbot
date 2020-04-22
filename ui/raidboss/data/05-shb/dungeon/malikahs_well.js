@@ -1,7 +1,11 @@
 'use strict';
 
 [{
-  zoneRegex: /^Malikah's Well$/,
+  zoneRegex: {
+    en: /^Malikah's Well$/,
+    cn: /^避暑离宫马利卡大井$/,
+    ko: /^말리카 큰우물$/,
+  },
   timelineFile: 'malikahs_well.txt',
   triggers: [
     {
@@ -12,38 +16,15 @@
       regexJa: Regexes.startsUsing({ id: '3CE5', source: 'グレーター・アルマジロ' }),
       regexCn: Regexes.startsUsing({ id: '3CE5', source: '大犰狳' }),
       regexKo: Regexes.startsUsing({ id: '3CE5', source: '거대 아르마딜로' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Malikah Head Toss Stack',
       regex: Regexes.headMarker({ id: '003E' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Auf DIR sammeln',
-          };
-        }
-        return {
-          en: 'Stack on ' + data.ShortName(matches.target),
-          de: 'Auf ' + data.ShortName(matches.target) + ' sammeln',
-        };
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'Malikah Right Round',
@@ -56,24 +37,22 @@
       infoText: {
         en: 'Melee Knockback',
         de: 'Nahkämpfer Rückstoß',
+        ko: '근거리 넉백',
+        cn: '近战击退',
       },
     },
     {
       id: 'Malikah Deep Draught',
-      regex: Regexes.startsUsing({ id: '4188', source: 'Pack Armadillo', capture: false }),
-      regexDe: Regexes.startsUsing({ id: '4188', source: 'Rudel-Gürteltier', capture: false }),
-      regexFr: Regexes.startsUsing({ id: '4188', source: 'Tatou Grégaire', capture: false }),
-      regexJa: Regexes.startsUsing({ id: '4188', source: 'パック・アルマジロ', capture: false }),
-      regexCn: Regexes.startsUsing({ id: '4188', source: '群落犰狳', capture: false }),
-      regexKo: Regexes.startsUsing({ id: '4188', source: '무리 아르마딜로', capture: false }),
+      regex: Regexes.startsUsing({ id: '4188', source: 'Pack Armadillo' }),
+      regexDe: Regexes.startsUsing({ id: '4188', source: 'Rudel-Gürteltier' }),
+      regexFr: Regexes.startsUsing({ id: '4188', source: 'Tatou Grégaire' }),
+      regexJa: Regexes.startsUsing({ id: '4188', source: 'パック・アルマジロ' }),
+      regexCn: Regexes.startsUsing({ id: '4188', source: '群落犰狳' }),
+      regexKo: Regexes.startsUsing({ id: '4188', source: '무리 아르마딜로' }),
       condition: function(data) {
         return data.CanSilence();
       },
-      infoText: {
-        en: 'Silence Add',
-        de: 'Add stummen',
-        fr: 'Silence Add',
-      },
+      response: Responses.interrupt('info'),
     },
     {
       id: 'Malikah Efface',
@@ -83,22 +62,10 @@
       regexJa: Regexes.startsUsing({ id: '3CEB', source: 'ハイドロタロース' }),
       regexCn: Regexes.startsUsing({ id: '3CEB', source: '水陆两用塔罗斯' }),
       regexKo: Regexes.startsUsing({ id: '3CEB', source: '수력 탈로스' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Malikah High Pressure',
@@ -108,10 +75,7 @@
       regexJa: Regexes.startsUsing({ id: '3CEC', source: 'ハイドロタロース', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3CEC', source: '水陆两用塔罗斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3CEC', source: '수력 탈로스', capture: false }),
-      infoText: {
-        en: 'Knockback',
-        de: 'Rückstoß',
-      },
+      response: Responses.knockback('info'),
     },
     {
       id: 'Malikah Swift Spill',
@@ -121,10 +85,7 @@
       regexJa: Regexes.startsUsing({ id: '3CEF', source: 'ハイドロタロース', capture: false }),
       regexCn: Regexes.startsUsing({ id: '3CEF', source: '水陆两用塔罗斯', capture: false }),
       regexKo: Regexes.startsUsing({ id: '3CEF', source: '수력 탈로스', capture: false }),
-      infoText: {
-        en: 'Get Behind',
-        de: 'Hinter ihn',
-      },
+      response: Responses.getBehind('info'),
     },
     {
       id: 'Malikah Intestinal Crank',
@@ -137,11 +98,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
   ],
   timelineReplace: [
@@ -149,12 +106,12 @@
       'locale': 'de',
       'replaceSync': {
         'Terminus': 'Drehscheibe',
-        'Greater Armadillo': 'Riesengürteltier',
         'Malikah\'s Gift': 'Malikahs Quelle',
-        'Amphibious Talos': 'Wasserträger-Talos',
         'Unquestioned Acceptance': 'Residenz der Großherzigkeit',
+        'Greater Armadillo': 'Riesengürteltier',
+        'Amphibious Talos': 'Wasserträger-Talos',
         'Storge': 'Storge',
-        'Rhapsodic': 'Keil der Liebe',
+        'Rhapsodic Nail': 'Keil der Liebe',
       },
       'replaceText': {
         'Stone Flail': 'Steindresche',
@@ -174,6 +131,68 @@
         'Censure': 'Tadel',
         'Armadillo': 'Armadillo',
       },
+    },
+    {
+      'locale': 'ko',
+      'replaceSync': {
+        'Terminus': '광차 종점',
+        'Malikah\'s Gift': '말리카의 수원',
+        'Unquestioned Acceptance': '시민 별장',
+        'Greater Armadillo': '거대 아르마딜로',
+        'Amphibious Talos': '수력 탈로스',
+        'Storge': '스토르게',
+        'Rhapsodic Nail': '사랑의 말뚝',
+      },
+      'replaceText': {
+        'Stone Flail': '바위 타작',
+        'Head Toss': '머리 겨냥',
+        'Right Round': '대회전',
+        'Flail Smash': '타작 충돌',
+        'Earthshake': '지반 진동',
+        'Efface': '파괴',
+        'Wellbore': '우물 파기',
+        'Geyser Eruption': '간헐천',
+        'High Pressure': '고압',
+        'Swift Spill': '강제 급수',
+        'Intestinal Crank': '창자 비틀기',
+        'Heretic\'s Fork': '이단자의 창',
+        'Breaking Wheel': '파괴의 바퀴',
+        'Crystal Nail': '말뚝박기',
+        'Censure': '집행',
+        '2x Pack Armadillo': '쫄 2마리 소환',
+      },
+    },
+    {
+      'locale': 'cn',
+      'replaceSync': {
+        'Terminus': '轨道车站',
+        'Malikah\'s Gift': '马利卡水源',
+        'Unquestioned Acceptance': '无偿离宫',
+        'Greater Armadillo': '大犰狳',
+        'Amphibious Talos': '水陆两用塔罗斯',
+        'Storge': '斯托尔戈',
+        'Rhapsodic Nail': '爱之桩柱',
+      },
+      'replaceText': {
+        'Stone Flail': '落石重锤',
+        'Head Toss': '甩尾锤',
+        'Right Round': '大回旋',
+        'Flail Smash': '重锤碎击',
+        'Earthshake': '地盘震动',
+        'Efface': '抹灭',
+        'Wellbore': '钻井',
+        'Geyser Eruption': '井水喷出',
+        'High Pressure': '高压',
+        'Swift Spill': '强制放水',
+        'Intestinal Crank': '绞肠',
+        'Heretic\'s Fork': '异端十字叉',
+        'Breaking Wheel': '碎轮',
+        'Crystal Nail': '打桩',
+        'Censure': '执行',
+        'Armadillo': '犰狳',
+        'Pack': '',
+      },
+      '~effectNames': {},
     },
   ],
 }];

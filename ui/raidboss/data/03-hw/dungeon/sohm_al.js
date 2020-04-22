@@ -3,53 +3,21 @@
 // Sohm Al (normal)
 // Nobody remembers what to do here, so here's triggers.
 [{
-  zoneRegex: /^Sohm Al$/,
+  zoneRegex: {
+    en: /^Sohm Al$/,
+    cn: /^天山绝顶索姆阿尔灵峰$/,
+  },
   triggers: [
     {
       id: 'Sohm Al Myath Stack',
       regex: Regexes.headMarker({ id: '0017' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Stack on YOU',
-            de: 'Stack auf DIR',
-            fr: 'Stack sur VOUS',
-          };
-        }
-        return {
-          en: 'Stack on ' + matches.target,
-          de: 'Stack auf ' + matches.target,
-          fr: 'Stack sur ' + matches.target,
-        };
-      },
-      tts: {
-        en: 'stack',
-        de: 'stek',
-        fr: 'stack',
-      },
+      response: Responses.stackOn(),
     },
     {
       id: 'Sohm Al Myath Spread',
       regex: Regexes.headMarker({ id: '00AE' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Move away from others',
-            de: 'Weg von den anderen',
-            fr: 'Eloignez-vous des autres',
-          };
-        }
-        return {
-          en: 'Move away from ' + matches.target,
-          de: 'Weg von ' + matches.target,
-          fr: 'Eloignez-vous de ' + matches.target,
-        };
-      },
-      tts: {
-        en: 'don\'t stack',
-        de: 'nicht stek en',
-        fr: 'ne restez pas packé',
-      },
+      condition: Conditions.targetIsYou(),
+      response: Responses.spread(),
     },
     {
       id: 'Sohm Al Myath Chyme',
@@ -63,34 +31,20 @@
         en: 'Kill Chyme Add',
         de: 'Brei Add töten',
         fr: 'Tuez l\'add',
+        cn: '击杀圣山之糜',
       },
       tts: {
         en: 'kill chyme',
         de: 'brei töten',
         fr: 'tuez lad',
+        cn: '击杀圣山之糜',
       },
     },
     {
       id: 'Sohm Al Tioman Meteor',
       regex: Regexes.headMarker({ id: '0007' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'place meteor on edge',
-            de: 'Meteor an Kante ablegen',
-            fr: 'Météore à placer sur le côté',
-          };
-        }
-      },
-      tts: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'meteor',
-            de: 'meteor',
-            fr: 'météore',
-          };
-        }
-      },
+      condition: Conditions.targetIsYou(),
+      response: Responses.meteorOnYou(),
     },
   ],
 }];

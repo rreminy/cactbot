@@ -2,7 +2,10 @@
 
 // Innocence Normal
 [{
-  zoneRegex: /^The Crown Of The Immaculate$/,
+  zoneRegex: {
+    en: /^The Crown Of The Immaculate$/,
+    cn: /^无瑕灵君歼灭战$/,
+  },
   timelineFile: 'innocence.txt',
   triggers: [
     {
@@ -16,12 +19,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        ja: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Inno Enthrall',
@@ -34,6 +32,8 @@
       alertText: {
         en: 'Look Away, Get Towers',
         de: 'Weg schauen, Türme nehmen',
+        cn: '背对BOSS，踩塔',
+        fr: 'Regardez ailleurs, prenez une tour',
       },
     },
     {
@@ -51,6 +51,8 @@
         de: 'Schwerter!',
         ja: '剣くるよ',
         fr: 'Epées !',
+        cn: '剑!',
+        ko: '검 돌아옴!',
       },
     },
 
@@ -65,12 +67,7 @@
       condition: function(data) {
         return data.role == 'healer';
       },
-      infoText: {
-        en: 'aoe',
-        de: 'AoE',
-        ja: 'AoE',
-        fr: 'Dégâts de zone',
-      },
+      response: Responses.aoe(),
     },
     {
       id: 'Inno Righteous Bolt',
@@ -80,24 +77,10 @@
       regexJa: Regexes.startsUsing({ id: '3EA3', source: 'イノセンス' }),
       regexCn: Regexes.startsUsing({ id: '3EA3', source: '无瑕灵君' }),
       regexKo: Regexes.startsUsing({ id: '3EA3', source: '이노센스' }),
-      alertText: function(data, matches) {
-        if (matches.target == data.me) {
-          return {
-            en: 'Tank Buster on YOU',
-            de: 'Tankbuster auf DIR',
-            fr: 'Tankbuster sur VOUS',
-            ja: '自分にタンクバスター',
-          };
-        }
-        if (data.role == 'healer') {
-          return {
-            en: 'Buster on ' + data.ShortName(matches.target),
-            de: 'Tankbuster auf ' + data.ShortName(matches.target),
-            fr: 'Tankbuster sur ' + data.ShortName(matches.target),
-            ja: data.ShortName(matches.target) + 'にタンクバスター',
-          };
-        }
+      condition: function(data, matches) {
+        return matches.target == data.me || data.role == 'healer';
       },
+      response: Responses.tankBuster(),
     },
     {
       id: 'Inno Charge',
@@ -112,6 +95,7 @@
         de: 'ausweichen',
         ja: '突進避けて',
         fr: 'Evitez les charges',
+        cn: '躲避冲锋',
       },
     },
     {
@@ -127,6 +111,8 @@
         de: 'In einer Linie sammeln',
         ja: 'シェア',
         fr: 'Packez-vous en ligne',
+        cn: '直线分摊',
+        ko: '직선 쉐어',
       },
     },
     {
@@ -140,6 +126,7 @@
         de: 'Kreis auf DIR',
         fr: 'Cercle sur vous',
         ja: 'サークルついた',
+        cn: '圈圈点你',
       },
     },
     {
@@ -156,6 +143,8 @@
         en: 'Rotate Right',
         de: 'Rechts rum rotieren',
         fr: 'Rotation vers la droite',
+        cn: '向右旋转',
+        ko: '오른쪽으로 도세요',
       },
     },
   ],
@@ -165,10 +154,8 @@
       'replaceSync': {
         'Sword of Condemnation': 'Schwert des Urteils',
         'Innocence': 'Innozenz',
-        'Engage!': 'Start!',
       },
       'replaceText': {
-        'attack': 'Attacke',
         'Winged Reprobation': 'Schwinge des Urteils',
         'Unknown Ability': 'Unknown Ability',
         'Starbirth': 'Sternengeburt',
@@ -177,7 +164,7 @@
         'Scold\'s Bridle': 'Schandmal',
         'Rightful Reprobation': 'Rechtmäßige Verurteilung',
         'Righteous Bolt': 'Blitz der Gerechtigkeit',
-        'Reprobation': 'Verurteilung',
+        '(?<! )Reprobation': 'Verurteilung',
         'Light Pillar': 'Lichtsäule',
         'Holy Trinity': 'Heilige Dreifaltigkeit',
         'Holy Sword': 'Heiliges Schwert',
@@ -185,27 +172,21 @@
         'God Ray': 'Göttlicher Strahl',
         'Flaming Sword': 'Flammenschwert',
         'Explosion': 'Explosion',
-        'Enrage': 'Finalangriff',
         'Duel Descent': 'Doppelter Sinkflug',
         'Drop of Light': 'Lichtabfall',
         'Dream of the Rood': 'Traum des Kreuzes',
         'Beatific Vision': 'Seligmachende Schau',
         'Forgiven venery': 'Geläuterte Wollust',
         'Forgiven shame': 'Geläuterte Schande',
-        '--untargetable--': '--nich anvisierbar--',
-        '--targetable--': '--anvisierbar--',
         'Realmrazer': 'Weltenzerstörer',
         'Heavenly Host': 'Machtwort',
         'Daybreak': 'Morgengrauen',
         'Enthrall': 'Bezaubern',
         'Sinsphere': 'Sündensphäre',
-        '--center--': '--Mitte--',
-        '--north--': '--Norden--',
         'Exalted Wing': 'Exaltierte Schwinge',
         'Exalted Plumes': 'Exaltierte Schwaden',
         'Soul And Body': 'Seele und Körper',
         '--add Phase--': '--Add Phase--',
-        '--jump--': '--Sprung--',
         'Drop Of Light': 'Lichtabfall',
       },
       '~effectNames': {
@@ -217,15 +198,14 @@
     },
     {
       'locale': 'fr',
+      'missingTranslations': true,
       'replaceSync': {
         'Sword Of Condemnation': 'Épée De Condamnation',
         'Forgiven Venery': 'Débauche Pardonnée',
         'Forgiven Shame': 'Déshonneur Pardonné',
         'Innocence': 'Innocence',
-        'Engage!': 'À l\'attaque',
       },
       'replaceText': {
-        'attack': 'Attaque',
         'Winged Reprobation': 'Réprobation ailée',
         'Unknown Ability': 'Unknown Ability',
         'Starbirth': 'Accouchement stellaire',
@@ -234,7 +214,7 @@
         'Scold\'s Bridle': 'Bride-bavarde',
         'Rightful Reprobation': 'Réprobation légitime',
         'Righteous Bolt': 'Éclair vertueux',
-        'Reprobation': 'Réprobation',
+        '(?<! )Reprobation': 'Réprobation',
         'Light Pillar': 'Pilier de lumière',
         'Holy Trinity': 'Sainte Trinité',
         'Holy Sword': 'Épée sacrée',
@@ -242,17 +222,13 @@
         'God Ray': 'Rayon divin',
         'Flaming Sword': 'Épée du feu des cieux',
         'Explosion': 'Explosion',
-        'Enrage': 'Enrage',
+        'Enthrall': 'Œil captivant',
         'Duel Descent': 'Double plongeon',
         'Drop of Light': 'Goutte de lumière',
         'Dream of the Rood': 'Le Rêve de la Croix',
         'Beatific Vision': 'Vision béatifique',
         'Forgiven venery': 'débauche pardonnée',
         'Forgiven shame': 'déshonneur pardonné',
-        '--untargetable--': '--Impossible à cibler--',
-        '--targetable--': '--Ciblable--',
-        '--sync--': '--Synchronisation--',
-        '--Reset--': '--Réinitialisation--',
       },
       '~effectNames': {
         'Physical Vulnerability Up': 'Vulnérabilité physique augmentée',
@@ -263,14 +239,12 @@
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
         'Schwert des Urteils': '',
         'Innocence': 'イノセンス',
-        'Engage!': '戦闘開始！',
       },
       'replaceText': {
-        '断罪': '断罪',
-        'attack': '攻撃',
         'Winged Reprobation': '断罪の飛翔',
         'Unknown Ability': 'Unknown Ability',
         'Starbirth': 'スターバース',
@@ -279,7 +253,7 @@
         'Scold\'s Bridle': 'スコルドブライダル',
         'Rightful Reprobation': '断罪の旋回',
         'Righteous Bolt': 'ジャッジボルト',
-        'Reprobation': '断罪',
+        '(?<! )Reprobation': '断罪',
         'Light Pillar': 'ライトピラー',
         'Holy Trinity': 'ホーリートリニティー',
         'Holy Sword': 'ホーリーソード',
@@ -304,41 +278,50 @@
     {
       'locale': 'cn',
       'replaceSync': {
-        'Schwert des Urteils': '',
-        'Innocence': '',
-        'Engage!': '战斗开始！',
+        'Sword of Condemnation': '断罪之剑',
+        'Innocence': '无瑕灵君',
+        'Sword Of Condemnation': '断罪之剑',
+        'Forgiven Venery': '得到宽恕的情欲',
+        'Forgiven Shame': '得到宽恕的耻辱',
       },
       'replaceText': {
-        '断罪': '',
-        'attack': '',
-        'Winged Reprobation': '',
-        'Unknown Ability': 'Unknown Ability',
-        'Starbirth': '',
-        'Soul and Body': '',
-        'Shadowreaver': '',
-        'Scold\'s Bridle': '',
-        'Rightful Reprobation': '',
-        'Righteous Bolt': '',
-        'Reprobation': '',
-        'Light Pillar': '',
-        'Holy Trinity': '',
-        'Holy Sword': '',
-        'Guiding Light': '',
-        'God Ray': '',
-        'Flaming Sword': '',
-        'Explosion': '',
-        'Duel Descent': '',
-        'Drop of Light': '',
-        'Dream of the Rood': '',
-        'Beatific Vision': '',
-        'Geläuterte Wollust': '',
-        'Geläuterte Schande': '',
+        'Winged Reprobation': '断罪飞翔',
+        'Starbirth': '创星',
+        'Soul and Body': '身心',
+        'Shadowreaver': '夺影',
+        'Scold\'s Bridle': '毒舌钩',
+        'Rightful Reprobation': '断罪回旋',
+        'Righteous Bolt': '裁决之雷',
+        '(?<! )Reprobation': '(?<! )断罪飞翔',
+        'Light Pillar': '光明柱',
+        'Holy Trinity': '圣三一',
+        'Holy Sword': '神圣剑',
+        'Guiding Light': '指明灯',
+        'God Ray': '神光',
+        'Flaming Sword': '回转火焰剑',
+        'Explosion': '爆炸',
+        'Duel Descent': '双重降临',
+        'Drop of Light': '落光',
+        'Dream of the Rood': '十字架之梦',
+        'Beatific Vision': '荣福直观',
+        'Forgiven venery': '得到宽恕的情欲',
+        'Forgiven shame': '得到宽恕的耻辱',
+        'Realmrazer': '灭境',
+        'Heavenly Host': '天堂君威',
+        'Daybreak': '破晓',
+        'Enthrall': '迷魂之眼',
+        'Sinsphere': '罪恶晶球',
+        'Exalted Wing': '高贵之翼',
+        'Exalted Plumes': '羽化',
+        'Soul And Body': '身心',
+        '--add Phase--': '--小怪--',
+        'Drop Of Light': '落光',
       },
       '~effectNames': {
-        'Physical Vulnerability Up': '',
+        'Physical Vulnerability Up': '物理受伤加重',
         'Lightning Resistance Down II': '雷属性耐性大幅降低',
         'Embolden': '鼓励',
-        'Damage Down': '',
+        'Damage Down': '伤害降低',
       },
     },
   ],

@@ -49,6 +49,11 @@ class CactbotLanguageJa extends CactbotLanguage {
       PresenceOfMind: '神速魔',
       Shifu: '士風',
       CircleOfPower: '黒魔紋：効果',
+      AstralAttenuation: '星極性耐性低下',
+      UmbralAttenuation: '霊極性耐性低下',
+      PhysicalAttenuation: '被物理ダメージ増加',
+
+      SurgeProtection: '避雷',
 
       Paralysis: '麻痺',
       Petrification: '石化',
@@ -62,6 +67,13 @@ class CactbotLanguageJa extends CactbotLanguage {
       FoolsTumble: '墜落幻覚', // 0x183
       Dropsy: '水毒',
       Throttle: '窒息',
+      StaticCondensation: '蓄電',
+      DamageDown: 'ダメージ低下',
+      AstralEffect: '偏属性：光',
+      UmbralEffect: '偏属性：闇',
+      Stun: 'スタン',
+      ThinIce: '氷床',
+      DeepFreeze: '氷結',
 
       // UWU
       Windburn: '裂傷',

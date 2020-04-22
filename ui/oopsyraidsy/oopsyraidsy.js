@@ -121,6 +121,15 @@ let kLatePullText = {
   ko: '풀링 늦음',
 };
 
+const kPartyWipeText = {
+  en: 'Party Wipe',
+  de: 'Party Wipe',
+  fr: 'Party Wipe',
+  ja: 'Party Wipe',
+  cn: '团灭',
+  ko: '파티 전멸',
+};
+
 // Internal trigger id for early pull
 let kEarlyPullId = 'General Early Pull';
 
@@ -543,7 +552,7 @@ class MistakeCollector {
     // wipe then (to make post-wipe deaths more obvious), however this
     // requires making liveList be able to insert items in a sorted
     // manner instead of just being append only.
-    this.OnFullMistakeText('wipe', null, 'Party Wipe');
+    this.OnFullMistakeText('wipe', null, kPartyWipeText[this.options.Language || 'en']);
     // Party wipe usually comes a few seconds after everybody dies
     // so this will clobber any late damage.
     this.StopCombat();
@@ -834,6 +843,11 @@ class DamageTracker {
   }
 
   OnTrigger(trigger, evt, matches) {
+    // If using named groups, treat matches.groups as matches
+    // so triggers can do things like matches.target.
+    if ((matches != undefined) && (matches.groups != undefined))
+      matches = matches.groups;
+
     if (trigger.id && this.options.DisabledTriggers[trigger.id])
       return;
 
@@ -875,7 +889,7 @@ class DamageTracker {
       if ('deathReason' in trigger) {
         let ret = ValueOrFunction(trigger.deathReason, eventOrEvents);
         if (ret) {
-          ret.reason = this.Translate(ret.reason);
+          ret.reason = this.collector.Translate(ret.reason);
           this.AddImpliedDeathReason(ret);
         }
       }
@@ -955,7 +969,34 @@ class DamageTracker {
 
     for (let i = 0; i < this.triggerSets.length; ++i) {
       let set = this.triggerSets[i];
-      if (this.zoneName.search(set.zoneRegex) < 0)
+
+      let zoneError = (s) => {
+        console.error(s + ': ' + JSON.stringify(set.zoneRegex) + ' in ' + set.filename);
+      };
+
+      let zoneRegex = set.zoneRegex;
+      let locale = this.options.Language || 'en';
+      if (typeof zoneRegex !== 'object') {
+        zoneError('zoneRegex must be translatable object or regexp');
+        continue;
+      } else if (!(zoneRegex instanceof RegExp)) {
+        let locale = this.options.Language || 'en';
+        if (locale in zoneRegex) {
+          zoneRegex = zoneRegex[locale];
+        } else if ('en' in zoneRegex) {
+          zoneRegex = zoneRegex['en'];
+        } else {
+          zoneError('unknown zoneRegex locale');
+          continue;
+        }
+
+        if (!(zoneRegex instanceof RegExp)) {
+          zoneError('zoneRegex must be regexp');
+          continue;
+        }
+      }
+
+      if (this.zoneName.search(zoneRegex) < 0)
         continue;
       this.AddSimpleTriggers('warn', set.damageWarn);
       this.AddSimpleTriggers('fail', set.damageFail);
@@ -965,15 +1006,15 @@ class DamageTracker {
       for (let j = 0; j < set.triggers.length; ++j) {
         let trigger = set.triggers[j];
         if ('regex' in trigger) {
-          trigger.regex = Regexes.parse(trigger.regex);
+          trigger.regex = Regexes.parse(Regexes.anyOf(trigger.regex));
           this.generalTriggers.push(trigger);
         }
         if ('damageRegex' in trigger) {
-          trigger.idRegex = Regexes.parse('^' + trigger.damageRegex + '$');
+          trigger.idRegex = Regexes.parse('^' + Regexes.anyOf(trigger.damageRegex) + '$');
           this.damageTriggers.push(trigger);
         }
         if ('abilityRegex' in trigger) {
-          trigger.idRegex = Regexes.parse('^' + trigger.abilityRegex + '$');
+          trigger.idRegex = Regexes.parse('^' + Regexes.anyOf(trigger.abilityRegex) + '$');
           this.abilityTriggers.push(trigger);
         }
         if ('gainsEffectRegex' in trigger) {
@@ -985,7 +1026,7 @@ class DamageTracker {
           this.effectTriggers.push(trigger);
         }
         if ('healRegex' in trigger) {
-          trigger.idRegex = Regexes.parse('^' + trigger.healRegex + '$');
+          trigger.idRegex = Regexes.parse('^' + Regexes.anyOf(trigger.healRegex) + '$');
           this.healTriggers.push(trigger);
         }
       }
@@ -1034,6 +1075,7 @@ class DamageTracker {
           console.error('Unexpected JSON from ' + filename + ', expected a zoneRegex');
           continue;
         }
+        json[i].filename = filename;
         if ('triggers' in json[i]) {
           if (typeof json[i].triggers != 'object' || !(json[i].triggers.length >= 0)) {
             console.error('Unexpected JSON from ' + filename + ', expected triggers to be an array');

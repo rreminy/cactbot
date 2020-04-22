@@ -1,7 +1,10 @@
 'use strict';
 
 [{
-  zoneRegex: /^The Binding Coil Of Bahamut - Turn \(5\)$/,
+  zoneRegex: {
+    en: /^The Binding Coil Of Bahamut - Turn \(5\)$/,
+    cn: /^巴哈姆特大迷宫 \(邂逅之章5\)$/,
+  },
   timelineFile: 't5.txt',
   triggers: [
     {
@@ -32,7 +35,9 @@
       suppressSeconds: 5,
       infoText: {
         en: 'Death Sentence Soon',
-        fr: 'Sentence de mort bientôt',
+        de: 'Todesurteil bald',
+        fr: 'Peine de mort bientôt',
+        cn: '死刑',
       },
     },
     {
@@ -45,7 +50,9 @@
       regexKo: Regexes.startsUsing({ source: '메라시디아 와이번', id: '4DB', capture: false }),
       infoText: {
         en: 'Liquid Hell',
+        de: 'Höllenschmelze',
         fr: 'Enfer liquide',
+        cn: '液体地狱',
       },
     },
     {
@@ -70,7 +77,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Fireball on YOU',
+            de: 'Feuerball auf DIR',
             fr: 'Boule de feu sur VOUS',
+            cn: '火球点名',
           };
         }
       },
@@ -78,7 +87,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Fireball on ' + data.ShortName(matches.target),
+            de: 'Feuerball auf ' + data.ShortName(matches.target),
             fr: 'Boule de feu sur ' + data.ShortName(matches.target),
+            cn: '火球点' + data.ShortName(matches.target),
           };
         }
       },
@@ -95,7 +106,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Conflag on YOU',
-            fr: 'Incendie sur VOUS',
+            de: 'Feuersturm auf DIR',
+            fr: 'Tempête de feu sur VOUS',
+            cn: '火焰流点名',
           };
         }
       },
@@ -103,7 +116,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Conflag on ' + data.ShortName(matches.target),
-            fr: 'Incendie sur ' + data.ShortName(matches.target),
+            de: 'Feuersturm auf ' + data.ShortName(matches.target),
+            fr: 'Tempête de feu sur ' + data.ShortName(matches.target),
+            cn: '火焰流点' + data.ShortName(matches.target),
           };
         }
       },
@@ -128,7 +143,9 @@
       regexKo: Regexes.ability({ source: '트윈타니아', id: '5B0', capture: false }),
       alertText: {
         en: 'DIVEBOMB',
+        de: 'STURZBOMBE',
         fr: 'BOMBE PLONGEANTE',
+        cn: '俯冲',
       },
     },
     {
@@ -143,7 +160,9 @@
       suppressSeconds: 5000,
       infoText: {
         en: 'Divebombs Soon',
+        de: 'Sturzbombe bald',
         fr: 'Bombe plongeante bientôt',
+        cn: '即将俯冲',
       },
     },
     {
@@ -159,12 +178,16 @@
         if (data.me == matches.target) {
           return {
             en: 'Knight on YOU',
+            de: 'Furchtritter auf DIR',
             fr: 'Chevalier sur VOUS',
+            cn: '骑士点名',
           };
         }
         return {
           en: 'Knight on ' + data.ShortName(matches.target),
+          de: 'Furchtritter auf ' + data.ShortName(matches.target),
           fr: 'Chevalier sur ' + data.ShortName(matches.target),
+          cn: '骑士点' + data.ShortName(matches.target),
         };
       },
     },
@@ -178,7 +201,9 @@
       regexKo: Regexes.startsUsing({ source: '트윈타니아', id: '4E1', capture: false }),
       alertText: {
         en: 'Twister!',
-        fr: 'Grande tornade !',
+        de: 'Wirbelsturm!',
+        fr: 'Tornade !',
+        cn: '风风风！',
       },
     },
     {
@@ -203,7 +228,9 @@
         if (data.me == matches.target) {
           return {
             en: 'Hatch on YOU',
-            fr: 'Eclosion sur VOUS',
+            de: 'Austritt auf DIR',
+            fr: 'Éclosion sur VOUS',
+            cn: '黑球点名',
           };
         }
       },
@@ -211,7 +238,9 @@
         if (data.me != matches.target) {
           return {
             en: 'Hatch on ' + data.ShortName(matches.target),
-            fr: 'Eclosion sur ' + data.ShortName(matches.target),
+            de: 'Austritt auf ' + data.ShortName(matches.target),
+            fr: 'Éclosion sur ' + data.ShortName(matches.target),
+            cn: '黑球点' + data.ShortName(matches.target),
           };
         }
       },
@@ -221,13 +250,10 @@
     {
       'locale': 'de',
       'replaceSync': {
-        'Engage!': 'Start!',
-        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
-        'The Right Hand of Bahamut will be sealed off': 'bis sich der Zugang zu[rm]? Rechte Hand von Bahamut schließt',
+        'The Right Hand of Bahamut': 'Rechten Hand von Bahamut',
         'Twintania': 'Twintania',
       },
       'replaceText': {
-        '--targetable--': '--anvisierbar--',
         'Aetheric Profusion': 'Ätherische Profusion',
         'Asclepius': 'Asclepius',
         'Death Sentence': 'Todesurteil',
@@ -245,37 +271,31 @@
     {
       'locale': 'fr',
       'replaceSync': {
-        'Engage!': 'À l\'attaque !',
-        'The Right Hand of Bahamut is no longer sealed': 'Ouverture de la Serre droite de Bahamut',
-        'The Right Hand of Bahamut will be sealed off': 'Fermeture de la Serre droite de Bahamut',
+        'The Right Hand of Bahamut': 'la Serre droite de Bahamut',
         'Twintania': 'Gémellia',
       },
       'replaceText': {
-        '--targetable--': '--Ciblable--',
         'Aetheric Profusion': 'Excès d\'éther',
-        'Asclepius': 'Asclépios',
+        'Asclepius Add': 'Add Asclépios',
         'Death Sentence': 'Peine de mort',
         'Divebomb': 'Bombe plongeante',
         'Fireball': 'Boule de feu',
         'Firestorm': 'Tempête de feu',
         'Hatch': 'Éclosion',
-        'Hygieia': 'Hygie',
+        'Hygieia Adds': 'Adds Hygie',
         'Liquid Hell': 'Enfer liquide',
         'Plummet': 'Piqué',
-        'Twister': 'Grande tornade',
+        'Twister': 'Tornade',
         'Unwoven Will': 'Volonté dispersée',
       },
     },
     {
       'locale': 'ja',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '戦闘開始！',
-        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
-        'The Right Hand of Bahamut will be sealed off': 'The Right Hand of Bahamut will be sealed off', // FIXME
         'Twintania': 'ツインタニア',
       },
       'replaceText': {
-        '--targetable--': '--targetable--',
         'Aetheric Profusion': 'エーテリックプロフュージョン',
         'Asclepius': 'アスクレピオス',
         'Death Sentence': 'デスセンテンス',
@@ -292,14 +312,11 @@
     },
     {
       'locale': 'cn',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '战斗开始！',
-        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
-        'The Right Hand of Bahamut will be sealed off': 'The Right Hand of Bahamut will be sealed off', // FIXME
         'Twintania': '双塔尼亚',
       },
       'replaceText': {
-        '--targetable--': '--targetable--', // FIXME
         'Aetheric Profusion': '以太失控',
         'Asclepius': '阿斯克勒庇俄斯',
         'Death Sentence': '死刑',
@@ -316,14 +333,11 @@
     },
     {
       'locale': 'ko',
+      'missingTranslations': true,
       'replaceSync': {
-        'Engage!': '전투 시작!',
-        'The Right Hand of Bahamut is no longer sealed': 'The Right Hand of Bahamut is no longer sealed', // FIXME
-        'The Right Hand of Bahamut will be sealed off': 'The Right Hand of Bahamut will be sealed off', // FIXME
         'Twintania': '트윈타니아',
       },
       'replaceText': {
-        '--targetable--': '--targetable--', // FIXME
         'Aetheric Profusion': '에테르 홍수',
         'Asclepius': '아스클레피오스',
         'Death Sentence': '사형 선고',

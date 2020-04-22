@@ -314,6 +314,7 @@ class RaidbossConfigurator {
     // This is probably where using something like vue or react would be easier.
     // For the moment, folks can just reload, for real.
     this.alertsLang = this.base.getOption('raidboss', 'AlertsLanguage', this.base.lang);
+    this.timelineLang = this.base.getOption('raidboss', 'TimelineLanguage', this.base.lang);
   }
 
   buildUI(container, raidbossFiles) {
@@ -439,6 +440,8 @@ class RaidbossConfigurator {
     // TODO: somehow use the option for alert language here??
     if (result[this.alertsLang])
       return this.valueOrFunction(result[this.alertsLang]);
+    if (result[this.timelineLang])
+      return this.valueOrFunction(result[this.timelineLang]);
     // For partially localized results where this localization doesn't
     // exist, prefer English over nothing.
     return this.valueOrFunction(result['en']);
@@ -576,7 +579,7 @@ class RaidbossConfigurator {
 
     let lang = this.base.lang;
     let regexLocale = 'regex' + lang.charAt(0).toUpperCase() + lang.slice(1);
-    let baseRegex = trig[regexLocale] || trig.regex;
+    let baseRegex = Regexes.parse(trig[regexLocale] || trig.regex);
     // FIXME: the current \y{Name} is extremely verbose due to some unicode characters.
     // It would be nice to replace it with something much simpler like `.*?`, as Regexes does.
     // However, this doesn't work for all regexes yet until they are converted over.
@@ -775,30 +778,35 @@ UserConfig.registerOptions('raidboss', {
           '🆙💬 Text and TTS': 'ttsAndText',
           '💬 TTS Only': 'ttsOnly',
           '🆙 Text Only': 'textOnly',
+          '❌ Disabled': 'disabled',
         },
         de: {
           '🆙🔊 Text und Ton': 'textAndSound',
           '🆙💬 Text und TTS': 'ttsAndText',
           '💬 Nur TTS': 'ttsOnly',
           '🆙 Nur Text': 'textOnly',
+          '❌ Deaktiviert': 'disabled',
         },
         fr: {
           '🆙🔊 Texte et son': 'textAndSound',
           '🆙💬 Texte et TTS': 'ttsAndText',
           '💬 TTS seulement': 'ttsOnly',
           '🆙 Text seulement': 'textOnly',
+          '❌ Désactivé': 'disabled',
         },
         cn: {
           '🆙🔊 文字和声音': 'textAndSound',
           '🆙💬 文字和TTS': 'ttsAndText',
           '💬 只使用TTS': 'ttsOnly',
           '🆙 只使用文字': 'textOnly',
+          '❌ 禁用': 'disabled',
         },
         ko: {
           '🆙🔊 텍스트와 소리': 'textAndSound',
           '🆙💬 텍스트와 TTS': 'ttsAndText',
           '💬 TTS만': 'ttsOnly',
           '🆙 텍스트만': 'textOnly',
+          '❌ 비활성화': 'disabled',
         },
       },
       default: 'textAndSound',
@@ -867,6 +875,71 @@ UserConfig.registerOptions('raidboss', {
         if (value === 'default')
           return;
         options['AlertsLanguage'] = value;
+      },
+    },
+    {
+      id: 'TimelineLanguage',
+      name: {
+        en: 'Timeline language',
+        de: 'Timeline Sprache',
+        fr: 'Langue des timeline',
+        cn: '时间轴语言',
+        ko: '타임라인 언어',
+      },
+      type: 'select',
+      options: {
+        en: {
+          'Use FFXIV Plugin Language': 'default',
+          'English (en)': 'en',
+          'Chinese (cn)': 'cn',
+          'German (de)': 'de',
+          'French (fr)': 'fr',
+          'Japanese (ja)': 'ja',
+          'Korean (ko)': 'ko',
+        },
+        de: {
+          'Benutze FFXIV Plugin Sprache': 'default',
+          'Englisch (en)': 'en',
+          'Chinesisch (cn)': 'cn',
+          'Deutsch (de)': 'de',
+          'Französisch (fr)': 'fr',
+          'Japanisch (ja)': 'ja',
+          'Koreanisch (ko)': 'ko',
+        },
+        fr: {
+          'Utiliser la langue du Plugin FFXIV': 'default',
+          'Anglais (en)': 'en',
+          'Chinois (cn)': 'cn',
+          'Allemand (de)': 'de',
+          'Français (fr)': 'fr',
+          'Japonais (ja)': 'ja',
+          'Coréen (ko)': 'ko',
+        },
+        cn: {
+          '使用最终幻想XIV解析插件设置的语言': 'default',
+          '英语 (en)': 'en',
+          '汉语 (cn)': 'cn',
+          '德语 (de)': 'de',
+          '法语 (fr)': 'fr',
+          '日语 (ja)': 'ja',
+          '朝鲜语 (ko)': 'ko',
+        },
+        ko: {
+          'FFXIV Plugin 언어 사용': 'default',
+          '영어 (en)': 'en',
+          '중국어 (cn)': 'cn',
+          '독일어 (de)': 'de',
+          '프랑스어 (fr)': 'fr',
+          '일본어 (ja)': 'ja',
+          '한국어 (ko)': 'ko',
+        },
+      },
+      default: 'default',
+      debug: true,
+      setterFunc: (options, value) => {
+        if (value === 'default')
+          return;
+        options['TimelineLanguage'] = value;
       },
     },
     {
@@ -1072,12 +1145,33 @@ UserConfig.registerOptions('raidboss', {
       default: 1,
     },
     {
+      id: 'BrowserTTS',
+      name: {
+        en: 'Use Browser for Text to Speech',
+        de: 'Verwenden Sie den Browser für Text zu Sprache', // Machine translation
+        fr: 'Utiliser le navigateur pour la synthèse vocale', // Machine Translation
+        ko: '텍스트 음성 변환을위한 브라우저 사용', // Machine translation
+        cn: '使用浏览器进行文字转语音', // Machine translation
+      },
+      type: 'checkbox',
+      default: false,
+    },
+    {
       id: 'cactbotWormholeStrat',
       // TODO: maybe need some way to group these kinds of
       // options if we end up having a lot?
       name: {
         en: 'Alex Ultimate: enable cactbot Wormhole strat',
         ko: '절 알렉: cactbot 웜홀 공략방식 활성화',
+        cn: '亚历山大绝境战：cactbot灵泉辅助功能',
+      },
+      type: 'checkbox',
+      default: false,
+    },
+    {
+      id: 'cactbote8sUptimeKnockbackStrat',
+      name: {
+        en: 'e8s: enable cactbot Uptime Knockback strat',
       },
       type: 'checkbox',
       default: false,
